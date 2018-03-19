@@ -7,3 +7,7 @@
 */
 
 CFBundleDisplayName = "Taro";
+NSBluetoothPeripheralUsageDescription = "Please open bluetooth to connect Taro before record video";
+NSCameraUsageDescription = "Allow Taro to take pictures and record video";
+NSMicrophoneUsageDescription = "Allow Taro to record audio";
+NSPhotoLibraryUsageDescription = "Allow Taro to access photos,media,and files on your device?";

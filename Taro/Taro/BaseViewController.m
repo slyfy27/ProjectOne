@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    // Do any additional setup after loading the view
 }
 
 - (void)setRightNavigationBarButton:(SEL)action title:(NSString *)title image:(NSString *)image
@@ -31,7 +31,7 @@
         if (image) {
             rightButton.titleEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
         }else{
-            rightButton.titleEdgeInsets = UIEdgeInsetsMake(0, 64 - 14*title.length, 0, 0);
+            rightButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
         }
         rightButton.titleLabel.font = RightNaviTitleFont;
     }
