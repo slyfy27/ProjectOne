@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Navigation View Controller-->
         <scene sceneID="MGF-H4-ySP">
             <objects>
-                <navigationController id="dsZ-wa-nKQ" sceneMemberID="viewController">
+                <navigationController id="dsZ-wa-nKQ" customClass="UINavigationViewController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eoj-Dp-oJz">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="32"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -33,14 +33,39 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group" translatesAutoresizingMaskIntoConstraints="NO" id="BGv-rv-5H2">
+                                <rect key="frame" x="50" y="64" width="346" height="246"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="346" id="gHp-Uj-GQY"/>
+                                    <constraint firstAttribute="height" constant="246" id="mnz-bb-xsV"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto-Tracking Filming" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dYI-1L-Qcn">
+                                <rect key="frame" x="440" y="84" width="207" height="26.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <color key="textColor" red="0.21568627450980393" green="0.21568627450980393" blue="0.21568627450980393" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="dYI-1L-Qcn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="62j-Nk-LfM"/>
+                            <constraint firstItem="dYI-1L-Qcn" firstAttribute="top" secondItem="BGv-rv-5H2" secondAttribute="top" constant="20" id="Gdc-U4-mhj"/>
+                            <constraint firstItem="BGv-rv-5H2" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="KtB-Mh-kzt"/>
+                            <constraint firstItem="BGv-rv-5H2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="RMs-ZD-Qci"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dYI-1L-Qcn" secondAttribute="trailing" constant="20" id="xsr-GO-8OY"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="VaN-Bd-BgJ"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-527" y="6"/>
+            <point key="canvasLocation" x="-527.58620689655174" y="5.5999999999999996"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Group" width="346" height="246"/>
+    </resources>
 </document>

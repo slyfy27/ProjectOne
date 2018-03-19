@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42675C73205E99EB005CBB33 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42675C72205E99EB005CBB33 /* BaseViewController.m */; };
 		4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4274A2F0205B72A800844BCE /* AppDelegate.m */; };
 		4274A2F4205B72A800844BCE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4274A2F3205B72A800844BCE /* ViewController.m */; };
 		4274A2F7205B72A800844BCE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4274A2F5205B72A800844BCE /* Main.storyboard */; };
@@ -18,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		42675C71205E99EB005CBB33 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		42675C72205E99EB005CBB33 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		4274A2EC205B72A800844BCE /* Taro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Taro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4274A2EF205B72A800844BCE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4274A2F0205B72A800844BCE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -33,7 +36,6 @@
 		4274A30E205B781300844BCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4274A310205B781A00844BCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4274A312205B968800844BCE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
-		4274A313205B9E0E00844BCE /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		4274A314205B9EBE00844BCE /* GolbalDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GolbalDefine.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,6 +73,8 @@
 				4274A2F0205B72A800844BCE /* AppDelegate.m */,
 				4274A2F2205B72A800844BCE /* ViewController.h */,
 				4274A2F3205B72A800844BCE /* ViewController.m */,
+				42675C71205E99EB005CBB33 /* BaseViewController.h */,
+				42675C72205E99EB005CBB33 /* BaseViewController.m */,
 				4274A2F5205B72A800844BCE /* Main.storyboard */,
 				4274A2F8205B72A800844BCE /* Assets.xcassets */,
 				4274A2FA205B72A800844BCE /* LaunchScreen.storyboard */,
@@ -78,7 +82,6 @@
 				4274A2FE205B72A800844BCE /* main.m */,
 				4274A309205B74E100844BCE /* InfoPlist.strings */,
 				4274A30F205B781300844BCE /* Localizable.strings */,
-				4274A313205B9E0E00844BCE /* PrefixHeader.pch */,
 				4274A314205B9EBE00844BCE /* GolbalDefine.h */,
 			);
 			path = Taro;
@@ -158,6 +161,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4274A2F4205B72A800844BCE /* ViewController.m in Sources */,
+				42675C73205E99EB005CBB33 /* BaseViewController.m in Sources */,
 				4274A2FF205B72A800844BCE /* main.m in Sources */,
 				4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */,
 			);
@@ -313,7 +317,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				GCC_PREFIX_HEADER = "$(SRCROT)/Taro/PrefixHeader";
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Taro/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = slyfy27.Taro;
@@ -327,7 +331,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				GCC_PREFIX_HEADER = "$(SRCROT)/Taro/PrefixHeader";
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Taro/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = slyfy27.Taro;
