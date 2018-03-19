@@ -37,6 +37,9 @@
 #define NaviBarColor UIColorFromRGB(0x4267B2) //导航栏颜色
 #define NormalTextColor UIColorFromRGB(0x373737) //常见字体颜色
 #define DescTextColor UIColorFromRGB(0x999999) //描述文字颜色
-#define 
+
+//定义字体
+#define LeftNaviTitleFont [UIFont boldSystemFontOfSize:18]
+#define RightNaviTitleFont [UIFont systemFontOfSize:14]
 
 #endif /* GolbalDefine_h */

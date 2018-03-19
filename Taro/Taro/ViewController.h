@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
+#import "GolbalDefine.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : BaseViewController
 
 
 @end
