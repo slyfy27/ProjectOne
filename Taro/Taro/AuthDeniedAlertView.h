@@ -36,6 +36,6 @@ typedef void(^ChooseBlock)(NSInteger index);
  */
 - (void)dismiss;
 
-+ (void)alertWithIconName:(NSString *)iconName content:(NSString *)content choose:(ChooseBlock)choose;
++ (void)alertWithIconName:(NSString *)iconName content:(NSString *)content comfirmTitle:(NSString *)comfireTitle choose:(ChooseBlock)choose;
 
 @end

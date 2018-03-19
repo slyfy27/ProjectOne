@@ -17,3 +17,4 @@
 "BlueToothOpenTip" = "Please open bluetooth to connect Taro before record video";
 
 "AlertComfirmTitle" = "Try Again";
+"AlertBlueToothComfirmTitle" = "OK";

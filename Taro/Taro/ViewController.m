@@ -60,12 +60,12 @@
                     
                 }
                 else{
-                    [AuthDeniedAlertView alertWithIconName:@"" content:NSLocalizedString(@"BlueToothOpenTip", nil) choose:^(NSInteger index) {
+                    [AuthDeniedAlertView alertWithIconName:@"蓝牙" content:NSLocalizedString(@"BlueToothOpenTip", nil) comfirmTitle:NSLocalizedString(@"AlertBlueToothComfirmTitle",nil) choose:^(NSInteger index) {
                     }];
                 }
             }
             else{
-                [AuthDeniedAlertView alertWithIconName:@"" content:NSLocalizedString(@"PhotoAuthDenied", nil) choose:^(NSInteger index) {
+                [AuthDeniedAlertView alertWithIconName:@"保存" content:NSLocalizedString(@"PhotoAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
                     if (index == 1) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Photos"] options:@{} completionHandler:^(BOOL success) {
@@ -77,7 +77,7 @@
             }
         }
         else{
-            [AuthDeniedAlertView alertWithIconName:@"" content:NSLocalizedString(@"MicrophoneAuthDenied", nil) choose:^(NSInteger index) {
+            [AuthDeniedAlertView alertWithIconName:@"麦克风" content:NSLocalizedString(@"MicrophoneAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
                 if (index == 1) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Photos"] options:@{} completionHandler:^(BOOL success) {
@@ -89,7 +89,7 @@
         }
     }
     else{
-        [AuthDeniedAlertView alertWithIconName:@"" content:NSLocalizedString(@"CameraAuthDenied", nil) choose:^(NSInteger index) {
+        [AuthDeniedAlertView alertWithIconName:@"录像" content:NSLocalizedString(@"CameraAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
             if (index == 1) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Photos"] options:@{} completionHandler:^(BOOL success) {

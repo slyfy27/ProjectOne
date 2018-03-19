@@ -55,8 +55,9 @@
         _contentView.layer.shadowRadius = 5;
         _contentView.backgroundColor = [UIColor whiteColor];
         _iconImageView = [[UIImageView alloc] initWithFrame:(CGRect){20,20,20,29}];
+        _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
         [_contentView addSubview:_iconImageView];
-        _contentLabel = [[UILabel alloc] initWithFrame:(CGRect){60,20,245,35}];
+        _contentLabel = [[UILabel alloc] initWithFrame:(CGRect){60,20,245,32}];
         _contentLabel.textColor = [UIColor blackColor];
         _contentLabel.font = AlertContentFont;
         _contentLabel.textAlignment = NSTextAlignmentLeft;
@@ -133,11 +134,12 @@
     }];
 }
 
-+ (void)alertWithIconName:(NSString *)iconName content:(NSString *)content choose:(ChooseBlock)choose{
++ (void)alertWithIconName:(NSString *)iconName content:(NSString *)content comfirmTitle:(NSString *)comfireTitle choose:(ChooseBlock)choose{
     AuthDeniedAlertView *alert = [[AuthDeniedAlertView alloc] init];
     alert->_contentLabel.text = content;
     alert->_iconImageView.image = [UIImage imageNamed:iconName];
     alert->_choose = choose;
+    [alert->_comfirmBtn setTitle:comfireTitle forState:UIControlStateNormal];
     [[UIApplication sharedApplication].keyWindow addSubview:alert];
     [alert show];
 }
