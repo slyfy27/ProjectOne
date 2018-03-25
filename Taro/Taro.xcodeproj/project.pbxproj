@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		42675C73205E99EB005CBB33 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42675C72205E99EB005CBB33 /* BaseViewController.m */; };
+		42675C7C20679DEC005CBB33 /* GalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42675C7A20679DEC005CBB33 /* GalleryViewController.m */; };
+		42675C7D20679DEC005CBB33 /* GalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42675C7B20679DEC005CBB33 /* GalleryViewController.xib */; };
 		4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4274A2F0205B72A800844BCE /* AppDelegate.m */; };
 		4274A2F4205B72A800844BCE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4274A2F3205B72A800844BCE /* ViewController.m */; };
 		4274A2F7205B72A800844BCE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4274A2F5205B72A800844BCE /* Main.storyboard */; };
@@ -21,6 +23,9 @@
 /* Begin PBXFileReference section */
 		42675C71205E99EB005CBB33 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		42675C72205E99EB005CBB33 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		42675C7920679DEC005CBB33 /* GalleryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryViewController.h; sourceTree = "<group>"; };
+		42675C7A20679DEC005CBB33 /* GalleryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GalleryViewController.m; sourceTree = "<group>"; };
+		42675C7B20679DEC005CBB33 /* GalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryViewController.xib; sourceTree = "<group>"; };
 		4274A2EC205B72A800844BCE /* Taro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Taro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4274A2EF205B72A800844BCE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4274A2F0205B72A800844BCE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -73,6 +78,9 @@
 				4274A2F0205B72A800844BCE /* AppDelegate.m */,
 				4274A2F2205B72A800844BCE /* ViewController.h */,
 				4274A2F3205B72A800844BCE /* ViewController.m */,
+				42675C7920679DEC005CBB33 /* GalleryViewController.h */,
+				42675C7A20679DEC005CBB33 /* GalleryViewController.m */,
+				42675C7B20679DEC005CBB33 /* GalleryViewController.xib */,
 				42675C71205E99EB005CBB33 /* BaseViewController.h */,
 				42675C72205E99EB005CBB33 /* BaseViewController.m */,
 				4274A2F5205B72A800844BCE /* Main.storyboard */,
@@ -146,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4274A30D205B781300844BCE /* Localizable.strings in Resources */,
+				42675C7D20679DEC005CBB33 /* GalleryViewController.xib in Resources */,
 				4274A2FC205B72A800844BCE /* LaunchScreen.storyboard in Resources */,
 				4274A307205B74E100844BCE /* InfoPlist.strings in Resources */,
 				4274A2F9205B72A800844BCE /* Assets.xcassets in Resources */,
@@ -164,6 +173,7 @@
 				42675C73205E99EB005CBB33 /* BaseViewController.m in Sources */,
 				4274A2FF205B72A800844BCE /* main.m in Sources */,
 				4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */,
+				42675C7C20679DEC005CBB33 /* GalleryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

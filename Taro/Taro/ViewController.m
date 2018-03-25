@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "GalleryViewController.h"
 
 @interface ViewController ()
 
@@ -29,7 +30,8 @@
  push to the Gallery viewController
  */
 - (void)galleryAction{
-    
+    GalleryViewController *vc = [[GalleryViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
