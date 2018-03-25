@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42401724205F6E51007885C4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42401723205F6E51007885C4 /* AVFoundation.framework */; };
+		42401727205F9C55007885C4 /* AuthDeniedAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 42401726205F9C55007885C4 /* AuthDeniedAlertView.m */; };
+		4240172A205F9F2F007885C4 /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 42401729205F9F2F007885C4 /* UIView+Category.m */; };
+		4240172E205FAE6B007885C4 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4240172D205FAE6B007885C4 /* CoreBluetooth.framework */; };
 		42675C73205E99EB005CBB33 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42675C72205E99EB005CBB33 /* BaseViewController.m */; };
 		42675C7C20679DEC005CBB33 /* GalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42675C7A20679DEC005CBB33 /* GalleryViewController.m */; };
 		42675C7D20679DEC005CBB33 /* GalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42675C7B20679DEC005CBB33 /* GalleryViewController.xib */; };
@@ -21,6 +25,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		42401723205F6E51007885C4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		42401725205F9C55007885C4 /* AuthDeniedAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthDeniedAlertView.h; sourceTree = "<group>"; };
+		42401726205F9C55007885C4 /* AuthDeniedAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthDeniedAlertView.m; sourceTree = "<group>"; };
+		42401728205F9F2F007885C4 /* UIView+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
+		42401729205F9F2F007885C4 /* UIView+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
+		4240172D205FAE6B007885C4 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		42675C71205E99EB005CBB33 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		42675C72205E99EB005CBB33 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		42675C7920679DEC005CBB33 /* GalleryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryViewController.h; sourceTree = "<group>"; };
@@ -49,17 +59,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4240172E205FAE6B007885C4 /* CoreBluetooth.framework in Frameworks */,
+				42401724205F6E51007885C4 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		42401722205F6E51007885C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4240172D205FAE6B007885C4 /* CoreBluetooth.framework */,
+				42401723205F6E51007885C4 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4274A2E3205B72A800844BCE = {
 			isa = PBXGroup;
 			children = (
 				4274A2EE205B72A800844BCE /* Taro */,
 				4274A2ED205B72A800844BCE /* Products */,
+				42401722205F6E51007885C4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -81,6 +103,10 @@
 				42675C7920679DEC005CBB33 /* GalleryViewController.h */,
 				42675C7A20679DEC005CBB33 /* GalleryViewController.m */,
 				42675C7B20679DEC005CBB33 /* GalleryViewController.xib */,
+				42401725205F9C55007885C4 /* AuthDeniedAlertView.h */,
+				42401726205F9C55007885C4 /* AuthDeniedAlertView.m */,
+				42401728205F9F2F007885C4 /* UIView+Category.h */,
+				42401729205F9F2F007885C4 /* UIView+Category.m */,
 				42675C71205E99EB005CBB33 /* BaseViewController.h */,
 				42675C72205E99EB005CBB33 /* BaseViewController.m */,
 				4274A2F5205B72A800844BCE /* Main.storyboard */,
@@ -169,9 +195,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42401727205F9C55007885C4 /* AuthDeniedAlertView.m in Sources */,
 				4274A2F4205B72A800844BCE /* ViewController.m in Sources */,
 				42675C73205E99EB005CBB33 /* BaseViewController.m in Sources */,
 				4274A2FF205B72A800844BCE /* main.m in Sources */,
+				4240172A205F9F2F007885C4 /* UIView+Category.m in Sources */,
 				4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */,
 				42675C7C20679DEC005CBB33 /* GalleryViewController.m in Sources */,
 			);
@@ -327,6 +355,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8SF5TW4BS5;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Taro/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -341,6 +370,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8SF5TW4BS5;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Taro/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
