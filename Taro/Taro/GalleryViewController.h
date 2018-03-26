@@ -10,4 +10,6 @@
 
 @interface GalleryViewController : BaseViewController
 
+@property (weak, nonatomic) IBOutlet UICollectionView *galleryCollectionView;
+
 @end

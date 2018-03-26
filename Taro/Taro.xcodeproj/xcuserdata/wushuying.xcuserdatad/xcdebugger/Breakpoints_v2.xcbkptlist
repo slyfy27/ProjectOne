@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Taro/GalleryViewController.m"
-            timestampString = "543662464.7280329"
+            filePath = "Taro/GalleryCollectionViewCell.m"
+            timestampString = "543673362.640324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
-            landmarkName = "-viewDidLoad"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "-setAsset:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
