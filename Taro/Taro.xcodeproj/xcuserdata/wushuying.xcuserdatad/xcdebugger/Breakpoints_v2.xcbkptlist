@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Taro/GalleryCollectionViewCell.m"
-            timestampString = "543673362.640324"
+            timestampString = "543750109.233445"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "-setAsset:"
             landmarkType = "7">
          </BreakpointContent>

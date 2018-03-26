@@ -17,18 +17,26 @@
 
 @property (nonatomic, strong) NSMutableArray *assets;
 
+@property (nonatomic, assign) BOOL selectState;
+
 @end
 
 @implementation GalleryViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _selectState = NO;
     _galleryCollectionView.delegate = self;
     _galleryCollectionView.dataSource = self;
+    [self setLeftNavigationBarButton:@selector(back) title:nil image:@"返回"];
     [_galleryCollectionView registerNib:[UINib nibWithNibName:@"GalleryCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"cell"];
     [self setRightNavigationBarButton:@selector(edit) title:@"EDIT" image:nil];
     [self setTitle:@"Gallery"];
     [self enumerateGallery];
+}
+
+- (void)back{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)enumerateGallery{
@@ -43,7 +51,8 @@
 }
 
 - (void)edit{
-    
+    _selectState = YES;
+    [_galleryCollectionView reloadData];
 }
 
 //有多少的分组
@@ -57,6 +66,9 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     GalleryCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.asset = _assets[indexPath.row];
+    if (_selectState) {
+        cell.selectBtn.hidden = NO;
+    }
     return cell;
 }
 
@@ -76,12 +88,12 @@
 /* 定义每个UICollectionView 的大小 */
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(200, 150);
+    return CGSizeMake(185, 180);
 }
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(15, 15, 15, 15);//分别为上、左、下、右
+    return UIEdgeInsetsMake(28, 47, 28, 47);//分别为上、左、下、右
 }
 
 

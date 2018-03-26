@@ -8,11 +8,16 @@
 
 #import "GalleryCollectionViewCell.h"
 #import <AVKit/AVKit.h>
+#import "GolbalDefine.h"
 
 @implementation GalleryCollectionViewCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    self.bottomView.layer.shadowColor = UIColorFromRGB(0x000000).CGColor;
+    self.bottomView.layer.shadowRadius = 4;
+    self.bottomView.layer.shadowOffset = CGSizeMake(0, 3);
+    self.bottomView.layer.shadowOpacity = 0.2;
 }
 
 - (void)setAsset:(PHAsset *)asset{

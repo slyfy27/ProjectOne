@@ -13,36 +13,67 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="GalleryCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
+            <rect key="frame" x="0.0" y="0.0" width="185" height="180"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
+                <rect key="frame" x="0.0" y="0.0" width="185" height="180"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bxp-aZ-8At">
-                        <rect key="frame" x="0.0" y="0.0" width="200" height="150"/>
+                        <rect key="frame" x="6" y="0.0" width="173" height="145"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="173" id="Usg-KH-Saa"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AKE-Za-695">
-                        <rect key="frame" x="147.5" y="117" width="37.5" height="18"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IcO-cW-CRt">
+                        <rect key="frame" x="6" y="138" width="173" height="35"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AKE-Za-695">
+                                <rect key="frame" x="130" y="10" width="31" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.37254901960784315" green="0.37254901960784315" blue="0.37254901960784315" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="35" id="9XK-oQ-rjr"/>
+                            <constraint firstAttribute="width" constant="173" id="BkT-BP-kAw"/>
+                            <constraint firstItem="AKE-Za-695" firstAttribute="centerY" secondItem="IcO-cW-CRt" secondAttribute="centerY" id="DI9-R5-iuC"/>
+                            <constraint firstAttribute="trailing" secondItem="AKE-Za-695" secondAttribute="trailing" constant="12" id="TAm-YG-IqW"/>
+                        </constraints>
+                    </view>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lNi-Vn-IEP">
+                        <rect key="frame" x="17" y="10" width="21" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="21" id="Boi-CH-LKc"/>
+                            <constraint firstAttribute="height" constant="21" id="eFE-fa-Kh3"/>
+                        </constraints>
+                        <state key="normal" image="照片未选中"/>
+                        <state key="selected" image="选中"/>
+                    </button>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="SEy-5g-ep8" firstAttribute="leading" secondItem="Bxp-aZ-8At" secondAttribute="leading" id="3Hg-Wi-hH4"/>
-                <constraint firstItem="AKE-Za-695" firstAttribute="trailing" secondItem="Bxp-aZ-8At" secondAttribute="trailing" constant="-15" id="A3A-rC-wZ5"/>
-                <constraint firstItem="Bxp-aZ-8At" firstAttribute="width" secondItem="SEy-5g-ep8" secondAttribute="width" id="APe-W5-Nhg"/>
-                <constraint firstItem="AKE-Za-695" firstAttribute="bottom" secondItem="Bxp-aZ-8At" secondAttribute="bottom" constant="-15" id="J7V-se-Lc8"/>
-                <constraint firstItem="Bxp-aZ-8At" firstAttribute="bottom" secondItem="SEy-5g-ep8" secondAttribute="bottom" id="Usq-6K-wM6"/>
-                <constraint firstItem="Bxp-aZ-8At" firstAttribute="height" secondItem="SEy-5g-ep8" secondAttribute="height" id="nSM-EI-cEa"/>
+                <constraint firstItem="Bxp-aZ-8At" firstAttribute="top" secondItem="lNi-Vn-IEP" secondAttribute="bottom" constant="-31" id="4dU-JO-R0q"/>
+                <constraint firstItem="SEy-5g-ep8" firstAttribute="bottom" secondItem="IcO-cW-CRt" secondAttribute="bottom" constant="7" id="6py-hi-KOP"/>
+                <constraint firstItem="IcO-cW-CRt" firstAttribute="centerX" secondItem="SEy-5g-ep8" secondAttribute="centerX" id="Jiv-AL-6AL"/>
+                <constraint firstItem="Bxp-aZ-8At" firstAttribute="leading" secondItem="lNi-Vn-IEP" secondAttribute="leading" constant="-11" id="Nw7-Bo-Cq0"/>
+                <constraint firstItem="Bxp-aZ-8At" firstAttribute="centerX" secondItem="SEy-5g-ep8" secondAttribute="centerX" id="TZC-a4-KJi"/>
+                <constraint firstItem="Bxp-aZ-8At" firstAttribute="top" secondItem="SEy-5g-ep8" secondAttribute="top" id="h9X-WR-QS9"/>
+                <constraint firstItem="SEy-5g-ep8" firstAttribute="bottom" secondItem="Bxp-aZ-8At" secondAttribute="bottom" constant="35" id="pOO-ds-heR"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
             <connections>
                 <outlet property="audioImageVIew" destination="Bxp-aZ-8At" id="DUB-zR-kfd"/>
+                <outlet property="bottomView" destination="IcO-cW-CRt" id="uCt-My-Aho"/>
+                <outlet property="selectBtn" destination="lNi-Vn-IEP" id="hKC-u8-Feh"/>
                 <outlet property="timeLabel" destination="AKE-Za-695" id="M3P-V1-tvN"/>
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="照片未选中" width="13" height="14"/>
+        <image name="选中" width="13" height="14"/>
+    </resources>
 </document>
