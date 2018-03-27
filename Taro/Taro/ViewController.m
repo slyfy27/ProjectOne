@@ -56,36 +56,68 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstAuth"]) {
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
             if (granted) {
-                _authCount += 1;
-            }
-            [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
-                if (granted) {
-                    _authCount += 1;
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            if (status == PHAuthorizationStatusAuthorized) {
-                                _authCount += 1;
-                            }
-                            if (_authCount == 3) {
-                                //判断蓝牙是否打开
-                                if (_bluetoothManager.state == CBManagerStatePoweredOn) {
-                                    //搜索蓝牙列表，如果只有一个设备则直接连接并进入拍摄界面，否则弹出选择框
-                                    
+                [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+                    if (granted) {
+                        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                if (status == PHAuthorizationStatusAuthorized) {
+                                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstAuth"];
+                                    [[NSUserDefaults standardUserDefaults] synchronize];
+                                    if (_bluetoothManager.state == CBManagerStatePoweredOn) {
+                                        //搜索蓝牙列表，如果只有一个设备则直接连接并进入拍摄界面，否则弹出选择框
+                                        
+                                    }
+                                    else{
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [AuthDeniedAlertView alertWithIconName:@"蓝牙" content:NSLocalizedString(@"BlueToothOpenTip", nil) comfirmTitle:NSLocalizedString(@"AlertBlueToothComfirmTitle",nil) choose:^(NSInteger index) {
+                                            }];
+                                        });
+                                    }
                                 }
                                 else{
-                                    [AuthDeniedAlertView alertWithIconName:@"蓝牙" content:NSLocalizedString(@"BlueToothOpenTip", nil) comfirmTitle:NSLocalizedString(@"AlertBlueToothComfirmTitle",nil) choose:^(NSInteger index) {
-                                    }];
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        [AuthDeniedAlertView alertWithIconName:@"保存" content:NSLocalizedString(@"PhotoAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                                            if (index == 1) {
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                                                        
+                                                    }];
+                                                });
+                                            }
+                                        }];
+                                    });
                                 }
-                            }
+                            });
+                        }];
+                    }
+                    else{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [AuthDeniedAlertView alertWithIconName:@"麦克风" content:NSLocalizedString(@"MicrophoneAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                                if (index == 1) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                                            
+                                        }];
+                                    });
+                                }
+                            }];
                         });
+                    }
+                }];
+            }
+            else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [AuthDeniedAlertView alertWithIconName:@"录像" content:NSLocalizedString(@"CameraAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                        if (index == 1) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                                }];
+                            });
+                        }
                     }];
                 });
-            }];
+            }
         }];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstAuth"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }
     else{
         if ([self CameraAuthStatus]) {
@@ -105,7 +137,7 @@
                     [AuthDeniedAlertView alertWithIconName:@"保存" content:NSLocalizedString(@"PhotoAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
                         if (index == 1) {
                             dispatch_async(dispatch_get_main_queue(), ^{
-                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Photos"] options:@{} completionHandler:^(BOOL success) {
+                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
                                     
                                 }];
                             });
@@ -117,7 +149,7 @@
                 [AuthDeniedAlertView alertWithIconName:@"麦克风" content:NSLocalizedString(@"MicrophoneAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
                     if (index == 1) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Photos"] options:@{} completionHandler:^(BOOL success) {
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
                                 
                             }];
                         });
@@ -129,7 +161,7 @@
             [AuthDeniedAlertView alertWithIconName:@"录像" content:NSLocalizedString(@"CameraAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
                 if (index == 1) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=Photos"] options:@{} completionHandler:^(BOOL success) {
+                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
                             
                         }];
                     });

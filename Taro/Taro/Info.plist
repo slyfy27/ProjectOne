@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSHasLocalizedDisplayName</key>
-	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -18,24 +16,37 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>Prefs</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSHasLocalizedDisplayName</key>
+	<true/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string></string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string></string>
 	<key>NSCameraUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string></string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string></string>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
