@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -12,15 +12,148 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShootViewController">
             <connections>
+                <outlet property="bluetoothBtn" destination="7wS-Dw-Zoz" id="PZF-eF-axR"/>
+                <outlet property="cameraBtn" destination="0Yq-xf-8jR" id="GTr-mM-8nV"/>
+                <outlet property="deviceBtn" destination="tXB-5y-udb" id="AP4-aW-4Bv"/>
+                <outlet property="settingTable" destination="SCi-Gs-9gN" id="h1i-sc-CYC"/>
+                <outlet property="settingTitle" destination="OXL-7o-vQ2" id="aHR-kn-i75"/>
+                <outlet property="settingView" destination="Dot-cu-Ki1" id="0sT-EQ-u2A"/>
+                <outlet property="settingViewLeading" destination="Lip-0i-xVT" id="T1P-uK-oiC"/>
+                <outlet property="settingViewWidth" destination="FMU-J3-dxh" id="roT-Az-pGe"/>
+                <outlet property="videoView" destination="85x-2o-oSc" id="YWZ-Is-h5D"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="yuntaiBtn" destination="G7e-qd-RzY" id="ZbV-tj-ZKf"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="85x-2o-oSc">
+                    <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wu4-Xe-HDL">
+                    <rect key="frame" x="0.0" y="0.0" width="70" height="375"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kOc-8s-jRE">
+                            <rect key="frame" x="0.5" y="0.0" width="70" height="75"/>
+                            <state key="normal" image="返回"/>
+                            <connections>
+                                <action selector="back:" destination="-1" eventType="touchUpInside" id="oh9-2c-Lip"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7wS-Dw-Zoz">
+                            <rect key="frame" x="0.0" y="75" width="70" height="75"/>
+                            <state key="normal" image="蓝牙-白"/>
+                            <state key="selected" image="蓝牙-蓝"/>
+                            <state key="highlighted" image="蓝牙-蓝"/>
+                            <connections>
+                                <action selector="bluetoothAction:" destination="-1" eventType="touchUpInside" id="OOZ-Qq-p7q"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Yq-xf-8jR">
+                            <rect key="frame" x="0.0" y="150" width="70" height="75"/>
+                            <state key="normal" image="相机-白"/>
+                            <state key="selected" image="相机-蓝"/>
+                            <state key="highlighted" image="相机-蓝"/>
+                            <connections>
+                                <action selector="cameraACtion:" destination="-1" eventType="touchUpInside" id="w6n-wf-2kE"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tXB-5y-udb">
+                            <rect key="frame" x="0.0" y="225" width="70" height="75"/>
+                            <state key="normal" image="自拍-白"/>
+                            <state key="selected" image="相机-蓝"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G7e-qd-RzY">
+                            <rect key="frame" x="0.0" y="300" width="70" height="75"/>
+                            <state key="normal" image="云端设置1"/>
+                            <state key="selected" image="云端设置2"/>
+                            <state key="highlighted" image="云端设置2"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="tXB-5y-udb" firstAttribute="centerX" secondItem="0Yq-xf-8jR" secondAttribute="centerX" id="1px-67-icN"/>
+                        <constraint firstItem="7wS-Dw-Zoz" firstAttribute="centerX" secondItem="kOc-8s-jRE" secondAttribute="centerX" id="2Gk-32-UwW"/>
+                        <constraint firstItem="G7e-qd-RzY" firstAttribute="height" secondItem="tXB-5y-udb" secondAttribute="height" id="4eD-lI-Eel"/>
+                        <constraint firstItem="0Yq-xf-8jR" firstAttribute="centerX" secondItem="7wS-Dw-Zoz" secondAttribute="centerX" id="68Z-J3-3fQ"/>
+                        <constraint firstItem="kOc-8s-jRE" firstAttribute="centerX" secondItem="Wu4-Xe-HDL" secondAttribute="centerX" id="7QC-dy-KuG"/>
+                        <constraint firstItem="G7e-qd-RzY" firstAttribute="top" secondItem="tXB-5y-udb" secondAttribute="bottom" id="8D7-di-Hzi"/>
+                        <constraint firstItem="0Yq-xf-8jR" firstAttribute="height" secondItem="7wS-Dw-Zoz" secondAttribute="height" id="8WL-wV-IQn"/>
+                        <constraint firstItem="tXB-5y-udb" firstAttribute="width" secondItem="0Yq-xf-8jR" secondAttribute="width" id="Kev-Aq-BtK"/>
+                        <constraint firstAttribute="bottom" secondItem="G7e-qd-RzY" secondAttribute="bottom" id="OHt-dl-jO0"/>
+                        <constraint firstItem="0Yq-xf-8jR" firstAttribute="width" secondItem="7wS-Dw-Zoz" secondAttribute="width" id="OWP-Bw-YZO"/>
+                        <constraint firstItem="kOc-8s-jRE" firstAttribute="top" secondItem="Wu4-Xe-HDL" secondAttribute="top" id="OXs-of-FuW"/>
+                        <constraint firstItem="tXB-5y-udb" firstAttribute="top" secondItem="0Yq-xf-8jR" secondAttribute="bottom" id="Z2W-3f-LTs"/>
+                        <constraint firstItem="G7e-qd-RzY" firstAttribute="centerX" secondItem="tXB-5y-udb" secondAttribute="centerX" id="arI-CJ-kKR"/>
+                        <constraint firstItem="7wS-Dw-Zoz" firstAttribute="height" secondItem="kOc-8s-jRE" secondAttribute="height" id="dFA-JF-djD"/>
+                        <constraint firstItem="7wS-Dw-Zoz" firstAttribute="top" secondItem="kOc-8s-jRE" secondAttribute="bottom" id="eV8-5y-iTn"/>
+                        <constraint firstAttribute="width" constant="70" id="hYa-8e-YkQ"/>
+                        <constraint firstItem="G7e-qd-RzY" firstAttribute="width" secondItem="tXB-5y-udb" secondAttribute="width" id="nWw-5c-q9K"/>
+                        <constraint firstItem="0Yq-xf-8jR" firstAttribute="top" secondItem="7wS-Dw-Zoz" secondAttribute="bottom" id="qqz-ef-a96"/>
+                        <constraint firstItem="7wS-Dw-Zoz" firstAttribute="width" secondItem="kOc-8s-jRE" secondAttribute="width" id="rRa-S4-tkZ"/>
+                        <constraint firstItem="kOc-8s-jRE" firstAttribute="width" secondItem="Wu4-Xe-HDL" secondAttribute="width" id="tq5-aM-Tl3"/>
+                        <constraint firstItem="tXB-5y-udb" firstAttribute="height" secondItem="0Yq-xf-8jR" secondAttribute="height" id="tyD-cy-598"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dot-cu-Ki1">
+                    <rect key="frame" x="70" y="0.0" width="0.0" height="375"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXL-7o-vQ2">
+                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="nUb-4T-MKj"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SCi-Gs-9gN">
+                            <rect key="frame" x="0.0" y="40" width="0.0" height="335"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="OXL-7o-vQ2" firstAttribute="leading" secondItem="Dot-cu-Ki1" secondAttribute="leading" id="1x3-jl-WiN"/>
+                        <constraint firstAttribute="trailing" secondItem="OXL-7o-vQ2" secondAttribute="trailing" id="ABe-ZY-vhM"/>
+                        <constraint firstAttribute="width" id="FMU-J3-dxh"/>
+                        <constraint firstItem="OXL-7o-vQ2" firstAttribute="top" secondItem="Dot-cu-Ki1" secondAttribute="top" id="OXe-mH-PWk"/>
+                        <constraint firstItem="SCi-Gs-9gN" firstAttribute="top" secondItem="OXL-7o-vQ2" secondAttribute="bottom" id="Ofg-CI-eKP"/>
+                        <constraint firstAttribute="trailing" secondItem="SCi-Gs-9gN" secondAttribute="trailing" id="QRX-Xb-6o6"/>
+                        <constraint firstItem="SCi-Gs-9gN" firstAttribute="leading" secondItem="Dot-cu-Ki1" secondAttribute="leading" id="Rn2-Zk-rgT"/>
+                        <constraint firstAttribute="bottom" secondItem="SCi-Gs-9gN" secondAttribute="bottom" id="kEr-Or-3ap"/>
+                    </constraints>
+                </view>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="Dot-cu-Ki1" secondAttribute="bottom" id="0ft-QE-ljh"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="85x-2o-oSc" secondAttribute="bottom" id="Bxe-nl-usP"/>
+                <constraint firstItem="Wu4-Xe-HDL" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="Egu-KZ-CaT"/>
+                <constraint firstItem="Dot-cu-Ki1" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="I2C-Ju-Wjc"/>
+                <constraint firstItem="Dot-cu-Ki1" firstAttribute="leading" secondItem="Wu4-Xe-HDL" secondAttribute="trailing" id="Lip-0i-xVT"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="85x-2o-oSc" secondAttribute="trailing" id="Oih-5i-q2d"/>
+                <constraint firstItem="85x-2o-oSc" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="V3R-DN-5gd"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="leading" secondItem="Wu4-Xe-HDL" secondAttribute="leading" id="jSu-EA-NEl"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="Wu4-Xe-HDL" secondAttribute="bottom" id="o6J-Y6-BI5"/>
+                <constraint firstItem="85x-2o-oSc" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="t0q-Sb-kgK"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="33.5" y="54.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="云端设置1" width="60" height="60"/>
+        <image name="云端设置2" width="60" height="60"/>
+        <image name="相机-白" width="48" height="41"/>
+        <image name="相机-蓝" width="48" height="41"/>
+        <image name="自拍-白" width="48" height="41"/>
+        <image name="蓝牙-白" width="53" height="36"/>
+        <image name="蓝牙-蓝" width="53" height="36"/>
+        <image name="返回" width="9" height="18"/>
+    </resources>
 </document>

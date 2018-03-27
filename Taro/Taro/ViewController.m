@@ -14,6 +14,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "AuthDeniedAlertView.h"
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "ShootViewController.h"
 
 @interface ViewController ()<CBCentralManagerDelegate>
 
@@ -65,7 +66,8 @@
                                     [[NSUserDefaults standardUserDefaults] synchronize];
                                     if (_bluetoothManager.state == CBManagerStatePoweredOn) {
                                         //搜索蓝牙列表，如果只有一个设备则直接连接并进入拍摄界面，否则弹出选择框
-                                        
+                                        ShootViewController *vc = [[ShootViewController alloc] init];
+                                        [self.navigationController pushViewController:vc animated:YES];
                                     }
                                     else{
                                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -126,7 +128,8 @@
                     //判断蓝牙是否打开
                     if (_bluetoothManager.state == CBManagerStatePoweredOn) {
                         //搜索蓝牙列表，如果只有一个设备则直接连接并进入拍摄界面，否则弹出选择框
-                        
+                        ShootViewController *vc = [[ShootViewController alloc] init];
+                        [self.navigationController pushViewController:vc animated:YES];
                     }
                     else{
                         [AuthDeniedAlertView alertWithIconName:@"蓝牙" content:NSLocalizedString(@"BlueToothOpenTip", nil) comfirmTitle:NSLocalizedString(@"AlertBlueToothComfirmTitle",nil) choose:^(NSInteger index) {
