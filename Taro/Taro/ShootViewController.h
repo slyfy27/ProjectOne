@@ -19,5 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *settingTable;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *settingViewLeading;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *settingViewWidth;
+@property (weak, nonatomic) IBOutlet UITableView *subTable;
 
 @end

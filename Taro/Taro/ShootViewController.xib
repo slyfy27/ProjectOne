@@ -20,6 +20,7 @@
                 <outlet property="settingView" destination="Dot-cu-Ki1" id="0sT-EQ-u2A"/>
                 <outlet property="settingViewLeading" destination="Lip-0i-xVT" id="T1P-uK-oiC"/>
                 <outlet property="settingViewWidth" destination="FMU-J3-dxh" id="roT-Az-pGe"/>
+                <outlet property="subTable" destination="ahe-eg-7uS" id="AEB-YZ-3Hc"/>
                 <outlet property="videoView" destination="85x-2o-oSc" id="YWZ-Is-h5D"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="yuntaiBtn" destination="G7e-qd-RzY" id="ZbV-tj-ZKf"/>
@@ -32,7 +33,7 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="85x-2o-oSc">
                     <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wu4-Xe-HDL">
                     <rect key="frame" x="0.0" y="0.0" width="70" height="375"/>
@@ -111,6 +112,10 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ahe-eg-7uS">
+                            <rect key="frame" x="0.0" y="40" width="0.0" height="335"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </tableView>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SCi-Gs-9gN">
                             <rect key="frame" x="0.0" y="40" width="0.0" height="335"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -125,7 +130,11 @@
                         <constraint firstItem="SCi-Gs-9gN" firstAttribute="top" secondItem="OXL-7o-vQ2" secondAttribute="bottom" id="Ofg-CI-eKP"/>
                         <constraint firstAttribute="trailing" secondItem="SCi-Gs-9gN" secondAttribute="trailing" id="QRX-Xb-6o6"/>
                         <constraint firstItem="SCi-Gs-9gN" firstAttribute="leading" secondItem="Dot-cu-Ki1" secondAttribute="leading" id="Rn2-Zk-rgT"/>
+                        <constraint firstAttribute="trailing" secondItem="ahe-eg-7uS" secondAttribute="trailing" id="cDK-3H-mOY"/>
                         <constraint firstAttribute="bottom" secondItem="SCi-Gs-9gN" secondAttribute="bottom" id="kEr-Or-3ap"/>
+                        <constraint firstItem="ahe-eg-7uS" firstAttribute="leading" secondItem="Dot-cu-Ki1" secondAttribute="leading" id="si2-K5-Jbl"/>
+                        <constraint firstItem="ahe-eg-7uS" firstAttribute="top" secondItem="OXL-7o-vQ2" secondAttribute="bottom" id="u9u-Hk-qND"/>
+                        <constraint firstAttribute="bottom" secondItem="ahe-eg-7uS" secondAttribute="bottom" id="ut0-jq-w6F"/>
                     </constraints>
                 </view>
             </subviews>

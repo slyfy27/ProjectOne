@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, SettingType) {
     SettingTypeNone = 0,//默认从0开始
     SettingTypeBluetooth,
     SettingTypeCamera,
+    SettingTypeCameraResolution,
     SettingTypeDevice,
     SettingTypeYunTai,
 };
@@ -28,6 +29,8 @@ typedef NS_ENUM(NSInteger, SettingType) {
 @property (nonatomic, assign) SettingType type;
 
 @property (nonatomic, copy) NSArray *bluetoothArray;
+
+@property (nonatomic, copy) NSArray *resolutionArray;
 
 @end
 
@@ -70,6 +73,10 @@ typedef NS_ENUM(NSInteger, SettingType) {
             _settingTitle.text = @"Settings";
         }
             break;
+        case SettingTypeCameraResolution:{
+            _settingTitle.text = @"Resolution";
+        }
+            break;
         default:
             break;
     }
@@ -102,27 +109,27 @@ typedef NS_ENUM(NSInteger, SettingType) {
     [super viewDidLoad];
     self.navigationController.navigationBarHidden = YES;
     [self configView];
-    _captureSession = [[AVCaptureSession alloc] init];
-    if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
-        [_captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
-    }
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:NULL];
-    if (videoInput) {
-        if ([_captureSession canAddInput:videoInput]){
-            [_captureSession addInput:videoInput];
-        }
-    }
-    // 音频输入
-    AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio]; AVCaptureDeviceInput *audioIn = [[AVCaptureDeviceInput alloc] initWithDevice:audioDevice error:NULL];
-    if ([_captureSession canAddInput:audioIn]){
-        [_captureSession addInput:audioIn];
-    }
-    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
-    previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
-    [self.videoView.layer addSublayer:previewLayer];
-    [_captureSession startRunning];
+//    _captureSession = [[AVCaptureSession alloc] init];
+//    if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
+//        [_captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
+//    }
+//    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+//    AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:NULL];
+//    if (videoInput) {
+//        if ([_captureSession canAddInput:videoInput]){
+//            [_captureSession addInput:videoInput];
+//        }
+//    }
+//    // 音频输入
+//    AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio]; AVCaptureDeviceInput *audioIn = [[AVCaptureDeviceInput alloc] initWithDevice:audioDevice error:NULL];
+//    if ([_captureSession canAddInput:audioIn]){
+//        [_captureSession addInput:audioIn];
+//    }
+//    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
+//    previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+//    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
+//    [self.videoView.layer addSublayer:previewLayer];
+//    [_captureSession startRunning];
 }
 
 - (void)configView{
@@ -133,6 +140,7 @@ typedef NS_ENUM(NSInteger, SettingType) {
                             @{@"type":@"Flash",@"value":@"close"},
                             @{@"type":@"Mesh",@"value":@"None"}];
     _bluetoothArray = @[@"Taro-Test 1",@"Taro-Test 2",@"Taro-Test 3"];
+    _resolutionArray = @[@{@"type":@"1080p",@"value":AVCaptureSessionPreset1920x1080},@{@"type":@"720p",@"value":AVCaptureSessionPreset1280x720},@{@"type":@"480p",@"value":AVCaptureSessionPreset640x480}];
     _settingTable.delegate = self;
     _settingTable.dataSource = self;
     [_settingTable registerNib:[UINib nibWithNibName:@"CameraCell" bundle:nil] forCellReuseIdentifier:@"cameraCell"];
@@ -140,6 +148,9 @@ typedef NS_ENUM(NSInteger, SettingType) {
     _settingTable.rowHeight = 60;
     _settingTable.tableFooterView = [UIView new];
     _settingTable.backgroundColor = [UIColor clearColor];
+//    _subTable.delegate = self;
+//    _settingTable.dataSource = self;
+//    [_settingTable registerNib:[UINib nibWithNibName:@"CameraCell" bundle:nil] forCellReuseIdentifier:@"cameraCell"];
 }
 
 #pragma mark - UITableView
@@ -151,6 +162,9 @@ typedef NS_ENUM(NSInteger, SettingType) {
     if (_type == SettingTypeBluetooth) {
         return _bluetoothArray.count;
     }
+    if (_type == SettingTypeCameraResolution) {
+        return _resolutionArray.count;
+    }
     return 0;
 }
 
@@ -160,15 +174,37 @@ typedef NS_ENUM(NSInteger, SettingType) {
         NSDictionary *dict = _cameraSettingArray[indexPath.row];
         cell.typeLabel.text = dict[@"type"];
         cell.valueLabel.text = dict[@"value"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     if (_type == SettingTypeBluetooth) {
         TaroCell *cell = [tableView dequeueReusableCellWithIdentifier:@"taroCell"];
         cell.bluetoothLabel.text = _bluetoothArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    if (_type == SettingTypeCamera) {
+        CameraCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cameraCell"];
+        NSDictionary *dict = _cameraSettingArray[indexPath.row];
+        cell.typeLabel.text = dict[@"type"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     else{
         return nil;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (_type == SettingTypeCamera) {
+        NSDictionary *dict = _cameraSettingArray[indexPath.row];
+        if ([dict[@"type"] isEqualToString:@"Resolution"]) {
+            self.type = SettingTypeCameraResolution;
+            [tableView beginUpdates];
+            [tableView reloadData];
+            [tableView endUpdates];
+        }
+        _cameraBtn.selected = YES;
     }
 }
 
