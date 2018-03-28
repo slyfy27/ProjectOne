@@ -10,12 +10,14 @@
 #import <AVKit/AVKit.h>
 #import "CameraCell.h"
 #import "TaroCell.h"
+#import "WhiteBalanceCell.h"
 
 typedef NS_ENUM(NSInteger, SettingType) {
     SettingTypeNone = 0,//默认从0开始
     SettingTypeBluetooth,
     SettingTypeCamera,
     SettingTypeCameraResolution,
+    SettingTypeCameraWhiteBalance,
     SettingTypeDevice,
     SettingTypeYunTai,
 };
@@ -31,6 +33,8 @@ typedef NS_ENUM(NSInteger, SettingType) {
 @property (nonatomic, copy) NSArray *bluetoothArray;
 
 @property (nonatomic, copy) NSArray *resolutionArray;
+
+@property (nonatomic, copy) NSArray *whiteBalanceArray;
 
 @end
 
@@ -75,6 +79,16 @@ typedef NS_ENUM(NSInteger, SettingType) {
             break;
         case SettingTypeCameraResolution:{
             _settingTitle.text = @"Resolution";
+            _subTable.hidden = NO;
+            _settingTable.hidden = YES;
+            [_subTable reloadData];
+        }
+            break;
+        case SettingTypeCameraWhiteBalance:{
+            _settingTitle.text = @"White Balance";
+            _subTable.hidden = NO;
+            _settingTable.hidden = YES;
+            [_subTable reloadData];
         }
             break;
         default:
@@ -141,6 +155,7 @@ typedef NS_ENUM(NSInteger, SettingType) {
                             @{@"type":@"Mesh",@"value":@"None"}];
     _bluetoothArray = @[@"Taro-Test 1",@"Taro-Test 2",@"Taro-Test 3"];
     _resolutionArray = @[@{@"type":@"1080p",@"value":AVCaptureSessionPreset1920x1080},@{@"type":@"720p",@"value":AVCaptureSessionPreset1280x720},@{@"type":@"480p",@"value":AVCaptureSessionPreset640x480}];
+    _whiteBalanceArray = @[@{@"type":@"Auto",@"value":@""},@{@"type":@"Daylight",@"value":@""},@{@"type":@"Cloud Daylight",@"value":@""},@{@"type":@"Incandescent",@"value":@""},@{@"type":@"Fluorescent",@"value":@""}];
     _settingTable.delegate = self;
     _settingTable.dataSource = self;
     [_settingTable registerNib:[UINib nibWithNibName:@"CameraCell" bundle:nil] forCellReuseIdentifier:@"cameraCell"];
@@ -148,9 +163,24 @@ typedef NS_ENUM(NSInteger, SettingType) {
     _settingTable.rowHeight = 60;
     _settingTable.tableFooterView = [UIView new];
     _settingTable.backgroundColor = [UIColor clearColor];
-//    _subTable.delegate = self;
-//    _settingTable.dataSource = self;
-//    [_settingTable registerNib:[UINib nibWithNibName:@"CameraCell" bundle:nil] forCellReuseIdentifier:@"cameraCell"];
+    _subTable.delegate = self;
+    _subTable.dataSource = self;
+    [_subTable registerNib:[UINib nibWithNibName:@"CameraCell" bundle:nil] forCellReuseIdentifier:@"cameraCell"];
+    _subTable.rowHeight = 60;
+    [_subTable registerNib:[UINib nibWithNibName:@"WhiteBalanceCell" bundle:nil] forCellReuseIdentifier:@"whiteBalanceCell"];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:@"back" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    button.frame = CGRectMake(240, 10, 40, 40);
+    [button addTarget:self action:@selector(subTableBack) forControlEvents:UIControlEventTouchUpInside];
+    UIView *footerView = [[UIView alloc] initWithFrame:(CGRect){0,0,300,60}];
+    [footerView addSubview:button];
+    _subTable.tableFooterView = footerView;
+    _subTable.backgroundColor = [UIColor clearColor];
+}
+
+- (void)subTableBack{
+    
 }
 
 #pragma mark - UITableView
@@ -164,6 +194,9 @@ typedef NS_ENUM(NSInteger, SettingType) {
     }
     if (_type == SettingTypeCameraResolution) {
         return _resolutionArray.count;
+    }
+    if (_type == SettingTypeCameraWhiteBalance) {
+        return _whiteBalanceArray.count;
     }
     return 0;
 }
@@ -190,19 +223,36 @@ typedef NS_ENUM(NSInteger, SettingType) {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
+    if (_type == SettingTypeCameraResolution) {
+        CameraCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cameraCell"];
+        NSDictionary *dict = _resolutionArray[indexPath.row];
+        cell.typeLabel.text = dict[@"type"];
+        cell.textLabel.text = @"";
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    if (_type == SettingTypeCameraWhiteBalance) {
+        WhiteBalanceCell *cell = [tableView dequeueReusableCellWithIdentifier:@"whiteBalanceCell"];
+        NSDictionary *dict = _whiteBalanceArray[indexPath.row];
+        cell.typeLabel.text = dict[@"type"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
     else{
         return nil;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.selected = NO;
     if (_type == SettingTypeCamera) {
         NSDictionary *dict = _cameraSettingArray[indexPath.row];
         if ([dict[@"type"] isEqualToString:@"Resolution"]) {
             self.type = SettingTypeCameraResolution;
-            [tableView beginUpdates];
-            [tableView reloadData];
-            [tableView endUpdates];
+        }
+        else if ([dict[@"type"] isEqualToString:@"White Balance"]){
+            self.type = SettingTypeCameraWhiteBalance;
         }
         _cameraBtn.selected = YES;
     }
