@@ -20,6 +20,8 @@
 		42675C73205E99EB005CBB33 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42675C72205E99EB005CBB33 /* BaseViewController.m */; };
 		42675C7C20679DEC005CBB33 /* GalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42675C7A20679DEC005CBB33 /* GalleryViewController.m */; };
 		42675C7D20679DEC005CBB33 /* GalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42675C7B20679DEC005CBB33 /* GalleryViewController.xib */; };
+		42711626206BD1C700B762ED /* SliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 42711624206BD1C700B762ED /* SliderCell.m */; };
+		42711627206BD1C700B762ED /* SliderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42711625206BD1C700B762ED /* SliderCell.xib */; };
 		4272503B2069D9CA001DAE18 /* ShootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 427250392069D9CA001DAE18 /* ShootViewController.m */; };
 		4272503C2069D9CA001DAE18 /* ShootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4272503A2069D9CA001DAE18 /* ShootViewController.xib */; };
 		4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4274A2F0205B72A800844BCE /* AppDelegate.m */; };
@@ -55,6 +57,9 @@
 		42675C7920679DEC005CBB33 /* GalleryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryViewController.h; sourceTree = "<group>"; };
 		42675C7A20679DEC005CBB33 /* GalleryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GalleryViewController.m; sourceTree = "<group>"; };
 		42675C7B20679DEC005CBB33 /* GalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryViewController.xib; sourceTree = "<group>"; };
+		42711623206BD1C700B762ED /* SliderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SliderCell.h; sourceTree = "<group>"; };
+		42711624206BD1C700B762ED /* SliderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SliderCell.m; sourceTree = "<group>"; };
+		42711625206BD1C700B762ED /* SliderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SliderCell.xib; sourceTree = "<group>"; };
 		427250382069D9CA001DAE18 /* ShootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShootViewController.h; sourceTree = "<group>"; };
 		427250392069D9CA001DAE18 /* ShootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShootViewController.m; sourceTree = "<group>"; };
 		4272503A2069D9CA001DAE18 /* ShootViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShootViewController.xib; sourceTree = "<group>"; };
@@ -143,6 +148,9 @@
 				422E7639206B9A3A00B8F443 /* WhiteBalanceCell.h */,
 				422E763A206B9A3A00B8F443 /* WhiteBalanceCell.m */,
 				422E763B206B9A3A00B8F443 /* WhiteBalanceCell.xib */,
+				42711623206BD1C700B762ED /* SliderCell.h */,
+				42711624206BD1C700B762ED /* SliderCell.m */,
+				42711625206BD1C700B762ED /* SliderCell.xib */,
 				42401725205F9C55007885C4 /* AuthDeniedAlertView.h */,
 				42401726205F9C55007885C4 /* AuthDeniedAlertView.m */,
 				42401728205F9F2F007885C4 /* UIView+Category.h */,
@@ -225,6 +233,7 @@
 				4274A307205B74E100844BCE /* InfoPlist.strings in Resources */,
 				422E762B206A31BD00B8F443 /* CameraCell.xib in Resources */,
 				4272503C2069D9CA001DAE18 /* ShootViewController.xib in Resources */,
+				42711627206BD1C700B762ED /* SliderCell.xib in Resources */,
 				4274A2F9205B72A800844BCE /* Assets.xcassets in Resources */,
 				422E7630206A358000B8F443 /* TaroCell.xib in Resources */,
 				42C244E92067AA7300436FA0 /* GalleryCollectionViewCell.xib in Resources */,
@@ -248,6 +257,7 @@
 				4274A2FF205B72A800844BCE /* main.m in Sources */,
 				4240172A205F9F2F007885C4 /* UIView+Category.m in Sources */,
 				4272503B2069D9CA001DAE18 /* ShootViewController.m in Sources */,
+				42711626206BD1C700B762ED /* SliderCell.m in Sources */,
 				422E762A206A31BD00B8F443 /* CameraCell.m in Sources */,
 				42C244E82067AA7200436FA0 /* GalleryCollectionViewCell.m in Sources */,
 				4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */,

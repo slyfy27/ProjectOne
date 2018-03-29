@@ -73,6 +73,9 @@
                             <state key="normal" image="云端设置1"/>
                             <state key="selected" image="云端设置2"/>
                             <state key="highlighted" image="云端设置2"/>
+                            <connections>
+                                <action selector="deviceAction:" destination="-1" eventType="touchUpInside" id="lHG-6D-gwE"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

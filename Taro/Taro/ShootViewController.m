@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, SettingType) {
     SettingTypeCamera,
     SettingTypeCameraResolution,
     SettingTypeCameraWhiteBalance,
+    SettingTypeCameraMesh,
     SettingTypeDevice,
     SettingTypeYunTai,
 };
@@ -35,6 +36,10 @@ typedef NS_ENUM(NSInteger, SettingType) {
 @property (nonatomic, copy) NSArray *resolutionArray;
 
 @property (nonatomic, copy) NSArray *whiteBalanceArray;
+
+@property (nonatomic, copy) NSArray *meshArray;
+
+@property (nonatomic, copy) NSArray *deviceSettingArray;
 
 @end
 
@@ -75,6 +80,9 @@ typedef NS_ENUM(NSInteger, SettingType) {
             break;
         case SettingTypeCamera:{
             _settingTitle.text = @"Settings";
+            _subTable.hidden = YES;
+            _settingTable.hidden = NO;
+            [_settingTable reloadData];
         }
             break;
         case SettingTypeCameraResolution:{
@@ -89,6 +97,20 @@ typedef NS_ENUM(NSInteger, SettingType) {
             _subTable.hidden = NO;
             _settingTable.hidden = YES;
             [_subTable reloadData];
+        }
+            break;
+        case SettingTypeCameraMesh:{
+            _settingTitle.text = @"Mesh";
+            _subTable.hidden = NO;
+            _settingTable.hidden = YES;
+            [_subTable reloadData];
+        }
+            break;
+        case SettingTypeYunTai:{
+            _settingTitle.text = @"Device Setting";
+            _subTable.hidden = YES;
+            _settingTable.hidden = NO;
+            [_settingTable reloadData];
         }
             break;
         default:
@@ -113,6 +135,21 @@ typedef NS_ENUM(NSInteger, SettingType) {
     }
 }
 
+- (IBAction)deviceAction:(UIButton *)sender {
+    if (sender.selected) {
+        _settingViewWidth.constant = 0;
+        self.type = SettingTypeNone;
+        [_settingView layoutIfNeeded];
+    }
+    else{
+        _settingViewWidth.constant = 300;
+        self.type = SettingTypeYunTai;
+        [UIView animateWithDuration:0.25 animations:^{
+            [_settingView layoutIfNeeded];
+        }];
+        sender.selected = !sender.selected;
+    }
+}
 
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
@@ -156,6 +193,8 @@ typedef NS_ENUM(NSInteger, SettingType) {
     _bluetoothArray = @[@"Taro-Test 1",@"Taro-Test 2",@"Taro-Test 3"];
     _resolutionArray = @[@{@"type":@"1080p",@"value":AVCaptureSessionPreset1920x1080},@{@"type":@"720p",@"value":AVCaptureSessionPreset1280x720},@{@"type":@"480p",@"value":AVCaptureSessionPreset640x480}];
     _whiteBalanceArray = @[@{@"type":@"Auto",@"value":@""},@{@"type":@"Daylight",@"value":@""},@{@"type":@"Cloud Daylight",@"value":@""},@{@"type":@"Incandescent",@"value":@""},@{@"type":@"Fluorescent",@"value":@""}];
+    _meshArray = @[@{@"type":@"None",@"value":@""},@{@"type":@"Mesh",@"value":@""},@{@"type":@"Mesh and Diagonal",@"value":@""},@{@"type":@"Center Point",@"value":@""}];
+    _deviceSettingArray = @[@{@"type":@"Speed",@"value":@"Normal"},@{@"type":@"Device Mode",@"value":@"Full Follow"},@{@"type":@"Tracking Cursor",@"value":@"off"}];
     _settingTable.delegate = self;
     _settingTable.dataSource = self;
     [_settingTable registerNib:[UINib nibWithNibName:@"CameraCell" bundle:nil] forCellReuseIdentifier:@"cameraCell"];
@@ -180,7 +219,7 @@ typedef NS_ENUM(NSInteger, SettingType) {
 }
 
 - (void)subTableBack{
-    
+    self.type = SettingTypeCamera;
 }
 
 #pragma mark - UITableView
@@ -197,6 +236,12 @@ typedef NS_ENUM(NSInteger, SettingType) {
     }
     if (_type == SettingTypeCameraWhiteBalance) {
         return _whiteBalanceArray.count;
+    }
+    if (_type == SettingTypeCameraMesh) {
+        return _meshArray.count;
+    }
+    if (_type == SettingTypeYunTai) {
+        return _deviceSettingArray.count;
     }
     return 0;
 }
@@ -238,6 +283,22 @@ typedef NS_ENUM(NSInteger, SettingType) {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
+    if (_type == SettingTypeCameraMesh) {
+        CameraCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cameraCell"];
+        NSDictionary *dict = _meshArray[indexPath.row];
+        cell.typeLabel.text = dict[@"type"];
+        cell.valueLabel.text = dict[@"value"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    if (_type == SettingTypeYunTai) {
+        CameraCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cameraCell"];
+        NSDictionary *dict = _deviceSettingArray[indexPath.row];
+        cell.typeLabel.text = dict[@"type"];
+        cell.valueLabel.text = dict[@"value"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
     else{
         return nil;
     }
@@ -253,6 +314,9 @@ typedef NS_ENUM(NSInteger, SettingType) {
         }
         else if ([dict[@"type"] isEqualToString:@"White Balance"]){
             self.type = SettingTypeCameraWhiteBalance;
+        }
+        else if ([dict[@"type"] isEqualToString:@"Mesh"]){
+            self.type = SettingTypeCameraMesh;
         }
         _cameraBtn.selected = YES;
     }
