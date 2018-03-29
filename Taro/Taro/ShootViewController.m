@@ -11,6 +11,7 @@
 #import "CameraCell.h"
 #import "TaroCell.h"
 #import "WhiteBalanceCell.h"
+#import "SliderCell.h"
 
 typedef NS_ENUM(NSInteger, SettingType) {
     SettingTypeNone = 0,//默认从0开始
@@ -18,6 +19,8 @@ typedef NS_ENUM(NSInteger, SettingType) {
     SettingTypeCamera,
     SettingTypeCameraResolution,
     SettingTypeCameraWhiteBalance,
+    SettingTypeCameraISO,
+    SettingTypeCameraExposure,
     SettingTypeCameraMesh,
     SettingTypeDevice,
     SettingTypeYunTai,
@@ -94,6 +97,20 @@ typedef NS_ENUM(NSInteger, SettingType) {
             break;
         case SettingTypeCameraWhiteBalance:{
             _settingTitle.text = @"White Balance";
+            _subTable.hidden = NO;
+            _settingTable.hidden = YES;
+            [_subTable reloadData];
+        }
+            break;
+        case SettingTypeCameraISO:{
+            _settingTitle.text = @"ISO";
+            _subTable.hidden = NO;
+            _settingTable.hidden = YES;
+            [_subTable reloadData];
+        }
+            break;
+        case SettingTypeCameraExposure:{
+            _settingTitle.text = @"Exposure Compensation";
             _subTable.hidden = NO;
             _settingTable.hidden = YES;
             [_subTable reloadData];
@@ -207,6 +224,7 @@ typedef NS_ENUM(NSInteger, SettingType) {
     [_subTable registerNib:[UINib nibWithNibName:@"CameraCell" bundle:nil] forCellReuseIdentifier:@"cameraCell"];
     _subTable.rowHeight = 60;
     [_subTable registerNib:[UINib nibWithNibName:@"WhiteBalanceCell" bundle:nil] forCellReuseIdentifier:@"whiteBalanceCell"];
+    [_subTable registerNib:[UINib nibWithNibName:@"SliderCell" bundle:nil] forCellReuseIdentifier:@"sliderCell"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:@"back" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -220,6 +238,7 @@ typedef NS_ENUM(NSInteger, SettingType) {
 
 - (void)subTableBack{
     self.type = SettingTypeCamera;
+    _cameraBtn.selected = YES;
 }
 
 #pragma mark - UITableView
@@ -242,6 +261,9 @@ typedef NS_ENUM(NSInteger, SettingType) {
     }
     if (_type == SettingTypeYunTai) {
         return _deviceSettingArray.count;
+    }
+    if (_type == SettingTypeCameraISO || _type == SettingTypeCameraExposure) {
+        return 1;
     }
     return 0;
 }
@@ -272,8 +294,14 @@ typedef NS_ENUM(NSInteger, SettingType) {
         CameraCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cameraCell"];
         NSDictionary *dict = _resolutionArray[indexPath.row];
         cell.typeLabel.text = dict[@"type"];
-        cell.textLabel.text = @"";
+        cell.valueLabel.text = @"";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if ([dict[@"value"] isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"resolution"]]) {
+            [cell setCurrent:YES];
+        }
+        else{
+            [cell setCurrent:NO];
+        }
         return cell;
     }
     if (_type == SettingTypeCameraWhiteBalance) {
@@ -289,6 +317,12 @@ typedef NS_ENUM(NSInteger, SettingType) {
         cell.typeLabel.text = dict[@"type"];
         cell.valueLabel.text = dict[@"value"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if ([dict[@"type"] isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"mesh"]]) {
+            [cell setCurrent:YES];
+        }
+        else{
+            [cell setCurrent:NO];
+        }
         return cell;
     }
     if (_type == SettingTypeYunTai) {
@@ -297,6 +331,18 @@ typedef NS_ENUM(NSInteger, SettingType) {
         cell.typeLabel.text = dict[@"type"];
         cell.valueLabel.text = dict[@"value"];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    if (_type == SettingTypeCameraISO) {
+        SliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"sliderCell"];
+        cell.minLabel.text = @"40";
+        cell.maxLabel.text = @"2572";
+        return cell;
+    }
+    if (_type == SettingTypeCameraExposure) {
+        SliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"sliderCell"];
+        cell.minLabel.text = @"-12";
+        cell.maxLabel.text = @"12";
         return cell;
     }
     else{
@@ -318,7 +364,25 @@ typedef NS_ENUM(NSInteger, SettingType) {
         else if ([dict[@"type"] isEqualToString:@"Mesh"]){
             self.type = SettingTypeCameraMesh;
         }
+        else if ([dict[@"type"] isEqualToString:@"ISO"]){
+            self.type = SettingTypeCameraISO;
+        }
+        else if ([dict[@"type"] isEqualToString:@"Exposure Compensation"]){
+            self.type = SettingTypeCameraExposure;
+        }
         _cameraBtn.selected = YES;
+        return;
+    }
+    if (_type == SettingTypeCameraResolution) {
+        NSDictionary *dict = _resolutionArray[indexPath.row];
+        [_captureSession setSessionPreset:dict[@"value"]];
+        [[NSUserDefaults standardUserDefaults] setValue:dict[@"value"] forKey:@"resolution"];
+        [self subTableBack];
+    }
+    if (_type == SettingTypeCameraMesh) {
+        NSDictionary *dict = _resolutionArray[indexPath.row];
+        [[NSUserDefaults standardUserDefaults] setValue:dict[@"type"] forKey:@"mesh"];
+        [self subTableBack];
     }
 }
 

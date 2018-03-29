@@ -13,15 +13,49 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="SliderCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="erU-O1-tzP">
+                        <rect key="frame" x="15" y="20.5" width="37.5" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eiP-re-4Oe">
+                        <rect key="frame" x="267.5" y="20.5" width="37.5" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="zlF-aN-tko">
+                        <rect key="frame" x="60.5" y="15" width="199" height="31"/>
+                        <connections>
+                            <action selector="sliderValueChange:" destination="KGk-i7-Jjw" eventType="valueChanged" id="g0P-p8-qJz"/>
+                        </connections>
+                    </slider>
+                </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="zlF-aN-tko" firstAttribute="leading" secondItem="erU-O1-tzP" secondAttribute="trailing" constant="10" id="7lj-I7-Sft"/>
+                    <constraint firstItem="erU-O1-tzP" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Iva-9r-8BJ"/>
+                    <constraint firstItem="erU-O1-tzP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="LgP-Q3-NkD"/>
+                    <constraint firstItem="eiP-re-4Oe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="TZq-v1-1ZH"/>
+                    <constraint firstAttribute="trailing" secondItem="eiP-re-4Oe" secondAttribute="trailing" constant="15" id="ioV-DL-5zy"/>
+                    <constraint firstItem="zlF-aN-tko" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="kIa-dT-myX"/>
+                    <constraint firstItem="eiP-re-4Oe" firstAttribute="leading" secondItem="zlF-aN-tko" secondAttribute="trailing" constant="10" id="vXE-b4-fMo"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="maxLabel" destination="eiP-re-4Oe" id="fYn-hd-QX7"/>
+                <outlet property="minLabel" destination="erU-O1-tzP" id="HAQ-04-fQ1"/>
+                <outlet property="slider" destination="zlF-aN-tko" id="aUu-Tk-YmB"/>
+            </connections>
         </tableViewCell>
     </objects>
 </document>

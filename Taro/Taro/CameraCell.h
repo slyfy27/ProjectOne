@@ -14,4 +14,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *valueLabel;
 
+- (void)setCurrent:(BOOL)selected;
+
 @end
