@@ -11,10 +11,10 @@
 "HomeSubTitle" = "Auto-Tracking Filming";
 "HomeContent" = "Free up your hands and enjoy the ultra-stable and super smart auto-tracking filming journey";
 
-"CameraAuthDenied" = "Taro needs the access to shoot Video with the Camera";
-"MicrophoneAuthDenied" = "Taro needs the access to record audio with the Mic";
-"PhotoAuthDenied" = "Taro needs the access to save videos and files on your devices";
-"BlueToothOpenTip" = "Please open bluetooth to connect Taro before record video";
+"CameraAuthDenied" = "Video recording needs camera access, please try again to grant permission.";
+"MicrophoneAuthDenied" = "Audio recording needs microphone access, please try again to grant permission.";
+"PhotoAuthDenied" = "Video saving needs file access, please try again to grant permission.";
+"BlueToothOpenTip" = "Please turn on the Bluetooth function.";
 
 "AlertComfirmTitle" = "Try Again";
 "AlertBlueToothComfirmTitle" = "OK";

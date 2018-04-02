@@ -21,4 +21,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *selectBtn;
 
+@property (copy, nonatomic) NSString *moviePath;
+
 @end

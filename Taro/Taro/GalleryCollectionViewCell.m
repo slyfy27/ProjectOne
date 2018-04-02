@@ -34,7 +34,17 @@
     }];
 }
 
--(NSString *)timeFromSeconds:(int)seconds
+- (void)setMoviePath:(NSString *)moviePath{
+    _moviePath = moviePath;
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:moviePath] options:nil];
+    AVAssetImageGenerator *xx = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    CGImageRef im = [xx copyCGImageAtTime:CMTimeMake(0.0, 600) actualTime:NULL error:NULL];
+    _timeLabel.text = [self timeFromSeconds:CMTimeGetSeconds(asset.duration)];
+    _audioImageVIew.image = [UIImage imageWithCGImage:im];
+    CGImageRelease(im);
+}
+
+- (NSString *)timeFromSeconds:(int)seconds
 {
     int m =seconds/60;
     int s = seconds%60;

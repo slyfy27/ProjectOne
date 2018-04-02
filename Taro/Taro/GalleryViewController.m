@@ -19,12 +19,15 @@
 
 @property (nonatomic, assign) BOOL selectState;
 
+@property (nonatomic, strong) NSMutableArray *movieArray;
+
 @end
 
 @implementation GalleryViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _movieArray = @[].mutableCopy;
     _selectState = NO;
     _galleryCollectionView.delegate = self;
     _galleryCollectionView.dataSource = self;
@@ -33,6 +36,22 @@
     [self setRightNavigationBarButton:@selector(edit) title:@"EDIT" image:nil];
     [self setTitle:@"Gallery"];
     [self enumerateGallery];
+    [self getLocalVieo];
+}
+
+- (void)getLocalVieo{
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSDirectoryEnumerator *dirEnum = [fm enumeratorAtPath:path];
+    NSString *fileName;
+    while (fileName = [dirEnum nextObject]) {
+//        NSLog(@"短路径:%@", fileName);
+//        NSLog(@"全路径:%@", [path stringByAppendingPathComponent:fileName]);
+        if ([fileName hasSuffix:@".mov"]) {
+            [_movieArray addObject:[path stringByAppendingPathComponent:fileName]];
+        }
+    }
+    [self.galleryCollectionView reloadData];
 }
 
 - (void)back{
@@ -61,11 +80,11 @@
 }
 //每个分组里有多少个item
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return _assets.count;
+    return _movieArray.count;
 }
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     GalleryCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    cell.asset = _assets[indexPath.row];
+    cell.moviePath = _movieArray[indexPath.row];
     if (_selectState) {
         cell.selectBtn.hidden = NO;
     }
@@ -73,15 +92,12 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    [[PHImageManager defaultManager] requestPlayerItemForVideo:_assets[indexPath.row] options:nil resultHandler:^(AVPlayerItem * _Nullable playerItem, NSDictionary * _Nullable info) {
-        AVPlayer *player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
-        AVPlayerViewController *vc = [[AVPlayerViewController alloc] init];
-        vc.player = player;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.navigationController presentViewController:vc animated:YES completion:^{
-            }];
-        });
-    }];
+    NSURL *url = [NSURL fileURLWithPath:_movieArray[indexPath.row]];
+    AVPlayer *player = [AVPlayer playerWithURL:url];
+    AVPlayerViewController *playerViewController = [AVPlayerViewController new];
+    playerViewController.player = player;
+    [self presentViewController:playerViewController animated:YES completion:nil];
+    [playerViewController.player play];
 }
 
 /* 定义每个UICollectionView 的大小 */

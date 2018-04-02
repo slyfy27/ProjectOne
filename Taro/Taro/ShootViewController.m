@@ -34,7 +34,7 @@ static NSString *exposureCompensation = @"exposureCompensation";
 static NSString *flash = @"flash";
 static NSString *iso = @"iso";
 
-@interface ShootViewController ()<UITableViewDelegate,UITableViewDataSource,SliderCellDelegate>
+@interface ShootViewController ()<UITableViewDelegate,UITableViewDataSource,SliderCellDelegate,AVCaptureFileOutputRecordingDelegate>
 
 @property (nonatomic, strong) AVCaptureSession *captureSession;
 
@@ -60,7 +60,11 @@ static NSString *iso = @"iso";
 
 @property (nonatomic, strong) AVCaptureDeviceInput *frontInput;
 
+@property (nonatomic, strong) AVCaptureFileOutput *output;
+
 @property (nonatomic, assign) BOOL isFront;
+
+@property (nonatomic, weak) IBOutlet UIButton *recordBtn;
 
 @end
 
@@ -89,6 +93,25 @@ static NSString *iso = @"iso";
 
 - (IBAction)back:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (NSURL *)getFilePath{
+    NSString *times = @([[NSDate date] timeIntervalSince1970]).stringValue;
+    times = [times stringByAppendingString:@".mov"];
+    NSString *document = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSURL *outputURL = [NSURL fileURLWithPath:document isDirectory:YES];
+    outputURL = [NSURL URLWithString:times relativeToURL:outputURL];
+    return outputURL;
+}
+
+- (IBAction)recordAction:(UIButton *)sender{
+    sender.selected = !sender.selected;
+    if (sender.selected) {
+        [_output startRecordingToOutputFileURL:[self getFilePath] recordingDelegate:self];
+    }
+    else{
+        [_output stopRecording];
+    }
 }
 
 - (IBAction)bluetoothAction:(UIButton *)sender {
@@ -230,11 +253,6 @@ static NSString *iso = @"iso";
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated{
-    [super viewDidDisappear:animated];
-    self.navigationController.navigationBarHidden = NO;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configCameraSetting];
@@ -258,17 +276,19 @@ static NSString *iso = @"iso";
     if ([_captureSession canAddInput:audioIn]){
         [_captureSession addInput:audioIn];
     }
-    
-    AVCaptureMovieFileOutput *movieOutput = [[AVCaptureMovieFileOutput alloc] init];
-    if ([_captureSession canAddOutput:movieOutput]) {
-        [_captureSession addOutput:movieOutput];
-    }
-    https://www.cnblogs.com/liangzhimy/archive/2012/10/26/2740905.html
+//    https://www.cnblogs.com/liangzhimy/archive/2012/10/26/2740905.html
     AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
     previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
     [self.videoView.layer addSublayer:previewLayer];
     [_captureSession startRunning];
+    _output = [[AVCaptureMovieFileOutput alloc] init];
+    CMTime maxDuration = CMTimeMake(1200, 1);//最大20分钟
+    _output.maxRecordedDuration = maxDuration;
+    _output.minFreeDiskSpaceLimit = 1024;
+    if ([_captureSession canAddOutput:_output]) {
+        [_captureSession addOutput:_output];
+    }
 }
 
 - (NSString *)getResolution{
@@ -534,6 +554,14 @@ static NSString *iso = @"iso";
             [_backDevice unlockForConfiguration];
         }
     }
+}
+
+- (void)captureOutput:(AVCaptureFileOutput *)output didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray<AVCaptureConnection *> *)connections{
+    
+}
+
+- (void)captureOutput:(AVCaptureFileOutput *)output didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray<AVCaptureConnection *> *)connections error:(NSError *)error{
+    
 }
 
 - (void)didReceiveMemoryWarning {

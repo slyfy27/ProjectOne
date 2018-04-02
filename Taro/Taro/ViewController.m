@@ -40,6 +40,11 @@
     _authCount = 0;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 /**
  push to the Gallery viewController
  */
@@ -54,9 +59,6 @@
  @param sender button
  */
 - (IBAction)startAction:(id)sender {
-    ShootViewController *vc = [[ShootViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-    return;
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstAuth"]) {
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
             if (granted) {

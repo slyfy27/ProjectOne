@@ -15,6 +15,7 @@
                 <outlet property="bluetoothBtn" destination="7wS-Dw-Zoz" id="PZF-eF-axR"/>
                 <outlet property="cameraBtn" destination="0Yq-xf-8jR" id="GTr-mM-8nV"/>
                 <outlet property="deviceBtn" destination="tXB-5y-udb" id="AP4-aW-4Bv"/>
+                <outlet property="recordBtn" destination="x99-I5-vWM" id="b0f-eq-PCV"/>
                 <outlet property="settingTable" destination="SCi-Gs-9gN" id="h1i-sc-CYC"/>
                 <outlet property="settingTitle" destination="OXL-7o-vQ2" id="aHR-kn-i75"/>
                 <outlet property="settingView" destination="Dot-cu-Ki1" id="0sT-EQ-u2A"/>
@@ -45,7 +46,7 @@
                                 <action selector="back:" destination="-1" eventType="touchUpInside" id="oh9-2c-Lip"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7wS-Dw-Zoz">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7wS-Dw-Zoz">
                             <rect key="frame" x="0.0" y="75" width="70" height="75"/>
                             <state key="normal" image="蓝牙-白"/>
                             <state key="selected" image="蓝牙-蓝"/>
@@ -143,13 +144,27 @@
                         <constraint firstAttribute="bottom" secondItem="ahe-eg-7uS" secondAttribute="bottom" id="ut0-jq-w6F"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x99-I5-vWM">
+                    <rect key="frame" x="613" y="165" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Inz-oD-RMh"/>
+                        <constraint firstAttribute="width" constant="44" id="s5d-JH-8xz"/>
+                    </constraints>
+                    <state key="normal" image="开始录制"/>
+                    <state key="selected" image="停止录制"/>
+                    <connections>
+                        <action selector="recordAction:" destination="-1" eventType="touchUpInside" id="NLn-np-hgi"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="Dot-cu-Ki1" secondAttribute="bottom" id="0ft-QE-ljh"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="85x-2o-oSc" secondAttribute="bottom" id="Bxe-nl-usP"/>
                 <constraint firstItem="Wu4-Xe-HDL" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="Egu-KZ-CaT"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="x99-I5-vWM" secondAttribute="trailing" constant="10" id="HTA-4c-5Nh"/>
                 <constraint firstItem="Dot-cu-Ki1" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="I2C-Ju-Wjc"/>
+                <constraint firstItem="x99-I5-vWM" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="IuD-VE-wtx"/>
                 <constraint firstItem="Dot-cu-Ki1" firstAttribute="leading" secondItem="Wu4-Xe-HDL" secondAttribute="trailing" id="Lip-0i-xVT"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="85x-2o-oSc" secondAttribute="trailing" id="Oih-5i-q2d"/>
                 <constraint firstItem="85x-2o-oSc" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="V3R-DN-5gd"/>
@@ -164,6 +179,8 @@
     <resources>
         <image name="云端设置1" width="60" height="60"/>
         <image name="云端设置2" width="60" height="60"/>
+        <image name="停止录制" width="44" height="44"/>
+        <image name="开始录制" width="44" height="44"/>
         <image name="相机-白" width="48" height="41"/>
         <image name="相机-蓝" width="48" height="41"/>
         <image name="自拍-白" width="48" height="41"/>
