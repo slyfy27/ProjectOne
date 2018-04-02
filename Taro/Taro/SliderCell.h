@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SliderCellDelegate<NSObject>
+
+- (void)sliderValueChange:(CGFloat)value;
+
+@end
+
 @interface SliderCell : UITableViewCell
+
+@property (weak, nonatomic) id<SliderCellDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UISlider *sliderView;
 
 @property (weak, nonatomic) IBOutlet UILabel *minLabel;
 

@@ -22,11 +22,19 @@ typedef NS_ENUM(NSInteger, SettingType) {
     SettingTypeCameraISO,
     SettingTypeCameraExposure,
     SettingTypeCameraMesh,
+    SettingTypeCameraFlash,
     SettingTypeDevice,
     SettingTypeYunTai,
 };
 
-@interface ShootViewController ()<UITableViewDelegate,UITableViewDataSource>
+static NSString *resolution = @"resolution";
+static NSString *mesh = @"mesh";
+static NSString *whiteBalance = @"whiteBalance";
+static NSString *exposureCompensation = @"exposureCompensation";
+static NSString *flash = @"flash";
+static NSString *iso = @"iso";
+
+@interface ShootViewController ()<UITableViewDelegate,UITableViewDataSource,SliderCellDelegate>
 
 @property (nonatomic, strong) AVCaptureSession *captureSession;
 
@@ -44,9 +52,40 @@ typedef NS_ENUM(NSInteger, SettingType) {
 
 @property (nonatomic, copy) NSArray *deviceSettingArray;
 
+@property (nonatomic, strong) AVCaptureDevice *backDevice;
+
+@property (nonatomic, strong) AVCaptureDevice *frontDevice;
+
+@property (nonatomic, strong) AVCaptureDeviceInput *backInput;
+
+@property (nonatomic, strong) AVCaptureDeviceInput *frontInput;
+
+@property (nonatomic, assign) BOOL isFront;
+
 @end
 
 @implementation ShootViewController
+
+- (void)configCameraSetting{
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:resolution]) {
+        [[NSUserDefaults standardUserDefaults] setValue:AVCaptureSessionPreset1920x1080 forKey:resolution];
+    }
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:mesh]) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"None" forKey:mesh];
+    }
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:iso]) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:iso];
+    }
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:exposureCompensation]) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:exposureCompensation];
+    }
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:flash]) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"close" forKey:flash];
+    }
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:whiteBalance]) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"Auto" forKey:whiteBalance];
+    }
+}
 
 - (IBAction)back:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
@@ -130,6 +169,12 @@ typedef NS_ENUM(NSInteger, SettingType) {
             [_settingTable reloadData];
         }
             break;
+        case SettingTypeDevice:{
+            _settingTitle.text = @"Device Setting";
+            _subTable.hidden = YES;
+            _settingTable.hidden = NO;
+        }
+            break;
         default:
             break;
     }
@@ -150,6 +195,23 @@ typedef NS_ENUM(NSInteger, SettingType) {
         [_settingTable reloadData];
         sender.selected = !sender.selected;
     }
+}
+
+- (IBAction)cameraDeviceAction:(id)sender {
+    self.type = SettingTypeDevice;
+    //切换前后摄像头
+    [_captureSession beginConfiguration];
+    if (_isFront) {
+        [_captureSession removeInput:_frontInput];
+        [_captureSession addInput:_backInput];
+        _isFront = NO;
+    }
+    else{
+        [_captureSession removeInput:_backInput];
+        [_captureSession addInput:_frontInput];
+        _isFront = YES;
+    }
+    [_captureSession commitConfiguration];
 }
 
 - (IBAction)deviceAction:(UIButton *)sender {
@@ -175,38 +237,61 @@ typedef NS_ENUM(NSInteger, SettingType) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configCameraSetting];
     self.navigationController.navigationBarHidden = YES;
     [self configView];
-//    _captureSession = [[AVCaptureSession alloc] init];
-//    if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
-//        [_captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
-//    }
-//    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-//    AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:NULL];
-//    if (videoInput) {
-//        if ([_captureSession canAddInput:videoInput]){
-//            [_captureSession addInput:videoInput];
-//        }
-//    }
-//    // 音频输入
-//    AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio]; AVCaptureDeviceInput *audioIn = [[AVCaptureDeviceInput alloc] initWithDevice:audioDevice error:NULL];
-//    if ([_captureSession canAddInput:audioIn]){
-//        [_captureSession addInput:audioIn];
-//    }
-//    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
-//    previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-//    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
-//    [self.videoView.layer addSublayer:previewLayer];
-//    [_captureSession startRunning];
+    _captureSession = [[AVCaptureSession alloc] init];
+    if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
+        [_captureSession setSessionPreset:[[NSUserDefaults standardUserDefaults] valueForKey:resolution]];
+    }
+    _backDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+    _frontDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionFront];
+    _backInput = [AVCaptureDeviceInput deviceInputWithDevice:_backDevice error:NULL];
+    _frontInput = [AVCaptureDeviceInput deviceInputWithDevice:_frontDevice error:NULL];
+    if (_backInput) {
+        if ([_captureSession canAddInput:_backInput]){
+            [_captureSession addInput:_backInput];
+        }
+    }
+    // 音频输入
+    AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio]; AVCaptureDeviceInput *audioIn = [[AVCaptureDeviceInput alloc] initWithDevice:audioDevice error:NULL];
+    if ([_captureSession canAddInput:audioIn]){
+        [_captureSession addInput:audioIn];
+    }
+    
+    AVCaptureMovieFileOutput *movieOutput = [[AVCaptureMovieFileOutput alloc] init];
+    if ([_captureSession canAddOutput:movieOutput]) {
+        [_captureSession addOutput:movieOutput];
+    }
+    https://www.cnblogs.com/liangzhimy/archive/2012/10/26/2740905.html
+    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
+    previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
+    [self.videoView.layer addSublayer:previewLayer];
+    [_captureSession startRunning];
+}
+
+- (NSString *)getResolution{
+    NSString *res = [[NSUserDefaults standardUserDefaults] valueForKey:resolution];
+    if ([res isEqualToString:AVCaptureSessionPreset1920x1080]) {
+        return @"1920x1080 30fps";
+    }
+    if ([res isEqualToString:AVCaptureSessionPreset1280x720]) {
+        return @"1280x720 30fps";
+    }
+    if ([res isEqualToString:AVCaptureSessionPreset640x480]) {
+        return @"640x480 30fps";
+    }
+    return @"";
 }
 
 - (void)configView{
-    _cameraSettingArray = @[@{@"type":@"Resolution",@"value":@"1280x720 30fps"},
-                            @{@"type":@"White Balance",@"value":@"Auto"},
-                            @{@"type":@"ISO",@"value":@"0"},
-                            @{@"type":@"Exposure Compensation",@"value":@"0"},
-                            @{@"type":@"Flash",@"value":@"close"},
-                            @{@"type":@"Mesh",@"value":@"None"}];
+    _cameraSettingArray = @[@{@"type":@"Resolution",@"value":[self getResolution]},
+                            @{@"type":@"White Balance",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:whiteBalance]},
+                            @{@"type":@"ISO",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:iso]},
+                            @{@"type":@"Exposure Compensation",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:exposureCompensation]},
+                            @{@"type":@"Flash",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:flash]},
+                            @{@"type":@"Mesh",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:mesh]}];
     _bluetoothArray = @[@"Taro-Test 1",@"Taro-Test 2",@"Taro-Test 3"];
     _resolutionArray = @[@{@"type":@"1080p",@"value":AVCaptureSessionPreset1920x1080},@{@"type":@"720p",@"value":AVCaptureSessionPreset1280x720},@{@"type":@"480p",@"value":AVCaptureSessionPreset640x480}];
     _whiteBalanceArray = @[@{@"type":@"Auto",@"value":@""},@{@"type":@"Daylight",@"value":@""},@{@"type":@"Cloud Daylight",@"value":@""},@{@"type":@"Incandescent",@"value":@""},@{@"type":@"Fluorescent",@"value":@""}];
@@ -308,6 +393,12 @@ typedef NS_ENUM(NSInteger, SettingType) {
         WhiteBalanceCell *cell = [tableView dequeueReusableCellWithIdentifier:@"whiteBalanceCell"];
         NSDictionary *dict = _whiteBalanceArray[indexPath.row];
         cell.typeLabel.text = dict[@"type"];
+        if ([dict[@"type"] isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:whiteBalance]]) {
+            [cell setCurrent:YES];
+        }
+        else{
+            [cell setCurrent:NO];
+        }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
@@ -335,14 +426,16 @@ typedef NS_ENUM(NSInteger, SettingType) {
     }
     if (_type == SettingTypeCameraISO) {
         SliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"sliderCell"];
-        cell.minLabel.text = @"40";
-        cell.maxLabel.text = @"2572";
+        cell.minLabel.text = @(_backDevice.activeFormat.minISO).stringValue;
+        cell.maxLabel.text = @(_backDevice.activeFormat.maxISO).stringValue;
+        cell.delegate = self;
         return cell;
     }
     if (_type == SettingTypeCameraExposure) {
         SliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"sliderCell"];
         cell.minLabel.text = @"-12";
         cell.maxLabel.text = @"12";
+        cell.delegate = self;
         return cell;
     }
     else{
@@ -370,19 +463,76 @@ typedef NS_ENUM(NSInteger, SettingType) {
         else if ([dict[@"type"] isEqualToString:@"Exposure Compensation"]){
             self.type = SettingTypeCameraExposure;
         }
+        else if ([dict[@"type"] isEqualToString:@"Flash"]) {
+            if ([[[NSUserDefaults standardUserDefaults] valueForKey:flash] isEqualToString:@"close"]) {
+                [_backDevice lockForConfiguration:NULL];
+                [_backDevice setFlashMode:AVCaptureFlashModeOn];
+                [_backDevice setTorchMode:AVCaptureTorchModeOn];
+                [_backDevice unlockForConfiguration];
+                CameraCell *c = (CameraCell *)cell;
+                c.valueLabel.text = @"open";
+                [[NSUserDefaults standardUserDefaults] setValue:@"open" forKey:flash];
+            }
+            else{
+                [_backDevice lockForConfiguration:NULL];
+                [_backDevice setFlashMode:AVCaptureFlashModeOff];
+                [_backDevice setTorchMode:AVCaptureTorchModeOff];
+                [_backDevice unlockForConfiguration];
+                CameraCell *c = (CameraCell *)cell;
+                c.valueLabel.text = @"close";
+                [[NSUserDefaults standardUserDefaults] setValue:@"close" forKey:flash];
+            }
+        }
         _cameraBtn.selected = YES;
         return;
     }
     if (_type == SettingTypeCameraResolution) {
         NSDictionary *dict = _resolutionArray[indexPath.row];
         [_captureSession setSessionPreset:dict[@"value"]];
-        [[NSUserDefaults standardUserDefaults] setValue:dict[@"value"] forKey:@"resolution"];
+        [[NSUserDefaults standardUserDefaults] setValue:dict[@"value"] forKey:resolution];
         [self subTableBack];
     }
     if (_type == SettingTypeCameraMesh) {
-        NSDictionary *dict = _resolutionArray[indexPath.row];
-        [[NSUserDefaults standardUserDefaults] setValue:dict[@"type"] forKey:@"mesh"];
+        NSDictionary *dict = _meshArray[indexPath.row];
+        [[NSUserDefaults standardUserDefaults] setValue:dict[@"type"] forKey:mesh];
         [self subTableBack];
+    }
+    if (_type == SettingTypeCameraWhiteBalance) {
+        NSDictionary *dict = _whiteBalanceArray[indexPath.row];
+        [[NSUserDefaults standardUserDefaults] setValue:dict[@"type"] forKey:whiteBalance];
+        if ([dict[@"type"] isEqualToString:@"Auto"]) {
+            [_backDevice lockForConfiguration:NULL];
+            if ([_backDevice isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeAutoWhiteBalance]) {
+                [_backDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeAutoWhiteBalance];
+                
+//                _backDevice setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:<#(AVCaptureWhiteBalanceGains)#> completionHandler:<#^(CMTime syncTime)handler#>
+            }
+            [_backDevice unlockForConfiguration];
+        }
+        [self subTableBack];
+    }
+}
+
+- (void)sliderValueChange:(CGFloat)value{
+    if (_type == SettingTypeCameraISO) {
+        if (!_isFront) {
+            [_backDevice lockForConfiguration:NULL];
+            NSInteger v = (_backDevice.activeFormat.maxISO - _backDevice.activeFormat.minISO) * value + _backDevice.activeFormat.minISO;
+            [_backDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:v completionHandler:^(CMTime syncTime) {
+                
+            }];
+            [_backDevice unlockForConfiguration];
+        }
+    }
+    if (_type == SettingTypeCameraExposure) {
+        if (!_isFront) {
+            [_backDevice lockForConfiguration:NULL];
+            CGFloat v = (CMTimeGetSeconds(_backDevice.activeFormat.maxExposureDuration) - CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration)) * value + CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration);
+            [_backDevice setExposureTargetBias:v completionHandler:^(CMTime syncTime) {
+                
+            }];
+            [_backDevice unlockForConfiguration];
+        }
     }
 }
 

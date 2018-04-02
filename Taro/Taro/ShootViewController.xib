@@ -67,6 +67,9 @@
                             <rect key="frame" x="0.0" y="225" width="70" height="75"/>
                             <state key="normal" image="自拍-白"/>
                             <state key="selected" image="相机-蓝"/>
+                            <connections>
+                                <action selector="cameraDeviceAction:" destination="-1" eventType="touchUpInside" id="mks-7g-ULp"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G7e-qd-RzY">
                             <rect key="frame" x="0.0" y="300" width="70" height="75"/>

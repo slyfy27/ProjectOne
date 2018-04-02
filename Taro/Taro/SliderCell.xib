@@ -55,6 +55,7 @@
                 <outlet property="maxLabel" destination="eiP-re-4Oe" id="fYn-hd-QX7"/>
                 <outlet property="minLabel" destination="erU-O1-tzP" id="HAQ-04-fQ1"/>
                 <outlet property="slider" destination="zlF-aN-tko" id="aUu-Tk-YmB"/>
+                <outlet property="sliderView" destination="zlF-aN-tko" id="0ow-SU-J0a"/>
             </connections>
         </tableViewCell>
     </objects>

@@ -79,7 +79,6 @@
         vc.player = player;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.navigationController presentViewController:vc animated:YES completion:^{
-                
             }];
         });
     }];

@@ -33,6 +33,7 @@
                         </constraints>
                     </imageView>
                 </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="Gof-r7-t9f" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="PoK-Gr-hmh"/>
                     <constraint firstAttribute="trailing" secondItem="kRb-RD-Uk4" secondAttribute="trailing" constant="15" id="Rgn-IT-20R"/>
@@ -40,6 +41,7 @@
                     <constraint firstItem="kRb-RD-Uk4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ys3-GN-EZ4"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="iconImageView" destination="kRb-RD-Uk4" id="IfB-Ib-1LH"/>

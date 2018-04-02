@@ -13,4 +13,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 
+- (void)setCurrent:(BOOL)selected;
+
 @end
