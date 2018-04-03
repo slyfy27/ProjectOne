@@ -34,6 +34,7 @@
 		4274A30D205B781300844BCE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4274A30F205B781300844BCE /* Localizable.strings */; };
 		42C244E82067AA7200436FA0 /* GalleryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */; };
 		42C244E92067AA7300436FA0 /* GalleryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */; };
+		42DA1EC2207373EF000819C9 /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DA1EC1207373EF000819C9 /* BluetoothManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,8 @@
 		42C244E52067AA7200436FA0 /* GalleryCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryCollectionViewCell.h; sourceTree = "<group>"; };
 		42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GalleryCollectionViewCell.m; sourceTree = "<group>"; };
 		42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCollectionViewCell.xib; sourceTree = "<group>"; };
+		42DA1EC0207373EF000819C9 /* BluetoothManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothManager.h; sourceTree = "<group>"; };
+		42DA1EC1207373EF000819C9 /* BluetoothManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +151,8 @@
 				422E7639206B9A3A00B8F443 /* WhiteBalanceCell.h */,
 				422E763A206B9A3A00B8F443 /* WhiteBalanceCell.m */,
 				422E763B206B9A3A00B8F443 /* WhiteBalanceCell.xib */,
+				42DA1EC0207373EF000819C9 /* BluetoothManager.h */,
+				42DA1EC1207373EF000819C9 /* BluetoothManager.m */,
 				42711623206BD1C700B762ED /* SliderCell.h */,
 				42711624206BD1C700B762ED /* SliderCell.m */,
 				42711625206BD1C700B762ED /* SliderCell.xib */,
@@ -259,6 +264,7 @@
 				4272503B2069D9CA001DAE18 /* ShootViewController.m in Sources */,
 				42711626206BD1C700B762ED /* SliderCell.m in Sources */,
 				422E762A206A31BD00B8F443 /* CameraCell.m in Sources */,
+				42DA1EC2207373EF000819C9 /* BluetoothManager.m in Sources */,
 				42C244E82067AA7200436FA0 /* GalleryCollectionViewCell.m in Sources */,
 				4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */,
 				42675C7C20679DEC005CBB33 /* GalleryViewController.m in Sources */,

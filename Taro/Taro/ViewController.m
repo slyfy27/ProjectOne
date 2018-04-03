@@ -13,12 +13,10 @@
 #import <AVFoundation/AVMediaFormat.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "AuthDeniedAlertView.h"
-#import <CoreBluetooth/CoreBluetooth.h>
+#import "BluetoothManager.h"
 #import "ShootViewController.h"
 
-@interface ViewController ()<CBCentralManagerDelegate>
-
-@property (strong, nonatomic) CBCentralManager *bluetoothManager;
+@interface ViewController ()
 
 @property (assign, nonatomic) NSInteger authCount;
 
@@ -35,8 +33,6 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.shadowImage = [UIImage new];
-    _bluetoothManager = [[CBCentralManager alloc] initWithDelegate:self
-                                                             queue:nil];
     _authCount = 0;
 }
 
@@ -69,7 +65,7 @@
                                 if (status == PHAuthorizationStatusAuthorized) {
                                     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstAuth"];
                                     [[NSUserDefaults standardUserDefaults] synchronize];
-                                    if (_bluetoothManager.state == CBManagerStatePoweredOn) {
+                                    if ([BluetoothManager shareInstance].state == CBManagerStatePoweredOn) {
                                         //搜索蓝牙列表，如果只有一个设备则直接连接并进入拍摄界面，否则弹出选择框
                                         ShootViewController *vc = [[ShootViewController alloc] init];
                                         [self.navigationController pushViewController:vc animated:YES];
@@ -131,7 +127,7 @@
             if ([self microphoneAuthStatus]) {
                 if ([self photoLibraryAuthStatus]) {
                     //判断蓝牙是否打开
-                    if (_bluetoothManager.state == CBManagerStatePoweredOn) {
+                    if ([BluetoothManager shareInstance].state == CBManagerStatePoweredOn) {
                         //搜索蓝牙列表，如果只有一个设备则直接连接并进入拍摄界面，否则弹出选择框
                         ShootViewController *vc = [[ShootViewController alloc] init];
                         [self.navigationController pushViewController:vc animated:YES];
@@ -223,10 +219,6 @@
         
     }
     return NO;
-}
-
-- (void)centralManagerDidUpdateState:(CBCentralManager *)central{
-    
 }
 
 - (void)didReceiveMemoryWarning {
