@@ -39,13 +39,13 @@
 - (void)setupSelf
 {
     self.frame = [UIScreen mainScreen].bounds;
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = UIColorFromRGBAndAlpha(000000, 0.3);
     self.userInteractionEnabled = YES;
     if (!_contentView) {
-        _contentView = [[UIView alloc] initWithFrame:(CGRect){0,0,323,95}];
+        _contentView = [[UIView alloc] initWithFrame:(CGRect){0,0,360,110}];
         _contentView.center = self.center;
         [self addSubview:_contentView];
-        UIView *headerView = [[UIView alloc] initWithFrame:(CGRect){0,0,323,3}];
+        UIView *headerView = [[UIView alloc] initWithFrame:(CGRect){0,0,360,3}];
         headerView.backgroundColor = AlertBlueColor;
         [_contentView addSubview:headerView];
         _contentView.layer.cornerRadius = 3;
@@ -57,14 +57,14 @@
         _iconImageView = [[UIImageView alloc] initWithFrame:(CGRect){20,20,20,29}];
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
         [_contentView addSubview:_iconImageView];
-        _contentLabel = [[UILabel alloc] initWithFrame:(CGRect){60,20,245,32}];
+        _contentLabel = [[UILabel alloc] initWithFrame:(CGRect){60,20,280,32}];
         _contentLabel.textColor = [UIColor blackColor];
         _contentLabel.font = AlertContentFont;
         _contentLabel.textAlignment = NSTextAlignmentLeft;
         _contentLabel.numberOfLines = 2;
         [_contentView addSubview:_contentLabel];
         _comfirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _comfirmBtn.frame = CGRectMake(238, 60, 67, 24);
+        _comfirmBtn.frame = CGRectMake(270, 75, 67, 24);
         [_comfirmBtn setTitle:NSLocalizedString(@"AlertComfirmTitle", nil) forState:UIControlStateNormal];
         _comfirmBtn.titleLabel.font = AlertContentFont;
         [_comfirmBtn setTitleColor:AlertBlueColor forState:UIControlStateNormal];

@@ -6,12 +6,17 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "蓝牙-白@2x.png",
       "scale" : "2x"
     },
     {
+      "alignment-insets" : {
+        "top" : 3,
+        "left" : 5,
+        "bottom" : 3,
+        "right" : 5
+      },
       "idiom" : "universal",
-      "filename" : "蓝牙-白@3x.png",
+      "filename" : "蓝牙-白副本.png",
       "scale" : "3x"
     }
   ],

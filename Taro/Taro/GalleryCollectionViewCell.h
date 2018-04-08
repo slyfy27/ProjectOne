@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <Photos/Photos.h>
 
+@protocol GalleryCollectionCellDelegate<NSObject>
+
+- (void)selectIndex:(NSInteger)index;
+
+@end
+
 @interface GalleryCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *audioImageVIew;
@@ -22,5 +28,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *selectBtn;
 
 @property (copy, nonatomic) NSString *moviePath;
+
+@property (weak, nonatomic) id<GalleryCollectionCellDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UIView *whiteMaskView;
 
 @end

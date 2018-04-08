@@ -7,6 +7,7 @@
 //
 
 #import "TaroCell.h"
+#import "GolbalDefine.h"
 
 @implementation TaroCell
 
@@ -17,8 +18,21 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
+}
 
-    // Configure the view for the selected state
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    return [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+}
+
+- (void)setConnect:(BOOL)connect{
+    if (connect) {
+        _selectedIconImageView.image = [UIImage imageNamed:@"蓝牙选中"];
+        _bluetoothLabel.textColor = AlertBlueColor;
+    }
+    else{
+        _selectedIconImageView.image = [UIImage imageNamed:@"蓝牙圈"];
+        _bluetoothLabel.textColor = [UIColor whiteColor];
+    }
 }
 
 @end

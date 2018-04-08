@@ -12,6 +12,9 @@
 #import "TaroCell.h"
 #import "WhiteBalanceCell.h"
 #import "SliderCell.h"
+#import "GalleryViewController.h"
+#import "BluetoothManager.h"
+#import "UIImage+GradientColor.h"
 
 typedef NS_ENUM(NSInteger, SettingType) {
     SettingTypeNone = 0,//默认从0开始
@@ -66,9 +69,22 @@ static NSString *iso = @"iso";
 
 @property (nonatomic, weak) IBOutlet UIButton *recordBtn;
 
+@property (nonatomic, assign) AVCaptureWhiteBalanceGains autoGains;
+
+@property (nonatomic, strong) NSTimer *recordTimer;
+
+@property (nonatomic, assign) NSInteger second;
+
+
 @end
 
 @implementation ShootViewController
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [_recordTimer invalidate];
+    _recordTimer = nil;
+}
 
 - (void)configCameraSetting{
     if (![[NSUserDefaults standardUserDefaults] valueForKey:resolution]) {
@@ -108,30 +124,98 @@ static NSString *iso = @"iso";
     sender.selected = !sender.selected;
     if (sender.selected) {
         [_output startRecordingToOutputFileURL:[self getFilePath] recordingDelegate:self];
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstRecord"]) {
+            _maskViewHeightConstraint.constant = 0;
+            _maskViewWidthConstraint.constant = 0;
+            [UIView animateWithDuration:1 animations:^{
+                [self.view layoutIfNeeded];
+            }];
+        }
+        else{
+            _saveBtn.hidden = NO;
+        }
+        _recordTimeLabel.hidden = NO;
+        _second = 0;
+        _recordTimer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:_recordTimer forMode:NSRunLoopCommonModes];
+        [_recordTimer fire];
+        _recordViewTimeLabel.hidden = NO;
+        _leftViewLeadingConstraint.constant = 70;
+        [UIView animateWithDuration:0.25 animations:^{
+            [self.view layoutIfNeeded];
+        }];
     }
     else{
+        _leftViewLeadingConstraint.constant = 0;
+        [UIView animateWithDuration:0.25 animations:^{
+            [self.view layoutIfNeeded];
+        }];
+        _recordTimeLabel.hidden = YES;
+        _recordViewTimeLabel.hidden = YES;
         [_output stopRecording];
+        [_recordTimer invalidate];
+        _recordTimer = nil;
+        GalleryViewController *vc = [[GalleryViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void)timerAction{
+    _second += 1;
+    _recordTimeLabel.text = [self timeFromSeconds:_second];
+    _recordViewTimeLabel.text = [self timeFromSeconds:_second];
+}
+
+- (void)dealloc
+{
+    
+}
+
+- (NSString *)timeFromSeconds:(NSInteger)seconds
+{
+    int m = seconds/60;
+    int s = seconds%60;
+    NSString *mString ;
+    NSString *sString ;
+    if (m<10)
+        mString =[NSString stringWithFormat:@"%d",m];
+    else
+        mString =[NSString stringWithFormat:@"%d",m];
+    
+    if (s<10)
+        sString =[NSString stringWithFormat:@"0%d",s];
+    else
+        sString =[NSString stringWithFormat:@"%d",s];
+    
+    return  [NSString stringWithFormat:@"%@:%@",mString,sString];
+    
 }
 
 - (IBAction)bluetoothAction:(UIButton *)sender {
     if (sender.selected) {
         _settingViewWidth.constant = 0;
-        [_settingView layoutIfNeeded];
         self.type = SettingTypeNone;
+        [_settingView layoutIfNeeded];
     }
     else{
         _settingViewWidth.constant = 300;
         self.type = SettingTypeBluetooth;
         [UIView animateWithDuration:0.25 animations:^{
             [_settingView layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            [_settingTable reloadData];
         }];
-        [_settingTable reloadData];
         sender.selected = !sender.selected;
     }
 }
 
 - (void)setType:(SettingType)type{
+    if (type != SettingTypeNone) {
+        _leftView.backgroundColor = UIColorFromRGBAndAlpha(0x000000, 0.8);
+    }
+    if (type == SettingTypeNone) {
+        [self setViewGradient];
+    }
     _type = type;
     _bluetoothBtn.selected = _cameraBtn.selected = _yuntaiBtn.selected = _deviceBtn.selected = NO;
     switch (type) {
@@ -141,6 +225,9 @@ static NSString *iso = @"iso";
             break;
         case SettingTypeBluetooth:{
             _settingTitle.text = @"Taro List";
+            _subTable.hidden = YES;
+            _settingTable.hidden = NO;
+            [_settingTable reloadData];
         }
             break;
         case SettingTypeCamera:{
@@ -253,19 +340,40 @@ static NSString *iso = @"iso";
     }
 }
 
+- (void)setViewGradient{
+    _leftView.backgroundColor = [UIColor colorWithPatternImage:[UIImage gradientColorImageFromColors:@[UIColorFromRGBAndAlpha(0x000000, 0.4),UIColorFromRGBAndAlpha(0xffffff,0.1)] gradientType:GradientTypeLeftToRight imgSize:_leftView.frame.size]];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setViewGradient];
+    _type = SettingTypeNone;
+    _gifImageView.image = [YYImage imageNamed:@"连接摄像头GIF.gif"];
+    _maskViewWidthConstraint.constant = -Height;
+    _maskViewHeightConstraint.constant = -Width;
+    _turnOffBtn.layer.cornerRadius = 4;
+    _turnOffBtn.layer.masksToBounds = YES;
+    [_maskView layoutIfNeeded];
+    _trackingAlertViewTopConstraint.constant = - Height;
+    [self.view layoutIfNeeded];
     [self configCameraSetting];
-    self.navigationController.navigationBarHidden = YES;
     [self configView];
+    self.type = SettingTypeCamera;
     _captureSession = [[AVCaptureSession alloc] init];
     if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
         [_captureSession setSessionPreset:[[NSUserDefaults standardUserDefaults] valueForKey:resolution]];
     }
     _backDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+    _autoGains = [_backDevice deviceWhiteBalanceGains];
     _frontDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionFront];
     _backInput = [AVCaptureDeviceInput deviceInputWithDevice:_backDevice error:NULL];
     _frontInput = [AVCaptureDeviceInput deviceInputWithDevice:_frontDevice error:NULL];
+    
     if (_backInput) {
         if ([_captureSession canAddInput:_backInput]){
             [_captureSession addInput:_backInput];
@@ -305,25 +413,29 @@ static NSString *iso = @"iso";
     return @"";
 }
 
-- (void)configView{
+- (void)setconfigArray{
     _cameraSettingArray = @[@{@"type":@"Resolution",@"value":[self getResolution]},
                             @{@"type":@"White Balance",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:whiteBalance]},
                             @{@"type":@"ISO",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:iso]},
                             @{@"type":@"Exposure Compensation",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:exposureCompensation]},
                             @{@"type":@"Flash",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:flash]},
                             @{@"type":@"Mesh",@"value":[[NSUserDefaults standardUserDefaults] valueForKey:mesh]}];
-    _bluetoothArray = @[@"Taro-Test 1",@"Taro-Test 2",@"Taro-Test 3"];
+    _bluetoothArray = [BluetoothManager shareInstance].bluetoothArray;
     _resolutionArray = @[@{@"type":@"1080p",@"value":AVCaptureSessionPreset1920x1080},@{@"type":@"720p",@"value":AVCaptureSessionPreset1280x720},@{@"type":@"480p",@"value":AVCaptureSessionPreset640x480}];
-    _whiteBalanceArray = @[@{@"type":@"Auto",@"value":@""},@{@"type":@"Daylight",@"value":@""},@{@"type":@"Cloud Daylight",@"value":@""},@{@"type":@"Incandescent",@"value":@""},@{@"type":@"Fluorescent",@"value":@""}];
+    _whiteBalanceArray = @[@{@"type":@"Auto",@"value":@"a w b"},@{@"type":@"Daylight",@"value":@"太阳"},@{@"type":@"Cloud Daylight",@"value":@"云"},@{@"type":@"Incandescent",@"value":@"灯泡"},@{@"type":@"Fluorescent",@"value":@"糖"}];
     _meshArray = @[@{@"type":@"None",@"value":@""},@{@"type":@"Mesh",@"value":@""},@{@"type":@"Mesh and Diagonal",@"value":@""},@{@"type":@"Center Point",@"value":@""}];
     _deviceSettingArray = @[@{@"type":@"Speed",@"value":@"Normal"},@{@"type":@"Device Mode",@"value":@"Full Follow"},@{@"type":@"Tracking Cursor",@"value":@"off"}];
+}
+
+- (void)configView{
+    [self setconfigArray];
     _settingTable.delegate = self;
     _settingTable.dataSource = self;
+    [_settingTable registerNib:[UINib nibWithNibName:@"TaroCell" bundle:nil] forCellReuseIdentifier:@"cell"];
     [_settingTable registerNib:[UINib nibWithNibName:@"CameraCell" bundle:nil] forCellReuseIdentifier:@"cameraCell"];
-    [_settingTable registerNib:[UINib nibWithNibName:@"TaroCell" bundle:nil] forCellReuseIdentifier:@"taroCell"];
     _settingTable.rowHeight = 60;
     _settingTable.tableFooterView = [UIView new];
-    _settingTable.backgroundColor = [UIColor clearColor];
+    _settingTable.backgroundColor = UIColorFromRGBAndAlpha(0x000000, 0.6);
     _subTable.delegate = self;
     _subTable.dataSource = self;
     [_subTable registerNib:[UINib nibWithNibName:@"CameraCell" bundle:nil] forCellReuseIdentifier:@"cameraCell"];
@@ -338,7 +450,7 @@ static NSString *iso = @"iso";
     UIView *footerView = [[UIView alloc] initWithFrame:(CGRect){0,0,300,60}];
     [footerView addSubview:button];
     _subTable.tableFooterView = footerView;
-    _subTable.backgroundColor = [UIColor clearColor];
+    _subTable.backgroundColor = UIColorFromRGBAndAlpha(0x000000, 0.6);
 }
 
 - (void)subTableBack{
@@ -383,8 +495,23 @@ static NSString *iso = @"iso";
         return cell;
     }
     if (_type == SettingTypeBluetooth) {
-        TaroCell *cell = [tableView dequeueReusableCellWithIdentifier:@"taroCell"];
-        cell.bluetoothLabel.text = _bluetoothArray[indexPath.row];
+        TaroCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+        CBPeripheral *per = _bluetoothArray[indexPath.row];
+        NSString *connectDevice = [[NSUserDefaults standardUserDefaults] valueForKey:@"bluetooth"];
+        if ([per.identifier.UUIDString isEqualToString:connectDevice]) {
+            [cell setConnect:YES];
+        }
+        else{
+            [cell setConnect:NO];
+        }
+        NSString *name = per.name;
+        if ([name containsString:@"Smooth-"]) {
+            name = [name stringByReplacingOccurrencesOfString:@"Smooth-" withString:@"Taro-"];
+        }
+        if ([name containsString:@"Smooth"]) {
+            name = [name stringByReplacingOccurrencesOfString:@"Smooth" withString:@"Taro-"];
+        }
+        cell.bluetoothLabel.text = name;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
@@ -413,6 +540,7 @@ static NSString *iso = @"iso";
         WhiteBalanceCell *cell = [tableView dequeueReusableCellWithIdentifier:@"whiteBalanceCell"];
         NSDictionary *dict = _whiteBalanceArray[indexPath.row];
         cell.typeLabel.text = dict[@"type"];
+        cell.iconImageView.image = [UIImage imageNamed:dict[@"value"]];
         if ([dict[@"type"] isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:whiteBalance]]) {
             [cell setCurrent:YES];
         }
@@ -465,7 +593,6 @@ static NSString *iso = @"iso";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    cell.selected = NO;
     if (_type == SettingTypeCamera) {
         NSDictionary *dict = _cameraSettingArray[indexPath.row];
         if ([dict[@"type"] isEqualToString:@"Resolution"]) {
@@ -510,11 +637,13 @@ static NSString *iso = @"iso";
         NSDictionary *dict = _resolutionArray[indexPath.row];
         [_captureSession setSessionPreset:dict[@"value"]];
         [[NSUserDefaults standardUserDefaults] setValue:dict[@"value"] forKey:resolution];
+        [self setconfigArray];
         [self subTableBack];
     }
     if (_type == SettingTypeCameraMesh) {
         NSDictionary *dict = _meshArray[indexPath.row];
         [[NSUserDefaults standardUserDefaults] setValue:dict[@"type"] forKey:mesh];
+        [self setconfigArray];
         [self subTableBack];
     }
     if (_type == SettingTypeCameraWhiteBalance) {
@@ -522,14 +651,63 @@ static NSString *iso = @"iso";
         [[NSUserDefaults standardUserDefaults] setValue:dict[@"type"] forKey:whiteBalance];
         if ([dict[@"type"] isEqualToString:@"Auto"]) {
             [_backDevice lockForConfiguration:NULL];
-            if ([_backDevice isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeAutoWhiteBalance]) {
-                [_backDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeAutoWhiteBalance];
+            [_backDevice setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:_autoGains completionHandler:^(CMTime syncTime) {
                 
-//                _backDevice setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:<#(AVCaptureWhiteBalanceGains)#> completionHandler:<#^(CMTime syncTime)handler#>
-            }
+            }];
             [_backDevice unlockForConfiguration];
         }
+        if ([dict[@"type"] isEqualToString:@"Incandescent"]) {
+            [_backDevice lockForConfiguration:NULL];
+            AVCaptureWhiteBalanceTemperatureAndTintValues tem;
+            tem.temperature = 3500;
+            tem.tint = 0;
+            AVCaptureWhiteBalanceGains gains = [_backDevice deviceWhiteBalanceGainsForTemperatureAndTintValues:tem];
+            [_backDevice setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:gains completionHandler:^(CMTime syncTime) {
+                
+            }];
+        }
+        if ([dict[@"type"] isEqualToString:@"Daylight"]) {
+            [_backDevice lockForConfiguration:NULL];
+            AVCaptureWhiteBalanceTemperatureAndTintValues tem;
+            tem.temperature = 4500;
+            tem.tint = 0;
+            AVCaptureWhiteBalanceGains gains = [_backDevice deviceWhiteBalanceGainsForTemperatureAndTintValues:tem];
+            
+            [_backDevice setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:gains completionHandler:^(CMTime syncTime) {
+                
+            }];
+        }
+        if ([dict[@"type"] isEqualToString:@"Fluorescent"]) {
+            [_backDevice lockForConfiguration:NULL];
+            AVCaptureWhiteBalanceTemperatureAndTintValues tem;
+            tem.temperature = 5500;
+            tem.tint = 0;
+            AVCaptureWhiteBalanceGains gains = [_backDevice deviceWhiteBalanceGainsForTemperatureAndTintValues:tem];
+            
+            [_backDevice setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:gains completionHandler:^(CMTime syncTime) {
+                
+            }];
+        }
+        if ([dict[@"type"] isEqualToString:@"Cloud Daylight"]) {
+            [_backDevice lockForConfiguration:NULL];
+            AVCaptureWhiteBalanceTemperatureAndTintValues tem;
+            tem.temperature = 6500;
+            tem.tint = 0;
+            AVCaptureWhiteBalanceGains gains = [_backDevice deviceWhiteBalanceGainsForTemperatureAndTintValues:tem];
+            
+            [_backDevice setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:gains completionHandler:^(CMTime syncTime) {
+                
+            }];
+        }
+        [_backDevice unlockForConfiguration];
+        [self setconfigArray];
         [self subTableBack];
+    }
+    if (_type == SettingTypeBluetooth) {
+        CBPeripheral *per = _bluetoothArray[indexPath.row];
+        [[BluetoothManager shareInstance] connect:per result:^(ConnectResultType result) {
+            
+        }];
     }
 }
 
@@ -562,6 +740,42 @@ static NSString *iso = @"iso";
 
 - (void)captureOutput:(AVCaptureFileOutput *)output didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray<AVCaptureConnection *> *)connections error:(NSError *)error{
     
+}
+
+- (IBAction)trackingAction:(UIButton *)sender {
+//    sender.selected = !sender.selected;
+    _trackingAlertViewTopConstraint.constant = 0;
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (IBAction)trackingConfirmAction:(id)sender {
+    _trackingAlertViewTopConstraint.constant = - Height;
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (IBAction)turnOffSaveModeAction:(id)sender {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRecord"];
+    _maskViewHeightConstraint.constant = -Height;
+    _maskViewWidthConstraint.constant = -Width;
+    [UIView animateWithDuration:1 animations:^{
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        _saveBtn.hidden = NO;
+    }];
+}
+
+- (IBAction)saveBtnAction:(id)sender {
+    _maskViewHeightConstraint.constant = 0;
+    _maskViewWidthConstraint.constant = 0;
+    [UIView animateWithDuration:1 animations:^{
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        _saveBtn.hidden = YES;
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

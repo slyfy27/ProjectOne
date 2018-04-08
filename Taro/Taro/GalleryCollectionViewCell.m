@@ -34,6 +34,14 @@
     }];
 }
 
+- (IBAction)selectAction:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    _whiteMaskView.hidden = !sender.selected;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(selectIndex:)]) {
+        [self.delegate selectIndex:sender.tag];
+    }
+}
+
 - (void)setMoviePath:(NSString *)moviePath{
     _moviePath = moviePath;
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:moviePath] options:nil];

@@ -43,6 +43,10 @@
                             <constraint firstAttribute="trailing" secondItem="AKE-Za-695" secondAttribute="trailing" constant="12" id="TAm-YG-IqW"/>
                         </constraints>
                     </view>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v7Y-n1-ifl">
+                        <rect key="frame" x="0.0" y="0.0" width="185" height="180"/>
+                        <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lNi-Vn-IEP">
                         <rect key="frame" x="17" y="10" width="21" height="21"/>
                         <constraints>
@@ -51,15 +55,22 @@
                         </constraints>
                         <state key="normal" image="照片未选中"/>
                         <state key="selected" image="选中"/>
+                        <connections>
+                            <action selector="selectAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="y21-Hv-puj"/>
+                        </connections>
                     </button>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstItem="Bxp-aZ-8At" firstAttribute="top" secondItem="lNi-Vn-IEP" secondAttribute="bottom" constant="-31" id="4dU-JO-R0q"/>
                 <constraint firstItem="SEy-5g-ep8" firstAttribute="bottom" secondItem="IcO-cW-CRt" secondAttribute="bottom" constant="7" id="6py-hi-KOP"/>
+                <constraint firstItem="v7Y-n1-ifl" firstAttribute="top" secondItem="SEy-5g-ep8" secondAttribute="top" id="AEo-Kw-u53"/>
+                <constraint firstItem="SEy-5g-ep8" firstAttribute="leading" secondItem="v7Y-n1-ifl" secondAttribute="leading" id="IY9-l3-WR3"/>
                 <constraint firstItem="IcO-cW-CRt" firstAttribute="centerX" secondItem="SEy-5g-ep8" secondAttribute="centerX" id="Jiv-AL-6AL"/>
                 <constraint firstItem="Bxp-aZ-8At" firstAttribute="leading" secondItem="lNi-Vn-IEP" secondAttribute="leading" constant="-11" id="Nw7-Bo-Cq0"/>
+                <constraint firstItem="SEy-5g-ep8" firstAttribute="bottom" secondItem="v7Y-n1-ifl" secondAttribute="bottom" id="OPc-mM-Fsd"/>
                 <constraint firstItem="Bxp-aZ-8At" firstAttribute="centerX" secondItem="SEy-5g-ep8" secondAttribute="centerX" id="TZC-a4-KJi"/>
+                <constraint firstItem="v7Y-n1-ifl" firstAttribute="trailing" secondItem="SEy-5g-ep8" secondAttribute="trailing" id="exp-7F-plw"/>
                 <constraint firstItem="Bxp-aZ-8At" firstAttribute="top" secondItem="SEy-5g-ep8" secondAttribute="top" id="h9X-WR-QS9"/>
                 <constraint firstItem="SEy-5g-ep8" firstAttribute="bottom" secondItem="Bxp-aZ-8At" secondAttribute="bottom" constant="35" id="pOO-ds-heR"/>
             </constraints>
@@ -69,6 +80,7 @@
                 <outlet property="bottomView" destination="IcO-cW-CRt" id="uCt-My-Aho"/>
                 <outlet property="selectBtn" destination="lNi-Vn-IEP" id="hKC-u8-Feh"/>
                 <outlet property="timeLabel" destination="AKE-Za-695" id="M3P-V1-tvN"/>
+                <outlet property="whiteMaskView" destination="v7Y-n1-ifl" id="zKx-6k-4P4"/>
             </connections>
         </collectionViewCell>
     </objects>

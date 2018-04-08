@@ -16,5 +16,7 @@
 "PhotoAuthDenied" = "Video saving needs file access, please try again to grant permission.";
 "BlueToothOpenTip" = "Please turn on the Bluetooth function.";
 
+"NoneDevice" = "No Taro gimbal founded, please turn on Taro and make sure it is ";
+
 "AlertComfirmTitle" = "Try Again";
 "AlertBlueToothComfirmTitle" = "OK";

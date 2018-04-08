@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "YYKit.h"
 
 @interface ShootViewController : BaseViewController
 @property (weak, nonatomic) IBOutlet UIButton *bluetoothBtn;
@@ -20,5 +21,17 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *settingViewLeading;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *settingViewWidth;
 @property (weak, nonatomic) IBOutlet UITableView *subTable;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *maskViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *maskViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIView *maskView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *trackingAlertViewTopConstraint;
+@property (weak, nonatomic) IBOutlet UIView *trackingAlertView;
+@property (weak, nonatomic) IBOutlet UIButton *saveBtn;
+@property (weak, nonatomic) IBOutlet UILabel *recordTimeLabel;
+@property (weak, nonatomic) IBOutlet UIButton *turnOffBtn;
+@property (weak, nonatomic) IBOutlet UIView *leftView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftViewLeadingConstraint;
+@property (weak, nonatomic) IBOutlet UILabel *recordViewTimeLabel;
+@property (weak, nonatomic) IBOutlet YYAnimatedImageView *gifImageView;
 
 @end

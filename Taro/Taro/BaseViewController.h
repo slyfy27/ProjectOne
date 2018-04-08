@@ -15,4 +15,6 @@
 
 - (void)setRightNavigationBarButton:(SEL)action title:(NSString *)title image:(NSString *)image;
 
+- (void)setRightNavigationBarButton:(SEL)action title:(NSString *)title image:(NSString *)image barbutton1:(SEL)action1 title1:(NSString *)title1 image1:(NSString *)image1;
+
 @end

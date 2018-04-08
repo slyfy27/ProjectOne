@@ -12,4 +12,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *bluetoothLabel;
 
+@property (weak, nonatomic) IBOutlet UIImageView *selectedIconImageView;
+
+@property (assign, nonatomic) BOOL isAlert;
+
+- (void)setConnect:(BOOL)connect;
+
 @end

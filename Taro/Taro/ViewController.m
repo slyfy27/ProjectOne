@@ -15,6 +15,7 @@
 #import "AuthDeniedAlertView.h"
 #import "BluetoothManager.h"
 #import "ShootViewController.h"
+#import "SlyShowProgress.h"
 
 @interface ViewController ()
 
@@ -28,12 +29,22 @@
     [super viewDidLoad];
     [self setLeftNavigationBarButton:nil title:@"Taro" image:nil];
     [self setRightNavigationBarButton:@selector(galleryAction) title:@"Gallery" image:nil];
+    [BluetoothManager shareInstance];
     self.navigationController.navigationBar.barTintColor = NaviBarColor;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.shadowImage = [UIImage new];
     _authCount = 0;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gotoCamera) name:@"deviceConnected" object:nil];
+    
+}
+
+- (void)gotoCamera{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        ShootViewController *vc = [[ShootViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -55,6 +66,9 @@
  @param sender button
  */
 - (IBAction)startAction:(id)sender {
+    ShootViewController *vc = [[ShootViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+    return;
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstAuth"]) {
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
             if (granted) {
@@ -67,8 +81,24 @@
                                     [[NSUserDefaults standardUserDefaults] synchronize];
                                     if ([BluetoothManager shareInstance].state == CBManagerStatePoweredOn) {
                                         //搜索蓝牙列表，如果只有一个设备则直接连接并进入拍摄界面，否则弹出选择框
-                                        ShootViewController *vc = [[ShootViewController alloc] init];
-                                        [self.navigationController pushViewController:vc animated:YES];
+                                        [[SlyShowProgress shareInstance] show];
+                                        [[BluetoothManager shareInstance] scanWithResult:^(ConnectResultType result) {
+                                            [[SlyShowProgress shareInstance] dismiss];
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                if (result == ConnectResultTypeSuccess) {
+                                                    
+                                                    ShootViewController *vc = [[ShootViewController alloc] init];
+                                                    [self.navigationController pushViewController:vc animated:YES];
+                                                    
+                                                }
+                                                else if(result == ConnectResultTypeNoneDevice){
+                                                    [AuthDeniedAlertView alertWithIconName:@"找不到设备" content:NSLocalizedString(@"NoneDevice", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                                                        if (index == 1) {
+                                                            [self startAction:nil];
+                                                        }
+                                                    }];
+                                                }                                      });
+                                        }];
                                     }
                                     else{
                                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -131,6 +161,24 @@
                         //搜索蓝牙列表，如果只有一个设备则直接连接并进入拍摄界面，否则弹出选择框
                         ShootViewController *vc = [[ShootViewController alloc] init];
                         [self.navigationController pushViewController:vc animated:YES];
+                        return;
+                        [[SlyShowProgress shareInstance] show];
+                        [[BluetoothManager shareInstance] scanWithResult:^(ConnectResultType result) {
+                            [[SlyShowProgress shareInstance] dismiss];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                if (result == ConnectResultTypeSuccess) {
+                                    ShootViewController *vc = [[ShootViewController alloc] init];
+                                    [self.navigationController pushViewController:vc animated:YES];
+                                }
+                                else if(result == ConnectResultTypeNoneDevice){
+                                    [AuthDeniedAlertView alertWithIconName:@"找不到设备" content:NSLocalizedString(@"NoneDevice", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                                        if (index == 1) {
+                                            [self startAction:nil];
+                                        }
+                                    }];
+                                }
+                            });
+                        }];
                     }
                     else{
                         [AuthDeniedAlertView alertWithIconName:@"蓝牙" content:NSLocalizedString(@"BlueToothOpenTip", nil) comfirmTitle:NSLocalizedString(@"AlertBlueToothComfirmTitle",nil) choose:^(NSInteger index) {

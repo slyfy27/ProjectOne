@@ -11,7 +11,11 @@
 #import "GalleryCollectionViewCell.h"
 #import <AVKit/AVKit.h>
 
-@interface GalleryViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+#import <MessageUI/MFMailComposeViewController.h>
+#import <Social/Social.h>
+#import <Accounts/Accounts.h>
+
+@interface GalleryViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,GalleryCollectionCellDelegate>
 
 @property (nonatomic, strong) PHFetchResult *audioResult;
 
@@ -21,28 +25,36 @@
 
 @property (nonatomic, strong) NSMutableArray *movieArray;
 
+@property (nonatomic, strong) NSMutableSet *selectSet;
+
+@property (nonatomic, strong) NSFileManager *fileManager;
+
 @end
 
 @implementation GalleryViewController
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     _movieArray = @[].mutableCopy;
-    _selectState = NO;
+    _selectSet = [[NSMutableSet alloc] init];
     _galleryCollectionView.delegate = self;
     _galleryCollectionView.dataSource = self;
     [self setLeftNavigationBarButton:@selector(back) title:nil image:@"返回"];
     [_galleryCollectionView registerNib:[UINib nibWithNibName:@"GalleryCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"cell"];
     [self setRightNavigationBarButton:@selector(edit) title:@"EDIT" image:nil];
     [self setTitle:@"Gallery"];
-    [self enumerateGallery];
     [self getLocalVieo];
 }
 
 - (void)getLocalVieo{
     NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSDirectoryEnumerator *dirEnum = [fm enumeratorAtPath:path];
+    _fileManager = [NSFileManager defaultManager];
+    NSDirectoryEnumerator *dirEnum = [_fileManager enumeratorAtPath:path];
     NSString *fileName;
     while (fileName = [dirEnum nextObject]) {
 //        NSLog(@"短路径:%@", fileName);
@@ -58,20 +70,29 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)enumerateGallery{
-    _assets = @[].mutableCopy;
-    _audioResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeVideo options:nil];
-    [_audioResult enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [_assets addObject:obj];
-        if (stop) {
-            [_galleryCollectionView reloadData];
-        }
-    }];
-}
-
 - (void)edit{
     _selectState = YES;
     [_galleryCollectionView reloadData];
+    [self setRightNavigationBarButton:@selector(share) title:@"SHARE" image:nil barbutton1:@selector(deleteAction) title1:@"DELETE" image1:nil];
+}
+
+- (void)share{
+    
+}
+
+- (void)deleteAction{
+    for (NSString *index in _selectSet) {
+        [self deleteFileWithUrl:[NSURL URLWithString:_movieArray[index.integerValue]]];
+        [_movieArray removeObjectAtIndex:index.integerValue];
+    }
+    [_selectSet removeAllObjects];
+    [_galleryCollectionView reloadData];
+}
+
+- (void)deleteFileWithUrl:(NSURL *)url{
+    if([_fileManager isWritableFileAtPath:url.absoluteString]){
+        [_fileManager removeItemAtPath:url.absoluteString error:NULL];
+    }
 }
 
 //有多少的分组
@@ -88,6 +109,19 @@
     if (_selectState) {
         cell.selectBtn.hidden = NO;
     }
+    else{
+        cell.selectBtn.hidden = YES;
+    }
+    cell.delegate = self;
+    if([_selectSet containsObject:@(indexPath.row).stringValue]){
+        cell.selectBtn.selected = YES;
+        cell.whiteMaskView.hidden = NO;
+    }
+    else{
+        cell.selectBtn.selected = NO;
+        cell.whiteMaskView.hidden = YES;
+    }
+    cell.selectBtn.tag = indexPath.row;
     return cell;
 }
 
@@ -111,6 +145,54 @@
     return UIEdgeInsetsMake(28, 47, 28, 47);//分别为上、左、下、右
 }
 
+- (void)selectIndex:(NSInteger)index{
+    if ([_selectSet containsObject:@(index).stringValue]) {
+        [_selectSet removeObject:@(index).stringValue];
+    }
+    else{
+        [_selectSet addObject:@(index).stringValue];
+    }
+    if (_selectSet.count == 0) {
+        self.navigationController.navigationItem.rightBarButtonItems = nil;
+        [self setRightNavigationBarButton:@selector(edit) title:@"EDIT" image:nil];
+    }
+    else if (_selectSet.count == 1){
+        self.navigationController.navigationItem.rightBarButtonItems = nil;
+        [self setRightNavigationBarButton:@selector(share) title:@"SHARE" image:nil barbutton1:@selector(deleteAction) title1:@"DELETE" image1:nil];
+    }
+    else{
+        self.navigationController.navigationItem.rightBarButtonItems = nil;
+        [self setRightNavigationBarButton:@selector(deleteAction) title:@"DELETE" image:nil];
+    }
+}
+
+- (IBAction)youtubeAction:(id)sender {
+    
+//    GTLRDriveService *service = self.driveService;
+//    
+//    GTLRUploadParameters *uploadParameters =
+//    [GTLRUploadParameters uploadParametersWithFileURL:fileToUploadURL
+//                                             MIMEType:@"text/plain"];
+//    
+//    GTLRDrive_File *newFile = [GTLRDrive_File object];
+//    newFile.name = path.lastPathComponent;
+//    
+//    GTLRDriveQuery_FilesCreate *query =
+//    [GTLRDriveQuery_FilesCreate queryWithObject:newFile
+//                               uploadParameters:uploadParameters];
+//    
+//    GTLRServiceTicket *uploadTicket =
+//    [service executeQuery:query
+//        completionHandler:^(GTLRServiceTicket *callbackTicket,
+//                            GTLRDrive_File *uploadedFile,
+//                            NSError *callbackError) {
+//            if (callbackError == nil) {
+//                // Succeeded
+//            }
+//        }];
+    
+    //only support fecebook and twitter
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
