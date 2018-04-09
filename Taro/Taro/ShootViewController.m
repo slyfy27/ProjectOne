@@ -75,6 +75,11 @@ static NSString *iso = @"iso";
 
 @property (nonatomic, assign) NSInteger second;
 
+@property (nonatomic, strong) UIView *meshView;
+
+@property (nonatomic, strong) UIView *centerView;
+
+@property (nonatomic, strong) UIView *diagonalView;
 
 @end
 
@@ -146,6 +151,7 @@ static NSString *iso = @"iso";
         }];
     }
     else{
+        _saveBtn.hidden = YES;
         _leftViewLeadingConstraint.constant = 0;
         [UIView animateWithDuration:0.25 animations:^{
             [self.view layoutIfNeeded];
@@ -445,7 +451,10 @@ static NSString *iso = @"iso";
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:@"back" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    button.frame = CGRectMake(240, 10, 40, 40);
+    button.frame = CGRectMake(235, 10, 50, 30);
+    button.backgroundColor = AlertBlueColor;
+    button.layer.cornerRadius = 6;
+    button.layer.masksToBounds = YES;
     [button addTarget:self action:@selector(subTableBack) forControlEvents:UIControlEventTouchUpInside];
     UIView *footerView = [[UIView alloc] initWithFrame:(CGRect){0,0,300,60}];
     [footerView addSubview:button];
@@ -456,6 +465,7 @@ static NSString *iso = @"iso";
 - (void)subTableBack{
     self.type = SettingTypeCamera;
     _cameraBtn.selected = YES;
+    [self setconfigArray];
 }
 
 #pragma mark - UITableView
@@ -716,6 +726,7 @@ static NSString *iso = @"iso";
         if (!_isFront) {
             [_backDevice lockForConfiguration:NULL];
             NSInteger v = (_backDevice.activeFormat.maxISO - _backDevice.activeFormat.minISO) * value + _backDevice.activeFormat.minISO;
+            [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:iso];
             [_backDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:v completionHandler:^(CMTime syncTime) {
                 
             }];
@@ -726,6 +737,8 @@ static NSString *iso = @"iso";
         if (!_isFront) {
             [_backDevice lockForConfiguration:NULL];
             CGFloat v = (CMTimeGetSeconds(_backDevice.activeFormat.maxExposureDuration) - CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration)) * value + CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration);
+            NSInteger inte = 24 * value - 12;
+            [[NSUserDefaults standardUserDefaults] setValue:@(inte).stringValue forKey:exposureCompensation];
             [_backDevice setExposureTargetBias:v completionHandler:^(CMTime syncTime) {
                 
             }];
@@ -776,6 +789,55 @@ static NSString *iso = @"iso";
     } completion:^(BOOL finished) {
         _saveBtn.hidden = YES;
     }];
+}
+
+- (void)configMeshView{
+    if (_meshView) {
+        [self.view addSubview:_meshView];
+    }
+    else{
+        _meshView = [[UIView alloc] initWithFrame:self.view.bounds];
+        _meshView.backgroundColor = [UIColor clearColor];
+        UIView *view = [[UIView alloc] initWithFrame:(CGRect){0,Height/3,Width,0.5}];
+        view.backgroundColor = [UIColor whiteColor];
+        [_meshView addSubview:view];
+        UIView *view1 = [[UIView alloc] initWithFrame:(CGRect){0,Height*2/3,Width,0.5}];
+        view1.backgroundColor = [UIColor whiteColor];
+        [_meshView addSubview:view1];
+        UIView *view2 = [[UIView alloc] initWithFrame:(CGRect){Width/3,0,Height,0.5}];
+        view2.backgroundColor = [UIColor whiteColor];
+        [_meshView addSubview:view2];
+        UIView *view3 = [[UIView alloc] initWithFrame:(CGRect){Width*2/3,0,Height,0.5}];
+        view3.backgroundColor = [UIColor whiteColor];
+        [_meshView addSubview:view3];
+        [self.view addSubview:_meshView];
+    }
+}
+
+- (void)configDiagonalView{
+    if (_diagonalView) {
+        [self.view addSubview:_diagonalView];
+    }
+    
+}
+
+- (void)configCenterView{
+    if (_centerView) {
+        [self.view addSubview:_centerView];
+    }
+    else{
+        _centerView = [[UIView alloc] initWithFrame:self.view.bounds];
+        _centerView.backgroundColor = [UIColor clearColor];
+        UIView *horView = [[UIView alloc] initWithFrame:(CGRect){0,0,10,0.5}];
+        horView.backgroundColor = [UIColor whiteColor];
+        horView.center = _centerView.center;
+        [_centerView addSubview:horView];
+        UIView *verView = [[UIView alloc] initWithFrame:(CGRect){0,0,0.5,10}];
+        verView.backgroundColor = [UIColor whiteColor];
+        verView.center = _centerView.center;
+        [_centerView addSubview:verView];
+        [self.view addSubview:_centerView];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

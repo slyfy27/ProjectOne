@@ -207,24 +207,24 @@
                     <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="POWER SAVING MODE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cQ5-Qo-Lsv">
-                            <rect key="frame" x="62" y="60" width="254" height="21"/>
+                            <rect key="frame" x="62" y="60" width="260" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="21" id="A4I-lB-dlE"/>
-                                <constraint firstAttribute="width" constant="254" id="Ggc-r1-JVd"/>
+                                <constraint firstAttribute="height" constant="25" id="A4I-lB-dlE"/>
+                                <constraint firstAttribute="width" constant="260" id="Ggc-r1-JVd"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0x-aL-LN9">
-                            <rect key="frame" x="62" y="121" width="483" height="60"/>
+                            <rect key="frame" x="62" y="125" width="500" height="60"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="483" id="R5P-TW-kwp"/>
+                                <constraint firstAttribute="width" constant="500" id="R5P-TW-kwp"/>
                                 <constraint firstAttribute="height" constant="60" id="bGv-Yi-nmJ"/>
                             </constraints>
                             <string key="text">The screen is turned off to save power,
 which wloud extend the video recording time for about 47%</string>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
