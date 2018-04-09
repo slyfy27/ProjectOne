@@ -66,9 +66,6 @@
  @param sender button
  */
 - (IBAction)startAction:(id)sender {
-    ShootViewController *vc = [[ShootViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-    return;
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstAuth"]) {
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
             if (granted) {
@@ -159,9 +156,6 @@
                     //判断蓝牙是否打开
                     if ([BluetoothManager shareInstance].state == CBManagerStatePoweredOn) {
                         //搜索蓝牙列表，如果只有一个设备则直接连接并进入拍摄界面，否则弹出选择框
-                        ShootViewController *vc = [[ShootViewController alloc] init];
-                        [self.navigationController pushViewController:vc animated:YES];
-                        return;
                         [[SlyShowProgress shareInstance] show];
                         [[BluetoothManager shareInstance] scanWithResult:^(ConnectResultType result) {
                             [[SlyShowProgress shareInstance] dismiss];
