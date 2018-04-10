@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <TwitterKit/TWTRKit.h>
 
 @interface AppDelegate ()
 

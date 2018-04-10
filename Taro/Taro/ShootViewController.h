@@ -33,5 +33,10 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftViewLeadingConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *recordViewTimeLabel;
 @property (weak, nonatomic) IBOutlet YYAnimatedImageView *gifImageView;
+@property (weak, nonatomic) IBOutlet UIButton *trakingBtn;
+@property (weak, nonatomic) IBOutlet UIView *rightView;
+@property (weak, nonatomic) IBOutlet UIImageView *redImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *maskRedImageView;
+@property (weak, nonatomic) IBOutlet UIView *settingMaskView;
 
 @end

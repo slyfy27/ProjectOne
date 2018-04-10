@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4224BBF7207D2A9400C47EBE /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4224BBF5207D2A9400C47EBE /* PlayViewController.m */; };
+		4224BBF8207D2A9400C47EBE /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4224BBF6207D2A9400C47EBE /* PlayViewController.xib */; };
 		422E762A206A31BD00B8F443 /* CameraCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 422E7628206A31BD00B8F443 /* CameraCell.m */; };
 		422E762B206A31BD00B8F443 /* CameraCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 422E7629206A31BD00B8F443 /* CameraCell.xib */; };
 		422E762F206A358000B8F443 /* TaroCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 422E762D206A358000B8F443 /* TaroCell.m */; };
@@ -49,6 +51,9 @@
 /* Begin PBXFileReference section */
 		08E6CFB29E817E33A8C720A4 /* Pods_Taro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Taro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BF8BD82EDEF7CCD3382EAD5 /* Pods-Taro.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Taro.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Taro/Pods-Taro.debug.xcconfig"; sourceTree = "<group>"; };
+		4224BBF4207D2A9400C47EBE /* PlayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayViewController.h; sourceTree = "<group>"; };
+		4224BBF5207D2A9400C47EBE /* PlayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayViewController.m; sourceTree = "<group>"; };
+		4224BBF6207D2A9400C47EBE /* PlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayViewController.xib; sourceTree = "<group>"; };
 		422E7627206A31BD00B8F443 /* CameraCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraCell.h; sourceTree = "<group>"; };
 		422E7628206A31BD00B8F443 /* CameraCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraCell.m; sourceTree = "<group>"; };
 		422E7629206A31BD00B8F443 /* CameraCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CameraCell.xib; sourceTree = "<group>"; };
@@ -175,6 +180,9 @@
 				427250382069D9CA001DAE18 /* ShootViewController.h */,
 				427250392069D9CA001DAE18 /* ShootViewController.m */,
 				4272503A2069D9CA001DAE18 /* ShootViewController.xib */,
+				4224BBF4207D2A9400C47EBE /* PlayViewController.h */,
+				4224BBF5207D2A9400C47EBE /* PlayViewController.m */,
+				4224BBF6207D2A9400C47EBE /* PlayViewController.xib */,
 				422E7627206A31BD00B8F443 /* CameraCell.h */,
 				422E7628206A31BD00B8F443 /* CameraCell.m */,
 				422E7629206A31BD00B8F443 /* CameraCell.xib */,
@@ -257,7 +265,7 @@
 				TargetAttributes = {
 					4274A2EB205B72A800844BCE = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -298,6 +306,7 @@
 				42C244E92067AA7300436FA0 /* GalleryCollectionViewCell.xib in Resources */,
 				4274A2F7205B72A800844BCE /* Main.storyboard in Resources */,
 				422E763D206B9A3A00B8F443 /* WhiteBalanceCell.xib in Resources */,
+				4224BBF8207D2A9400C47EBE /* PlayViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +396,7 @@
 				42DA1EC2207373EF000819C9 /* BluetoothManager.m in Sources */,
 				42C244E82067AA7200436FA0 /* GalleryCollectionViewCell.m in Sources */,
 				4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */,
+				4224BBF7207D2A9400C47EBE /* PlayViewController.m in Sources */,
 				42675C7C20679DEC005CBB33 /* GalleryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -541,7 +551,8 @@
 			baseConfigurationReference = 1BF8BD82EDEF7CCD3382EAD5 /* Pods-Taro.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8SF5TW4BS5;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Taro/Info.plist;
@@ -549,8 +560,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = slyfy27.Taro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d3cf7ae7-29ae-4a8d-8e47-8c57fe754ce2";
-				PROVISIONING_PROFILE_SPECIFIER = XCWildcardDev;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
@@ -561,7 +572,8 @@
 			baseConfigurationReference = 52495895D933E821E4B7A930 /* Pods-Taro.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8SF5TW4BS5;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = Taro/Info.plist;
@@ -569,8 +581,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = slyfy27.Taro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d3cf7ae7-29ae-4a8d-8e47-8c57fe754ce2";
-				PROVISIONING_PROFILE_SPECIFIER = XCWildcardDev;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};

@@ -14,6 +14,7 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
+#import "PlayViewController.h"
 
 @interface GalleryViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,GalleryCollectionCellDelegate>
 
@@ -128,10 +129,22 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSURL *url = [NSURL fileURLWithPath:_movieArray[indexPath.row]];
     AVPlayer *player = [AVPlayer playerWithURL:url];
-    AVPlayerViewController *playerViewController = [AVPlayerViewController new];
-    playerViewController.player = player;
-    [self presentViewController:playerViewController animated:YES completion:nil];
-    [playerViewController.player play];
+    PlayViewController *vc = [[PlayViewController alloc] init];
+    vc.player = player;
+    vc.videoGravity = AVLayerVideoGravityResizeAspect;
+    [self presentViewController:vc animated:YES completion:^{
+        
+    }];
+    [vc.player play];
+//    AVPlayerViewController *playerViewController = [AVPlayerViewController new];
+////    if (@available(iOS 11.0, *)) {
+////        playerViewController.entersFullScreenWhenPlaybackBegins = YES;
+////    } else {
+//        playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
+////    }
+//    playerViewController.player = player;
+//    [self presentViewController:playerViewController animated:YES completion:nil];
+//    [self.navigationController pushViewController:playerViewController animated:YES];
 }
 
 /* 定义每个UICollectionView 的大小 */

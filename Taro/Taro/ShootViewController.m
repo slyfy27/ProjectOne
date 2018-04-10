@@ -16,6 +16,42 @@
 #import "BluetoothManager.h"
 #import "UIImage+GradientColor.h"
 
+@interface DiagonalView : UIView
+
+@end
+
+@implementation DiagonalView
+
+- (void)drawRect:(CGRect)rect{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetLineCap(context, kCGLineCapRound);
+    CGContextSetLineWidth(context, 0.5);  //线宽
+    CGContextSetAllowsAntialiasing(context, true);
+    CGContextSetRGBStrokeColor(context, 1,1,1,1.0);  //线的颜色
+    CGContextBeginPath(context);
+    CGContextMoveToPoint(context, 0, 0);  //起点坐标
+    CGContextAddLineToPoint(context, Width, Height);   //终点坐标
+    
+    CGContextMoveToPoint(context, Width, 0);  //起点坐标
+    CGContextAddLineToPoint(context, 0, Height);   //终点坐标
+    
+    CGContextMoveToPoint(context, Width/3, 0);  //起点坐标
+    CGContextAddLineToPoint(context, Width/3, Height);   //终点坐标
+
+    CGContextMoveToPoint(context, Width*2/3, 0);  //起点坐标
+    CGContextAddLineToPoint(context, Width*2/3, Height);   //终点坐标
+
+    CGContextMoveToPoint(context, 0, Height/3);  //起点坐标
+    CGContextAddLineToPoint(context, Width, Height/3);   //终点坐标
+
+    CGContextMoveToPoint(context, 0, Height*2/3);  //起点坐标
+    CGContextAddLineToPoint(context, Width, Height*2/3);   //终点坐标
+    
+    CGContextStrokePath(context);
+}
+
+@end
+
 typedef NS_ENUM(NSInteger, SettingType) {
     SettingTypeNone = 0,//默认从0开始
     SettingTypeBluetooth,
@@ -79,7 +115,11 @@ static NSString *iso = @"iso";
 
 @property (nonatomic, strong) UIView *centerView;
 
-@property (nonatomic, strong) UIView *diagonalView;
+@property (nonatomic, strong) DiagonalView *diagonalView;
+
+@property (nonatomic, strong) CAGradientLayer *leftLayer;
+
+@property (nonatomic, strong) CAGradientLayer *rightLayer;
 
 @end
 
@@ -92,24 +132,24 @@ static NSString *iso = @"iso";
 }
 
 - (void)configCameraSetting{
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:resolution]) {
+//    if (![[NSUserDefaults standardUserDefaults] valueForKey:resolution]) {
         [[NSUserDefaults standardUserDefaults] setValue:AVCaptureSessionPreset1920x1080 forKey:resolution];
-    }
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:mesh]) {
+//    }
+//    if (![[NSUserDefaults standardUserDefaults] valueForKey:mesh]) {
         [[NSUserDefaults standardUserDefaults] setValue:@"None" forKey:mesh];
-    }
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:iso]) {
+//    }
+//    if (![[NSUserDefaults standardUserDefaults] valueForKey:iso]) {
         [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:iso];
-    }
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:exposureCompensation]) {
+//    }
+//    if (![[NSUserDefaults standardUserDefaults] valueForKey:exposureCompensation]) {
         [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:exposureCompensation];
-    }
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:flash]) {
+//    }
+//    if (![[NSUserDefaults standardUserDefaults] valueForKey:flash]) {
         [[NSUserDefaults standardUserDefaults] setValue:@"close" forKey:flash];
-    }
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:whiteBalance]) {
+//    }
+//    if (![[NSUserDefaults standardUserDefaults] valueForKey:whiteBalance]) {
         [[NSUserDefaults standardUserDefaults] setValue:@"Auto" forKey:whiteBalance];
-    }
+//    }
 }
 
 - (IBAction)back:(id)sender {
@@ -140,7 +180,11 @@ static NSString *iso = @"iso";
             _saveBtn.hidden = NO;
         }
         _recordTimeLabel.hidden = NO;
+        _redImageView.hidden = NO;
+        _maskRedImageView.hidden = NO;
         _second = 0;
+        _trakingBtn.hidden = YES;
+        self.type = SettingTypeNone;
         _recordTimer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
         [[NSRunLoop mainRunLoop] addTimer:_recordTimer forMode:NSRunLoopCommonModes];
         [_recordTimer fire];
@@ -152,6 +196,9 @@ static NSString *iso = @"iso";
     }
     else{
         _saveBtn.hidden = YES;
+        _trakingBtn.hidden = NO;
+        _redImageView.hidden = YES;
+        _maskRedImageView.hidden = YES;
         _leftViewLeadingConstraint.constant = 0;
         [UIView animateWithDuration:0.25 animations:^{
             [self.view layoutIfNeeded];
@@ -168,8 +215,8 @@ static NSString *iso = @"iso";
 
 - (void)timerAction{
     _second += 1;
-    _recordTimeLabel.text = [self timeFromSeconds:_second];
-    _recordViewTimeLabel.text = [self timeFromSeconds:_second];
+    _recordTimeLabel.text = [NSString stringWithFormat:@"  %@",[self timeFromSeconds:_second]];
+    _recordViewTimeLabel.text = [NSString stringWithFormat:@"  %@",[self timeFromSeconds:_second]];
 }
 
 - (void)dealloc
@@ -184,7 +231,7 @@ static NSString *iso = @"iso";
     NSString *mString ;
     NSString *sString ;
     if (m<10)
-        mString =[NSString stringWithFormat:@"%d",m];
+        mString =[NSString stringWithFormat:@"0%d",m];
     else
         mString =[NSString stringWithFormat:@"%d",m];
     
@@ -199,34 +246,36 @@ static NSString *iso = @"iso";
 
 - (IBAction)bluetoothAction:(UIButton *)sender {
     if (sender.selected) {
-        _settingViewWidth.constant = 0;
         self.type = SettingTypeNone;
-        [_settingView layoutIfNeeded];
     }
     else{
         _settingViewWidth.constant = 300;
-        self.type = SettingTypeBluetooth;
         [UIView animateWithDuration:0.25 animations:^{
             [_settingView layoutIfNeeded];
         } completion:^(BOOL finished) {
-            [_settingTable reloadData];
         }];
+        self.type = SettingTypeBluetooth;
         sender.selected = !sender.selected;
     }
 }
 
 - (void)setType:(SettingType)type{
     if (type != SettingTypeNone) {
+        [_leftLayer removeFromSuperlayer];
         _leftView.backgroundColor = UIColorFromRGBAndAlpha(0x000000, 0.8);
+        _settingMaskView.hidden = NO;
     }
     if (type == SettingTypeNone) {
+        _leftView.backgroundColor = [UIColor clearColor];
         [self setViewGradient];
+        _settingMaskView.hidden = YES;
     }
     _type = type;
     _bluetoothBtn.selected = _cameraBtn.selected = _yuntaiBtn.selected = _deviceBtn.selected = NO;
     switch (type) {
         case SettingTypeNone:{
-            _settingTitle.text = @"";
+            _settingViewWidth.constant = 0;
+            [_settingView layoutIfNeeded];
         }
             break;
         case SettingTypeBluetooth:{
@@ -304,17 +353,18 @@ static NSString *iso = @"iso";
     }
     else{
         _settingViewWidth.constant = 300;
-        self.type = SettingTypeCamera;
         [UIView animateWithDuration:0.25 animations:^{
             [_settingView layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            
         }];
-        [_settingTable reloadData];
+        self.type = SettingTypeCamera;
         sender.selected = !sender.selected;
     }
 }
 
 - (IBAction)cameraDeviceAction:(id)sender {
-    self.type = SettingTypeDevice;
+    self.type = SettingTypeNone;
     //切换前后摄像头
     [_captureSession beginConfiguration];
     if (_isFront) {
@@ -347,12 +397,42 @@ static NSString *iso = @"iso";
 }
 
 - (void)setViewGradient{
-    _leftView.backgroundColor = [UIColor colorWithPatternImage:[UIImage gradientColorImageFromColors:@[UIColorFromRGBAndAlpha(0x000000, 0.4),UIColorFromRGBAndAlpha(0xffffff,0.1)] gradientType:GradientTypeLeftToRight imgSize:_leftView.frame.size]];
+//    _leftView.backgroundColor = [UIColor colorWithPatternImage:[UIImage gradientColorImageFromColors:@[UIColorFromRGBAndAlpha(0x000000,1),UIColorFromRGBAndAlpha(0x000000,0)] gradientType:GradientTypeUpleftToLowright imgSize:_leftView.frame.size]];
+//    _leftView.alpha = 0.2;
+    if (_leftLayer) {
+        [_leftView.layer addSublayer:_leftLayer];
+    }
+    else{
+        UIColor *startColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+        UIColor *endColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+        _leftLayer = [[CAGradientLayer alloc] init];
+        _leftLayer.colors = @[(__bridge id)startColor.CGColor,(__bridge id)endColor.CGColor];
+        _leftLayer.startPoint = CGPointMake(0, 0);
+        _leftLayer.endPoint = CGPointMake(1,0);
+        _leftLayer.frame = CGRectMake(0, 0, 70, Height);
+        _leftLayer.zPosition = -100;
+        [_leftView.layer addSublayer:_leftLayer];
+    }
+    if (!_rightLayer) {
+        UIColor *startColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+        UIColor *endColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+        _rightLayer = [[CAGradientLayer alloc] init];
+        _rightLayer.colors = @[(__bridge id)startColor.CGColor,(__bridge id)endColor.CGColor];
+        _rightLayer.startPoint = CGPointMake(1, 0);
+        _rightLayer.endPoint = CGPointMake(0,0);
+        _rightLayer.frame = CGRectMake(0, 0, 76, Height);
+        _rightLayer.zPosition = -100;
+        [_rightView.layer addSublayer:_rightLayer];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+}
+
+- (void)tapAction{
+    self.type = SettingTypeNone;
 }
 
 - (void)viewDidLoad {
@@ -365,11 +445,12 @@ static NSString *iso = @"iso";
     _turnOffBtn.layer.cornerRadius = 4;
     _turnOffBtn.layer.masksToBounds = YES;
     [_maskView layoutIfNeeded];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
+    [_settingMaskView addGestureRecognizer:tap];
     _trackingAlertViewTopConstraint.constant = - Height;
     [self.view layoutIfNeeded];
     [self configCameraSetting];
     [self configView];
-    self.type = SettingTypeCamera;
     _captureSession = [[AVCaptureSession alloc] init];
     if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
         [_captureSession setSessionPreset:[[NSUserDefaults standardUserDefaults] valueForKey:resolution]];
@@ -393,11 +474,12 @@ static NSString *iso = @"iso";
 //    https://www.cnblogs.com/liangzhimy/archive/2012/10/26/2740905.html
     AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
     previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
     [self.videoView.layer addSublayer:previewLayer];
     [_captureSession startRunning];
     _output = [[AVCaptureMovieFileOutput alloc] init];
-    CMTime maxDuration = CMTimeMake(1200, 1);//最大20分钟
+    CMTime maxDuration = CMTimeMake(3600, 1);//最大20分钟
     _output.maxRecordedDuration = maxDuration;
     _output.minFreeDiskSpaceLimit = 1024;
     if ([_captureSession canAddOutput:_output]) {
@@ -475,7 +557,8 @@ static NSString *iso = @"iso";
         return _cameraSettingArray.count;
     }
     if (_type == SettingTypeBluetooth) {
-        return _bluetoothArray.count;
+//        return _bluetoothArray.count;
+        return 1;
     }
     if (_type == SettingTypeCameraResolution) {
         return _resolutionArray.count;
@@ -506,22 +589,22 @@ static NSString *iso = @"iso";
     }
     if (_type == SettingTypeBluetooth) {
         TaroCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-        CBPeripheral *per = _bluetoothArray[indexPath.row];
-        NSString *connectDevice = [[NSUserDefaults standardUserDefaults] valueForKey:@"bluetooth"];
-        if ([per.identifier.UUIDString isEqualToString:connectDevice]) {
-            [cell setConnect:YES];
-        }
-        else{
-            [cell setConnect:NO];
-        }
-        NSString *name = per.name;
-        if ([name containsString:@"Smooth-"]) {
-            name = [name stringByReplacingOccurrencesOfString:@"Smooth-" withString:@"Taro-"];
-        }
-        if ([name containsString:@"Smooth"]) {
-            name = [name stringByReplacingOccurrencesOfString:@"Smooth" withString:@"Taro-"];
-        }
-        cell.bluetoothLabel.text = name;
+//        CBPeripheral *per = _bluetoothArray[indexPath.row];
+//        NSString *connectDevice = [[NSUserDefaults standardUserDefaults] valueForKey:@"bluetooth"];
+//        if ([per.identifier.UUIDString isEqualToString:connectDevice]) {
+//            [cell setConnect:YES];
+//        }
+//        else{
+//            [cell setConnect:NO];
+//        }
+//        NSString *name = per.name;
+//        if ([name containsString:@"Smooth-"]) {
+//            name = [name stringByReplacingOccurrencesOfString:@"Smooth-" withString:@"Taro-"];
+//        }
+//        if ([name containsString:@"Smooth"]) {
+//            name = [name stringByReplacingOccurrencesOfString:@"Smooth" withString:@"Taro-"];
+//        }
+//        cell.bluetoothLabel.text = name;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
@@ -653,6 +736,16 @@ static NSString *iso = @"iso";
     if (_type == SettingTypeCameraMesh) {
         NSDictionary *dict = _meshArray[indexPath.row];
         [[NSUserDefaults standardUserDefaults] setValue:dict[@"type"] forKey:mesh];
+        [self configNone];
+        if ([dict[@"type"] isEqualToString:@"Mesh"]) {
+            [self configMeshView];
+        }
+        else if ([dict[@"type"] isEqualToString:@"Mesh and Diagonal"]){
+            [self configDiagonalView];
+        }
+        else if ([dict[@"type"] isEqualToString:@"Center Point"]){
+            [self configCenterView];
+        }
         [self setconfigArray];
         [self subTableBack];
     }
@@ -791,9 +884,15 @@ static NSString *iso = @"iso";
     }];
 }
 
+- (void)configNone{
+    [_meshView removeFromSuperview];
+    [_centerView removeFromSuperview];
+    [_diagonalView removeFromSuperview];
+}
+
 - (void)configMeshView{
     if (_meshView) {
-        [self.view addSubview:_meshView];
+        [self.videoView addSubview:_meshView];
     }
     else{
         _meshView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -804,26 +903,31 @@ static NSString *iso = @"iso";
         UIView *view1 = [[UIView alloc] initWithFrame:(CGRect){0,Height*2/3,Width,0.5}];
         view1.backgroundColor = [UIColor whiteColor];
         [_meshView addSubview:view1];
-        UIView *view2 = [[UIView alloc] initWithFrame:(CGRect){Width/3,0,Height,0.5}];
+        UIView *view2 = [[UIView alloc] initWithFrame:(CGRect){Width/3,0,0.5,Height}];
         view2.backgroundColor = [UIColor whiteColor];
         [_meshView addSubview:view2];
-        UIView *view3 = [[UIView alloc] initWithFrame:(CGRect){Width*2/3,0,Height,0.5}];
+        UIView *view3 = [[UIView alloc] initWithFrame:(CGRect){Width*2/3,0,0.5,Height}];
         view3.backgroundColor = [UIColor whiteColor];
         [_meshView addSubview:view3];
-        [self.view addSubview:_meshView];
+        [self.videoView addSubview:_meshView];
     }
 }
 
 - (void)configDiagonalView{
     if (_diagonalView) {
-        [self.view addSubview:_diagonalView];
+        [self.videoView addSubview:_diagonalView];
     }
-    
+    else{
+        _diagonalView = [[DiagonalView alloc] init];
+        _diagonalView.frame = self.videoView.bounds;
+        _diagonalView.backgroundColor = [UIColor clearColor];
+        [self.videoView addSubview:_diagonalView];
+    }
 }
 
 - (void)configCenterView{
     if (_centerView) {
-        [self.view addSubview:_centerView];
+        [self.videoView addSubview:_centerView];
     }
     else{
         _centerView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -836,7 +940,7 @@ static NSString *iso = @"iso";
         verView.backgroundColor = [UIColor whiteColor];
         verView.center = _centerView.center;
         [_centerView addSubview:verView];
-        [self.view addSubview:_centerView];
+        [self.videoView addSubview:_centerView];
     }
 }
 
@@ -844,6 +948,8 @@ static NSString *iso = @"iso";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 /*
 #pragma mark - Navigation
