@@ -53,6 +53,7 @@
 }
 
 - (void)getLocalVieo{
+    [_movieArray removeAllObjects];
     NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
     _fileManager = [NSFileManager defaultManager];
     NSDirectoryEnumerator *dirEnum = [_fileManager enumeratorAtPath:path];
@@ -84,10 +85,9 @@
 - (void)deleteAction{
     for (NSString *index in _selectSet) {
         [self deleteFileWithUrl:[NSURL URLWithString:_movieArray[index.integerValue]]];
-        [_movieArray removeObjectAtIndex:index.integerValue];
     }
     [_selectSet removeAllObjects];
-    [_galleryCollectionView reloadData];
+    [self getLocalVieo];
 }
 
 - (void)deleteFileWithUrl:(NSURL *)url{
@@ -131,11 +131,11 @@
     AVPlayer *player = [AVPlayer playerWithURL:url];
     PlayViewController *vc = [[PlayViewController alloc] init];
     vc.player = player;
-    vc.videoGravity = AVLayerVideoGravityResizeAspect;
+//    vc.videoGravity = AVLayerVideoGravityResize;
     [self presentViewController:vc animated:YES completion:^{
         
     }];
-    [vc.player play];
+//    [vc.player play];
 //    AVPlayerViewController *playerViewController = [AVPlayerViewController new];
 ////    if (@available(iOS 11.0, *)) {
 ////        playerViewController.entersFullScreenWhenPlaybackBegins = YES;

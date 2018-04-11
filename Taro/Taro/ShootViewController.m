@@ -471,7 +471,6 @@ static NSString *iso = @"iso";
     if ([_captureSession canAddInput:audioIn]){
         [_captureSession addInput:audioIn];
     }
-//    https://www.cnblogs.com/liangzhimy/archive/2012/10/26/2740905.html
     AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
     previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
