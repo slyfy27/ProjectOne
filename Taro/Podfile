@@ -5,6 +5,7 @@ target 'Taro' do
   pod 'TwitterKit'
 
   pod 'YYKit'
+  pod 'ZFPlayer'
 
 end
 

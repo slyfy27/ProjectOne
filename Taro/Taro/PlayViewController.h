@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <AVKit/AVKit.h>
+#import "ZFPlayerControlView.h"
+#import "ZFPlayerModel.h"
 
 @interface PlayViewController : UIViewController
 

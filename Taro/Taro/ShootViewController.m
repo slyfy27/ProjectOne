@@ -373,6 +373,18 @@ static NSString *iso = @"iso";
         _isFront = NO;
     }
     else{
+        NSString *currentSolution = [[NSUserDefaults standardUserDefaults] valueForKey:resolution];
+        if ([_frontDevice supportsAVCaptureSessionPreset:currentSolution]) {
+            [_captureSession setSessionPreset:currentSolution];
+        }
+        else if ([_frontDevice supportsAVCaptureSessionPreset:AVCaptureSessionPreset1280x720]){
+            [_captureSession setSessionPreset:AVCaptureSessionPreset1280x720];
+            [[NSUserDefaults standardUserDefaults] setValue:AVCaptureSessionPreset1280x720 forKey:resolution];
+        }
+        else{
+            [_captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+            [[NSUserDefaults standardUserDefaults] setValue:AVCaptureSessionPreset640x480 forKey:resolution];
+        }
         [_captureSession removeInput:_backInput];
         [_captureSession addInput:_frontInput];
         _isFront = YES;
@@ -556,8 +568,8 @@ static NSString *iso = @"iso";
         return _cameraSettingArray.count;
     }
     if (_type == SettingTypeBluetooth) {
-//        return _bluetoothArray.count;
-        return 1;
+        return _bluetoothArray.count;
+//        return 1;
     }
     if (_type == SettingTypeCameraResolution) {
         return _resolutionArray.count;
@@ -588,22 +600,22 @@ static NSString *iso = @"iso";
     }
     if (_type == SettingTypeBluetooth) {
         TaroCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-//        CBPeripheral *per = _bluetoothArray[indexPath.row];
-//        NSString *connectDevice = [[NSUserDefaults standardUserDefaults] valueForKey:@"bluetooth"];
-//        if ([per.identifier.UUIDString isEqualToString:connectDevice]) {
-//            [cell setConnect:YES];
-//        }
-//        else{
-//            [cell setConnect:NO];
-//        }
-//        NSString *name = per.name;
-//        if ([name containsString:@"Smooth-"]) {
-//            name = [name stringByReplacingOccurrencesOfString:@"Smooth-" withString:@"Taro-"];
-//        }
-//        if ([name containsString:@"Smooth"]) {
-//            name = [name stringByReplacingOccurrencesOfString:@"Smooth" withString:@"Taro-"];
-//        }
-//        cell.bluetoothLabel.text = name;
+        CBPeripheral *per = _bluetoothArray[indexPath.row];
+        NSString *connectDevice = [[NSUserDefaults standardUserDefaults] valueForKey:@"bluetooth"];
+        if ([per.identifier.UUIDString isEqualToString:connectDevice]) {
+            [cell setConnect:YES];
+        }
+        else{
+            [cell setConnect:NO];
+        }
+        NSString *name = per.name;
+        if ([name containsString:@"Smooth-"]) {
+            name = [name stringByReplacingOccurrencesOfString:@"Smooth-" withString:@"Taro-"];
+        }
+        if ([name containsString:@"Smooth"]) {
+            name = [name stringByReplacingOccurrencesOfString:@"Smooth" withString:@"Taro-"];
+        }
+        cell.bluetoothLabel.text = name;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
