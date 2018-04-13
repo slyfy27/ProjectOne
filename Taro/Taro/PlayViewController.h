@@ -6,15 +6,10 @@
 //  Copyright © 2018年 wushuying. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <AVKit/AVKit.h>
-#import "ZFPlayerControlView.h"
-#import "ZFPlayerModel.h"
 
-@interface PlayViewController : UIViewController
+@interface PlayViewController : AVPlayerViewController
 
-@property (nonatomic, strong) AVPlayer *player;
-
-@property (nonatomic, strong) AVPlayerLayer *playerLayer;
+@property (nonatomic, strong) NSURL *videoUrl;
 
 @end

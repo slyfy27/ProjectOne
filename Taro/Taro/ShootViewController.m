@@ -486,7 +486,8 @@ static NSString *iso = @"iso";
     AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
     previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
+    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+    
     [self.videoView.layer addSublayer:previewLayer];
     [_captureSession startRunning];
     _output = [[AVCaptureMovieFileOutput alloc] init];
@@ -496,7 +497,11 @@ static NSString *iso = @"iso";
     if ([_captureSession canAddOutput:_output]) {
         [_captureSession addOutput:_output];
     }
+    // 视频输出也需要设置成横屏的
+    AVCaptureConnection *outputVideoConnection = [_output connectionWithMediaType:AVMediaTypeVideo];
+    outputVideoConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
 }
+
 
 - (NSString *)getResolution{
     NSString *res = [[NSUserDefaults standardUserDefaults] valueForKey:resolution];

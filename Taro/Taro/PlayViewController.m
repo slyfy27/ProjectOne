@@ -14,6 +14,11 @@
 
 @end
 
+
+static NSString * const VIDEO_CONTROLLER_CLASS_NAME_IOS7 = @"MPInlineVideoFullscreenViewController";
+static NSString * const VIDEO_CONTROLLER_CLASS_NAME_IOS8 = @"AVFullScreenViewController";
+
+
 @implementation PlayViewController
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -21,46 +26,29 @@
     self.navigationController.navigationBarHidden = YES;
 }
 
-//- (void)viewWillDisappear:(BOOL)animated{
-//    self.navigationController
-//}
+- (BOOL)prefersStatusBarHidden {
+    return YES; // 返回YES表示隐藏，返回NO表示显示
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-    _playerLayer.frame = CGRectMake(0, 0, Width, Height);
-    _playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    [self.view.layer addSublayer:_playerLayer];
-    [_player play];
+    self.player = [[AVPlayer alloc] initWithURL:self.videoUrl];
+    [self.player play];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark -- 需要设置全局支持旋转方向，然后重写下面三个方法可以让当前页面支持多个方向
-// 是否支持自动转屏
-- (BOOL)shouldAutorotate {
-    return YES;
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
+    return UIInterfaceOrientationMaskLandscapeRight;
 }
-//// 支持哪些屏幕方向
-//- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-//    return UIInterfaceOrientationMaskAll;
-//}
-// 默认的屏幕方向（当前ViewController必须是通过模态出来的UIViewController（模态带导航的无效）方式展现出来的，才会调用这个方法）
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskLandscapeRight;
+}
+
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    return UIInterfaceOrientationLandscapeLeft;
+    return UIInterfaceOrientationLandscapeRight;
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

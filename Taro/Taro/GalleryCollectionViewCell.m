@@ -45,11 +45,15 @@
 - (void)setMoviePath:(NSString *)moviePath{
     _moviePath = moviePath;
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:moviePath] options:nil];
-    AVAssetImageGenerator *xx = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-    CGImageRef im = [xx copyCGImageAtTime:CMTimeMake(0.0, 600) actualTime:NULL error:NULL];
-    _timeLabel.text = [self timeFromSeconds:CMTimeGetSeconds(asset.duration)];
-    _audioImageVIew.image = [UIImage imageWithCGImage:im];
-    CGImageRelease(im);
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        AVAssetImageGenerator *xx = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+        CGImageRef im = [xx copyCGImageAtTime:CMTimeMake(0.0, 600) actualTime:NULL error:NULL];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _timeLabel.text = [self timeFromSeconds:CMTimeGetSeconds(asset.duration)];
+            _audioImageVIew.image = [UIImage imageWithCGImage:im];
+            CGImageRelease(im);
+        });
+    });
 }
 
 - (NSString *)timeFromSeconds:(int)seconds

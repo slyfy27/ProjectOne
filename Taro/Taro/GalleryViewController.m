@@ -128,24 +128,10 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSURL *url = [NSURL fileURLWithPath:_movieArray[indexPath.row]];
-    AVPlayer *player = [AVPlayer playerWithURL:url];
-//    PlayViewController *vc = [[PlayViewController alloc] init];
-//    vc.player = player;
-//    vc.videoGravity = AVLayerVideoGravityResize;
-//    [self presentViewController:vc animated:YES completion:^{
     
-//    }];
-//    [vc.player play];
-    AVPlayerViewController *playerViewController = [AVPlayerViewController new];
-    if (@available(iOS 11.0, *)) {
-        playerViewController.entersFullScreenWhenPlaybackBegins = YES;
-    } else {
-        playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
-    }
-    playerViewController.player = player;
-    [self presentViewController:playerViewController animated:YES completion:nil];
-    [player play];
-//    [self.navigationController pushViewController:playerViewController animated:YES];
+    PlayViewController *playerVC = [[PlayViewController alloc] init];
+    playerVC.videoUrl = url;
+    [self presentViewController:playerVC animated:YES completion:nil];
 }
 
 /* 定义每个UICollectionView 的大小 */
