@@ -11,5 +11,6 @@
 @interface GalleryViewController : BaseViewController
 
 @property (weak, nonatomic) IBOutlet UICollectionView *galleryCollectionView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *shareViewTopConstraint;
 
 @end

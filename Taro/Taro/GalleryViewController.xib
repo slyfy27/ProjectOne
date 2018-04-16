@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GalleryViewController">
             <connections>
                 <outlet property="galleryCollectionView" destination="RKf-cl-Hmp" id="Jjg-Mk-EIb"/>
+                <outlet property="shareViewTopConstraint" destination="BRw-9h-qRs" id="59Z-ku-4WS"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -31,11 +32,11 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Euq-AG-jEi">
-                    <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Euq-AG-jEi">
+                    <rect key="frame" x="0.0" y="375" width="667" height="375"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ae3-za-zTO">
-                            <rect key="frame" x="0.0" y="0.0" width="80" height="76"/>
+                            <rect key="frame" x="0.0" y="-375" width="80" height="76"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="76" id="B9t-KZ-mDN"/>
                                 <constraint firstAttribute="width" constant="80" id="MK4-Hf-AOg"/>
@@ -95,7 +96,7 @@
                 <constraint firstItem="Ae3-za-zTO" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="0hI-m8-WAq"/>
                 <constraint firstItem="RKf-cl-Hmp" firstAttribute="width" secondItem="Q5M-cg-NOt" secondAttribute="width" id="2uw-hm-9d1"/>
                 <constraint firstItem="Euq-AG-jEi" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="A6R-fM-7jM"/>
-                <constraint firstItem="Euq-AG-jEi" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="BRw-9h-qRs"/>
+                <constraint firstItem="Euq-AG-jEi" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="BRw-9h-qRs"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="RKf-cl-Hmp" secondAttribute="bottom" id="IBC-2Z-0UQ"/>
                 <constraint firstItem="Ae3-za-zTO" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="Lnp-qX-nf1"/>
                 <constraint firstItem="Euq-AG-jEi" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="UDk-dB-AMo"/>

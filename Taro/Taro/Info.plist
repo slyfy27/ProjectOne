@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>com.hengtiansoft.BeautyDiary</string>
+	<string>Taro</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -35,6 +35,10 @@
 	<true/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MOBAppKey</key>
+	<string>253c7c992b74c</string>
+	<key>MOBAppSecret</key>
+	<string>e458f3408155df4c243f2379df9d8336</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string></string>
 	<key>NSBluetoothPeripheralUsageDescription</key>

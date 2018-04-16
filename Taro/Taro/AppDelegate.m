@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import <TwitterKit/TWTRKit.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
+#import <FacebookConnector/FacebookConnector.h>
 
 @interface AppDelegate ()
 
@@ -17,7 +19,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    [ShareSDK registerActivePlatforms:@[@(SSDKPlatformTypeFacebook)] onImport:^(SSDKPlatformType platformType) {
+        [ShareSDKConnector connectFacebookMessenger:[FacebookConnector class]];
+    } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
+        
+    }];
     return YES;
 }
 

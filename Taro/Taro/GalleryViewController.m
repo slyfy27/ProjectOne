@@ -79,7 +79,10 @@
 }
 
 - (void)share{
-    
+    _shareViewTopConstraint.constant = -Height;
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)deleteAction{
@@ -193,23 +196,22 @@
     
     //only support fecebook and twitter
     
-    if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
-        
+    if ([SLComposeViewController isAvailableForServiceType:@"com.tencent.xin.sharetimeline"]) {
+        SLComposeViewController *composeVC = [SLComposeViewController composeViewControllerForServiceType:@"com.tencent.xin.sharetimeline"];
+        [composeVC addURL:[NSURL fileURLWithPath:_movieArray.firstObject]];
+        [composeVC setInitialText:@"share from Taro"];
+        [self presentViewController:composeVC animated:YES completion:^{
+            
+        }];
+        composeVC.completionHandler = ^(SLComposeViewControllerResult result) {
+            if (result == SLComposeViewControllerResultDone) {
+                
+            }
+            else if (result == SLComposeViewControllerResultCancelled){
+                
+            }
+        };
     }
-    SLComposeViewController *composeVC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-    [composeVC addURL:[NSURL fileURLWithPath:_movieArray.firstObject]];
-    [composeVC setInitialText:@"share from Taro"];
-    [self presentViewController:composeVC animated:YES completion:^{
-        
-    }];
-    composeVC.completionHandler = ^(SLComposeViewControllerResult result) {
-        if (result == SLComposeViewControllerResultDone) {
-            
-        }
-        else if (result == SLComposeViewControllerResultCancelled){
-            
-        }
-    };
 }
 
 - (void)didReceiveMemoryWarning {
