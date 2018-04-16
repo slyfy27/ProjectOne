@@ -192,6 +192,24 @@
 //        }];
     
     //only support fecebook and twitter
+    
+    if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+        
+    }
+    SLComposeViewController *composeVC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    [composeVC addURL:[NSURL fileURLWithPath:_movieArray.firstObject]];
+    [composeVC setInitialText:@"share from Taro"];
+    [self presentViewController:composeVC animated:YES completion:^{
+        
+    }];
+    composeVC.completionHandler = ^(SLComposeViewControllerResult result) {
+        if (result == SLComposeViewControllerResultDone) {
+            
+        }
+        else if (result == SLComposeViewControllerResultCancelled){
+            
+        }
+    };
 }
 
 - (void)didReceiveMemoryWarning {
