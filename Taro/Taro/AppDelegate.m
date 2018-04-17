@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import <TwitterKit/TWTRKit.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
 #import <FacebookConnector/FacebookConnector.h>
 
@@ -19,10 +18,19 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [ShareSDK registerActivePlatforms:@[@(SSDKPlatformTypeFacebook)] onImport:^(SSDKPlatformType platformType) {
-        [ShareSDKConnector connectFacebookMessenger:[FacebookConnector class]];
-    } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
+    [ShareSDK registerActivePlatforms:@[@(SSDKPlatformTypeFacebook),@(SSDKPlatformTypeYouTube)] onImport:^(SSDKPlatformType platformType) {
         
+    } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
+        switch (platformType) {
+            case SSDKPlatformTypeYouTube:
+                [appInfo SSDKSetupYouTubeByClientId:@"323232334081-5s9qqvqrlvvvho4vn94h47046ufhj7qb.apps.googleusercontent.com" clientSecret:@"" redirectUri:@"http://localhost"];
+                break;
+            case SSDKPlatformTypeFacebook:
+                        [appInfo SSDKSetupFacebookByApiKey:@"149883025847374" appSecret:@"b533d9806f4fb7a511042afbdaccc047" displayName:@"Taro" authType:@"SSDKAuthTypeBoth"];
+                break;
+            default:
+                break;
+        }
     }];
     return YES;
 }

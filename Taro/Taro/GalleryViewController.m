@@ -10,11 +10,9 @@
 #import <Photos/Photos.h>
 #import "GalleryCollectionViewCell.h"
 #import <AVKit/AVKit.h>
-
-#import <MessageUI/MFMailComposeViewController.h>
-#import <Social/Social.h>
 #import <Accounts/Accounts.h>
 #import "PlayViewController.h"
+#import "ShareViewController.h"
 
 @interface GalleryViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,GalleryCollectionCellDelegate>
 
@@ -79,10 +77,13 @@
 }
 
 - (void)share{
-    _shareViewTopConstraint.constant = -Height;
-    [UIView animateWithDuration:0.25 animations:^{
-        [self.view layoutIfNeeded];
-    }];
+    NSString *index = _selectSet.allObjects.firstObject;
+    NSURL *fileUrl = [NSURL fileURLWithPath:_movieArray[index.integerValue]];
+    GalleryCollectionViewCell *cell = (GalleryCollectionViewCell *)[_galleryCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index.integerValue inSection:0]];
+    ShareViewController *vc = [[ShareViewController alloc] init];
+    vc.videoUrl = fileUrl;
+    vc.videoImage = cell.audioImageVIew.image;
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)deleteAction{
@@ -195,23 +196,6 @@
 //        }];
     
     //only support fecebook and twitter
-    
-    if ([SLComposeViewController isAvailableForServiceType:@"com.tencent.xin.sharetimeline"]) {
-        SLComposeViewController *composeVC = [SLComposeViewController composeViewControllerForServiceType:@"com.tencent.xin.sharetimeline"];
-        [composeVC addURL:[NSURL fileURLWithPath:_movieArray.firstObject]];
-        [composeVC setInitialText:@"share from Taro"];
-        [self presentViewController:composeVC animated:YES completion:^{
-            
-        }];
-        composeVC.completionHandler = ^(SLComposeViewControllerResult result) {
-            if (result == SLComposeViewControllerResultDone) {
-                
-            }
-            else if (result == SLComposeViewControllerResultCancelled){
-                
-            }
-        };
-    }
 }
 
 - (void)didReceiveMemoryWarning {

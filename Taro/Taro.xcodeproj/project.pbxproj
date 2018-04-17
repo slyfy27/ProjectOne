@@ -57,6 +57,8 @@
 		4274A30D205B781300844BCE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4274A30F205B781300844BCE /* Localizable.strings */; };
 		42B3A698207A5337007DF798 /* UIImage+GradientColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B3A697207A5337007DF798 /* UIImage+GradientColor.m */; };
 		42B3A69A207A603D007DF798 /* 连接摄像头GIF.gif in Resources */ = {isa = PBXBuildFile; fileRef = 42B3A699207A603D007DF798 /* 连接摄像头GIF.gif */; };
+		42C01CD62085C5E800F9E0E9 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C01CD42085C5E800F9E0E9 /* ShareViewController.m */; };
+		42C01CD72085C5E800F9E0E9 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42C01CD52085C5E800F9E0E9 /* ShareViewController.xib */; };
 		42C244E82067AA7200436FA0 /* GalleryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */; };
 		42C244E92067AA7300436FA0 /* GalleryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */; };
 		42DA1EC2207373EF000819C9 /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DA1EC1207373EF000819C9 /* BluetoothManager.m */; };
@@ -139,6 +141,9 @@
 		42B3A696207A5337007DF798 /* UIImage+GradientColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+GradientColor.h"; sourceTree = "<group>"; };
 		42B3A697207A5337007DF798 /* UIImage+GradientColor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GradientColor.m"; sourceTree = "<group>"; };
 		42B3A699207A603D007DF798 /* 连接摄像头GIF.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "连接摄像头GIF.gif"; sourceTree = "<group>"; };
+		42C01CD32085C5E800F9E0E9 /* ShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		42C01CD42085C5E800F9E0E9 /* ShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		42C01CD52085C5E800F9E0E9 /* ShareViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
 		42C244E52067AA7200436FA0 /* GalleryCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryCollectionViewCell.h; sourceTree = "<group>"; };
 		42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GalleryCollectionViewCell.m; sourceTree = "<group>"; };
 		42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -296,6 +301,9 @@
 				42C244E52067AA7200436FA0 /* GalleryCollectionViewCell.h */,
 				42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */,
 				42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */,
+				42C01CD32085C5E800F9E0E9 /* ShareViewController.h */,
+				42C01CD42085C5E800F9E0E9 /* ShareViewController.m */,
+				42C01CD52085C5E800F9E0E9 /* ShareViewController.xib */,
 				427250382069D9CA001DAE18 /* ShootViewController.h */,
 				427250392069D9CA001DAE18 /* ShootViewController.m */,
 				4272503A2069D9CA001DAE18 /* ShootViewController.xib */,
@@ -426,6 +434,7 @@
 				4224BC0E2085027700C47EBE /* ShareSDKUI.bundle in Resources */,
 				42C244E92067AA7300436FA0 /* GalleryCollectionViewCell.xib in Resources */,
 				4274A2F7205B72A800844BCE /* Main.storyboard in Resources */,
+				42C01CD72085C5E800F9E0E9 /* ShareViewController.xib in Resources */,
 				422E763D206B9A3A00B8F443 /* WhiteBalanceCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,14 +469,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Taro/Pods-Taro-frameworks.sh",
-				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
-				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/YYKit/YYKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -510,6 +517,7 @@
 				42B3A698207A5337007DF798 /* UIImage+GradientColor.m in Sources */,
 				4274A2FF205B72A800844BCE /* main.m in Sources */,
 				4240172A205F9F2F007885C4 /* UIView+Category.m in Sources */,
+				42C01CD62085C5E800F9E0E9 /* ShareViewController.m in Sources */,
 				4272503B2069D9CA001DAE18 /* ShootViewController.m in Sources */,
 				42711626206BD1C700B762ED /* SliderCell.m in Sources */,
 				4271164C2079F22800B762ED /* SlyShowProgress.m in Sources */,

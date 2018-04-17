@@ -2,9 +2,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 target 'Taro' do
   platform :ios, '10.0'
   use_frameworks!
-  pod 'TwitterKit'
-
   pod 'YYKit'
+  pod 'SVProgressHUD'
 
 end
 
