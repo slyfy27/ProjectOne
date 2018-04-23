@@ -32,8 +32,8 @@ static NSString * const VIDEO_CONTROLLER_CLASS_NAME_IOS8 = @"AVFullScreenViewCon
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.player = [[AVPlayer alloc] initWithURL:self.videoUrl];
-    [self.player play];
+//    self.player = [[AVPlayer alloc] initWithURL:self.videoUrl];
+//    [self.player play];
 }
 
 

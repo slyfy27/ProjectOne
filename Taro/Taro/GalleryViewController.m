@@ -28,6 +28,8 @@
 
 @property (nonatomic, strong) NSFileManager *fileManager;
 
+@property (nonatomic, strong) PHAssetCollection *taroAssetCollection;
+
 @end
 
 @implementation GalleryViewController
@@ -39,6 +41,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self creatTaroAlbum];
     _movieArray = @[].mutableCopy;
     _selectSet = [[NSMutableSet alloc] init];
     _galleryCollectionView.delegate = self;
@@ -47,7 +50,26 @@
     [_galleryCollectionView registerNib:[UINib nibWithNibName:@"GalleryCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"cell"];
     [self setRightNavigationBarButton:@selector(edit) title:@"EDIT" image:nil];
     [self setTitle:@"Gallery"];
-    [self getLocalVieo];
+//    [self getLocalVieo];
+    [self enumerateGallery];
+}
+
+- (void)creatTaroAlbum{
+    PHFetchResult<PHAssetCollection *> *assetCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+    for (PHAssetCollection *collection in assetCollections) {
+        if ([collection.localizedTitle isEqualToString:@"Taro"]) {
+            _taroAssetCollection = collection;
+            return;
+        }
+    }
+    __block NSString *assetCollectionLocalIdentifier = nil;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        assetCollectionLocalIdentifier = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:@"Taro"].placeholderForCreatedAssetCollection.localIdentifier;
+    } completionHandler:^(BOOL success, NSError * _Nullable error) {
+        if (success) {
+            _taroAssetCollection = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[assetCollectionLocalIdentifier] options:nil].firstObject;
+        }
+    }];
 }
 
 - (void)getLocalVieo{
@@ -66,6 +88,22 @@
     [self.galleryCollectionView reloadData];
 }
 
+- (void)enumerateGallery{
+    _assets = @[].mutableCopy;
+    if (!_taroAssetCollection) {
+        [_galleryCollectionView reloadData];
+    }
+    else{
+        _audioResult = [PHAsset fetchAssetsInAssetCollection:_taroAssetCollection options:nil];
+        [_audioResult enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [_assets addObject:obj];
+            if (stop) {
+                [_galleryCollectionView reloadData];
+            }
+        }];
+    }
+}
+
 - (void)back{
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -78,20 +116,20 @@
 
 - (void)share{
     NSString *index = _selectSet.allObjects.firstObject;
-    NSURL *fileUrl = [NSURL fileURLWithPath:_movieArray[index.integerValue]];
+//    NSURL *fileUrl = [NSURL fileURLWithPath:_movieArray[index.integerValue]];
     GalleryCollectionViewCell *cell = (GalleryCollectionViewCell *)[_galleryCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index.integerValue inSection:0]];
     ShareViewController *vc = [[ShareViewController alloc] init];
-    vc.videoUrl = fileUrl;
+    vc.shareAsset = _assets[index.integerValue];
     vc.videoImage = cell.audioImageVIew.image;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)deleteAction{
+    NSMutableArray *deleAsset = @[].mutableCopy;
     for (NSString *index in _selectSet) {
-        [self deleteFileWithUrl:[NSURL URLWithString:_movieArray[index.integerValue]]];
+        [deleAsset addObject:_assets[index.integerValue]];
     }
-    [_selectSet removeAllObjects];
-    [self getLocalVieo];
+    [self deleteWithAsset:deleAsset];
 }
 
 - (void)deleteFileWithUrl:(NSURL *)url{
@@ -100,17 +138,29 @@
     }
 }
 
+- (void)deleteWithAsset:(NSArray<PHAsset *> *)assets{
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        PHAssetCollectionChangeRequest *request = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:_taroAssetCollection];
+        [request removeAssets:assets];
+    } completionHandler:^(BOOL success, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_selectSet removeAllObjects];
+            [self enumerateGallery];
+        });
+    }];
+}
+
 //有多少的分组
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
 //每个分组里有多少个item
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return _movieArray.count;
+    return _assets.count;
 }
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     GalleryCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    cell.moviePath = _movieArray[indexPath.row];
+        cell.asset = _assets[indexPath.row];
     if (_selectState) {
         cell.selectBtn.hidden = NO;
     }
@@ -131,11 +181,21 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSURL *url = [NSURL fileURLWithPath:_movieArray[indexPath.row]];
+//    NSURL *url = [NSURL fileURLWithPath:_movieArray[indexPath.row]];
+//
+//    PlayViewController *playerVC = [[PlayViewController alloc] init];
+//    playerVC.videoUrl = url;
+//    [self presentViewController:playerVC animated:YES completion:nil];
     
-    PlayViewController *playerVC = [[PlayViewController alloc] init];
-    playerVC.videoUrl = url;
-    [self presentViewController:playerVC animated:YES completion:nil];
+    [[PHImageManager defaultManager] requestPlayerItemForVideo:_assets[indexPath.row] options:nil resultHandler:^(AVPlayerItem * _Nullable playerItem, NSDictionary * _Nullable info) {
+        AVPlayer *player = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+        PlayViewController *vc = [[PlayViewController alloc] init];
+        vc.player = player;
+        [player play];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self presentViewController:vc animated:YES completion:nil];
+        });
+    }];
 }
 
 /* 定义每个UICollectionView 的大小 */

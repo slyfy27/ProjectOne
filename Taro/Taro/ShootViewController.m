@@ -15,6 +15,7 @@
 #import "GalleryViewController.h"
 #import "BluetoothManager.h"
 #import "UIImage+GradientColor.h"
+#import <Photos/Photos.h>
 
 @interface DiagonalView : UIView
 
@@ -122,6 +123,8 @@ static NSString *iso = @"iso";
 @property (nonatomic, strong) CAGradientLayer *leftLayer;
 
 @property (nonatomic, strong) CAGradientLayer *rightLayer;
+
+@property (nonatomic, strong) PHAssetCollection *taroAssetCollection;
 
 @end
 
@@ -375,8 +378,6 @@ static NSString *iso = @"iso";
         [_output stopRecording];
         [_recordTimer invalidate];
         _recordTimer = nil;
-        GalleryViewController *vc = [[GalleryViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -616,6 +617,7 @@ static NSString *iso = @"iso";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self creatTaroAlbum];
     [self setViewGradient];
     _type = SettingTypeNone;
     _gifImageView.image = [YYImage imageNamed:@"连接摄像头GIF.gif"];
@@ -1028,7 +1030,40 @@ static NSString *iso = @"iso";
 }
 
 - (void)captureOutput:(AVCaptureFileOutput *)output didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray<AVCaptureConnection *> *)connections error:(NSError *)error{
+    __block NSString *createdAssetId = nil;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        createdAssetId = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:outputFileURL].placeholderForCreatedAsset.localIdentifier;
+    } completionHandler:^(BOOL success, NSError * _Nullable error) {
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+            PHAssetCollectionChangeRequest *request = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:_taroAssetCollection];
+            PHAsset *asset = [PHAsset fetchAssetsWithLocalIdentifiers:@[createdAssetId] options:nil].firstObject;
+            [request addAssets:@[asset]];
+        } completionHandler:^(BOOL success, NSError * _Nullable error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                GalleryViewController *vc = [[GalleryViewController alloc] init];
+                [self.navigationController pushViewController:vc animated:YES];
+            });
+        }];
+    }];
     
+}
+
+- (void)creatTaroAlbum{
+    PHFetchResult<PHAssetCollection *> *assetCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
+    for (PHAssetCollection *collection in assetCollections) {
+        if ([collection.localizedTitle isEqualToString:@"Taro"]) {
+            _taroAssetCollection = collection;
+            return;
+        }
+    }
+    __block NSString *assetCollectionLocalIdentifier = nil;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        assetCollectionLocalIdentifier = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:@"Taro"].placeholderForCreatedAssetCollection.localIdentifier;
+    } completionHandler:^(BOOL success, NSError * _Nullable error) {
+        if (success) {
+            _taroAssetCollection = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[assetCollectionLocalIdentifier] options:nil].firstObject;
+        }
+    }];
 }
 
 - (IBAction)trackingAction:(UIButton *)sender {

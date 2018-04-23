@@ -45,17 +45,17 @@
 - (void)setMoviePath:(NSString *)moviePath{
     _moviePath = moviePath;
     NSString *imageFile = [moviePath stringByReplacingOccurrencesOfString:@".mov" withString:@".jpg"];
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:moviePath] options:nil];
+    _timeLabel.text = [self timeFromSeconds:CMTimeGetSeconds(asset.duration)];
     if ([[NSFileManager defaultManager] fileExistsAtPath:imageFile]) {
         UIImage *tempImage = [UIImage imageWithContentsOfFile:imageFile];
         _audioImageVIew.image = tempImage;
         return;
     }
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:moviePath] options:nil];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         AVAssetImageGenerator *xx = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-        CGImageRef im = [xx copyCGImageAtTime:CMTimeMake(0.0, 600) actualTime:NULL error:NULL];
+        CGImageRef im = [xx copyCGImageAtTime:CMTimeMake(0.1, 600) actualTime:NULL error:NULL];
         dispatch_async(dispatch_get_main_queue(), ^{
-            _timeLabel.text = [self timeFromSeconds:CMTimeGetSeconds(asset.duration)];
             UIImage *tempImage = [UIImage imageWithCGImage:im];
             [UIImageJPEGRepresentation(tempImage, 0.8) writeToFile:imageFile atomically:YES];
             _audioImageVIew.image = tempImage;

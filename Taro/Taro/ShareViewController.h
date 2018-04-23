@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import <ShareSDK/ShareSDK.h>
+#import <Photos/Photos.h>
 
 @interface ShareViewController : BaseViewController
 
@@ -16,5 +17,7 @@
 @property (strong, nonatomic) UIImage *videoImage;
 
 @property (copy, nonatomic) NSURL *videoUrl;
+
+@property (strong, nonatomic) PHAsset *shareAsset;
 
 @end

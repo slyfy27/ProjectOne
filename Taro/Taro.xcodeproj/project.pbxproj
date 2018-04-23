@@ -291,9 +291,9 @@
 			children = (
 				4224BBF92085027600C47EBE /* SDK */,
 				42B3A699207A603D007DF798 /* 连接摄像头GIF.gif */,
-				4274A2EF205B72A800844BCE /* AppDelegate.h */,
 				4274A2F0205B72A800844BCE /* AppDelegate.m */,
 				4274A2F2205B72A800844BCE /* ViewController.h */,
+				4274A2EF205B72A800844BCE /* AppDelegate.h */,
 				4274A2F3205B72A800844BCE /* ViewController.m */,
 				42675C7920679DEC005CBB33 /* GalleryViewController.h */,
 				42675C7A20679DEC005CBB33 /* GalleryViewController.m */,
@@ -702,7 +702,7 @@
 					"$(PROJECT_DIR)/Taro/NELivePlayer/include/NELivePlayer",
 					"$(PROJECT_DIR)/NELivePlayer/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = slyfy27.Taro;
+				PRODUCT_BUNDLE_IDENTIFIER = slyfy27.taro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -739,7 +739,7 @@
 					"$(PROJECT_DIR)/Taro/NELivePlayer/include/NELivePlayer",
 					"$(PROJECT_DIR)/NELivePlayer/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = slyfy27.Taro;
+				PRODUCT_BUNDLE_IDENTIFIER = slyfy27.taro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

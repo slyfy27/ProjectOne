@@ -8,6 +8,7 @@
 
 #import "ShareViewController.h"
 #import "SVProgressHUD.h"
+#import <Social/Social.h>
 
 @interface ShareViewController ()
 
@@ -20,8 +21,14 @@
     _videoImageView.image = _videoImage;
     _videoImageView.layer.borderWidth = 10;
     _videoImageView.layer.borderColor = [UIColor whiteColor].CGColor;
-    _videoImageView.layer.cornerRadius = 5;
     _videoImageView.layer.masksToBounds = YES;
+    PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+    options.version = PHImageRequestOptionsVersionCurrent;
+    options.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
+    [[PHImageManager defaultManager] requestAVAssetForVideo:_shareAsset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
+        AVURLAsset *urlAsset = (AVURLAsset *)asset;
+        _videoUrl = urlAsset.URL;
+    }];
 }
 
 - (IBAction)closeAction:(id)sender {
@@ -30,7 +37,7 @@
 
 - (IBAction)facebookAction:(id)sender {
     NSMutableDictionary *param = @{}.mutableCopy;
-    [param SSDKSetupShareParamsByText:@"分享视频" images:nil url:_videoUrl title:@"Taro" type:SSDKContentTypeVideo];
+    [param SSDKSetupShareParamsByText:nil images:nil url:_videoUrl title:@"Taro" type:SSDKContentTypeVideo];
     [param SSDKEnableUseClientShare];
     [ShareSDK share:SSDKPlatformTypeFacebook parameters:param onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
         if (state == SSDKResponseStateBeginUPLoad) {
@@ -58,6 +65,7 @@
 - (IBAction)youtubeAction:(id)sender {
     NSMutableDictionary *param = @{}.mutableCopy;
     [param SSDKSetupShareParamsByText:@"分享视频" images:nil url:_videoUrl title:@"Taro" type:SSDKContentTypeVideo];
+//    [param SSDKSetupYouTubeParamsByVideo:[NSData dataWithContentsOfFile:_videoUrl.absoluteString] title:@"title" description:@"desc" tags:nil privacyStatus:SSDKPrivacyStatusPrivate];
     [ShareSDK share:SSDKPlatformTypeYouTube parameters:param onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
         if (state == SSDKResponseStateBeginUPLoad) {
             [SVProgressHUD showWithStatus:@"正在上传视频"];
@@ -83,6 +91,11 @@
 
 - (IBAction)twitterAction:(id)sender {
     
+}
+
+- (IBAction)otherAction:(id)sender {
+    UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:@[_videoUrl] applicationActivities:nil];
+    [self presentViewController:activityController animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
