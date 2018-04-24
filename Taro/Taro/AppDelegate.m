@@ -18,7 +18,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [ShareSDK registerActivePlatforms:@[@(SSDKPlatformTypeFacebook),@(SSDKPlatformTypeYouTube)] onImport:^(SSDKPlatformType platformType) {
+    [ShareSDK registerActivePlatforms:@[@(SSDKPlatformTypeFacebook),@(SSDKPlatformTypeYouTube),@(SSDKPlatformTypeTwitter)] onImport:^(SSDKPlatformType platformType) {
         
     } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
         switch (platformType) {
@@ -26,7 +26,10 @@
                 [appInfo SSDKSetupYouTubeByClientId:@"323232334081-5s9qqvqrlvvvho4vn94h47046ufhj7qb.apps.googleusercontent.com" clientSecret:@"" redirectUri:@"http://localhost"];
                 break;
             case SSDKPlatformTypeFacebook:
-                        [appInfo SSDKSetupFacebookByApiKey:@"149883025847374" appSecret:@"b533d9806f4fb7a511042afbdaccc047" displayName:@"Taro" authType:@"SSDKAuthTypeBoth"];
+                        [appInfo SSDKSetupFacebookByApiKey:@"149883025847374" appSecret:@"b533d9806f4fb7a511042afbdaccc047" displayName:@"TaroTracking" authType:@"SSDKAuthTypeBoth"];
+                break;
+            case SSDKPlatformTypeTwitter:
+                [appInfo SSDKSetupTwitterByConsumerKey:@"1gFzSPd3YbI9y1aAxGSyycAId" consumerSecret:@"luJOmJAkgWhJS17Z7ff51Ll2j0pF7LttovwFpVBkwg3Mj4bR0Y" redirectUri:@"https://www.taro.ai"];
                 break;
             default:
                 break;

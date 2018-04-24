@@ -9,6 +9,7 @@
 #import "ShareViewController.h"
 #import "SVProgressHUD.h"
 #import <Social/Social.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface ShareViewController ()
 
@@ -28,7 +29,38 @@
     [[PHImageManager defaultManager] requestAVAssetForVideo:_shareAsset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
         AVURLAsset *urlAsset = (AVURLAsset *)asset;
         _videoUrl = urlAsset.URL;
+        [self saveToCameraRoll:_videoUrl];
+
     }];
+//    NSString *localStr = _shareAsset.localIdentifier;
+//    NSRange range = [localStr rangeOfString:@"/"];
+//    NSString *newString = [localStr substringToIndex:range.location];
+//    NSString *appendedString = [NSString stringWithFormat:@"%@%@%@",@"assets-library://asset/asset.MOV?id=",newString,@"&ext=MOV"];
+//    _videoUrl = [NSURL URLWithString:appendedString];
+    
+}
+
+- (void)saveToCameraRoll:(NSURL *)srcURL
+{
+    NSLog(@"srcURL: %@", srcURL);
+    
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    ALAssetsLibraryWriteVideoCompletionBlock videoWriteCompletionBlock =
+    ^(NSURL *newURL, NSError *error) {
+        if (error) {
+            NSLog( @"Error writing image with metadata to Photo Library: %@", error );
+        } else {
+            NSLog( @"Wrote image with metadata to Photo Library %@", newURL.absoluteString);
+            _videoUrl = newURL;
+            // 这里用url_new 分享试试
+        }
+    };
+    
+    if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:srcURL])
+    {
+        [library writeVideoAtPathToSavedPhotosAlbum:srcURL
+                                    completionBlock:videoWriteCompletionBlock];
+    }
 }
 
 - (IBAction)closeAction:(id)sender {
@@ -90,7 +122,30 @@
 }
 
 - (IBAction)twitterAction:(id)sender {
-    
+    NSMutableDictionary *param = @{}.mutableCopy;
+    [param SSDKSetupShareParamsByText:nil images:nil url:_videoUrl title:@"Taro" type:SSDKContentTypeVideo];
+    [param SSDKEnableUseClientShare];
+    [ShareSDK share:SSDKPlatformTypeTwitter parameters:param onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+        if (state == SSDKResponseStateBeginUPLoad) {
+            [SVProgressHUD showWithStatus:@"正在上传视频"];
+        }
+        else if (state == SSDKResponseStateSuccess) {
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [SVProgressHUD dismiss];
+                [self closeAction:nil];
+            });
+        }
+        else if (state == SSDKResponseStateFail) {
+            [SVProgressHUD dismiss];
+            [SVProgressHUD showSuccessWithStatus:@"上传失败"];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [SVProgressHUD dismiss];
+                [self closeAction:nil];
+            });
+        }
+    }];
 }
 
 - (IBAction)otherAction:(id)sender {

@@ -125,7 +125,6 @@
                                     <state key="normal" image="其他"/>
                                     <connections>
                                         <action selector="otherAction:" destination="-1" eventType="touchUpInside" id="FCi-n4-Y8T"/>
-                                        <action selector="twitterAction:" destination="-1" eventType="touchUpInside" id="zmB-t4-ZaS"/>
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Other" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iLu-qY-TY2">
