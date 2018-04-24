@@ -4,6 +4,7 @@ target 'Taro' do
   use_frameworks!
   pod 'YYKit'
   pod 'SVProgressHUD'
-
+  use_frameworks!
+    pod 'TwitterKit'
 end
 

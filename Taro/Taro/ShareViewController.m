@@ -10,6 +10,7 @@
 #import "SVProgressHUD.h"
 #import <Social/Social.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <TwitterKit/TWTRKit.h>
 
 @interface ShareViewController ()
 
@@ -69,8 +70,8 @@
 
 - (IBAction)facebookAction:(id)sender {
     NSMutableDictionary *param = @{}.mutableCopy;
-    [param SSDKSetupShareParamsByText:nil images:nil url:_videoUrl title:@"Taro" type:SSDKContentTypeVideo];
-    [param SSDKEnableUseClientShare];
+    [param SSDKSetupShareParamsByText:nil images:nil url:_videoUrl title:nil type:SSDKContentTypeVideo];
+//    [param SSDKEnableUseClientShare];
     [ShareSDK share:SSDKPlatformTypeFacebook parameters:param onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
         if (state == SSDKResponseStateBeginUPLoad) {
             [SVProgressHUD showWithStatus:@"正在上传视频"];
@@ -122,6 +123,23 @@
 }
 
 - (IBAction)twitterAction:(id)sender {
+    if ([[TWTRTwitter sharedInstance].sessionStore hasLoggedInUsers]) {
+        TWTRComposerViewController *composer = [TWTRComposerViewController emptyComposer];
+        composer = [composer initWithInitialText:nil image:nil videoURL:_videoUrl];
+        [self presentViewController:composer animated:YES completion:nil];
+    }
+    else{
+        [[TWTRTwitter sharedInstance] logInWithCompletion:^(TWTRSession *session, NSError *error) {
+            if (session) {
+                TWTRComposerViewController *composer = [TWTRComposerViewController emptyComposer];
+                composer = [composer initWithInitialText:nil image:nil videoURL:_videoUrl];
+                [self presentViewController:composer animated:YES completion:nil];
+            } else {
+                //分享失败
+            }
+        }];
+    }
+    return;
     NSMutableDictionary *param = @{}.mutableCopy;
     [param SSDKSetupShareParamsByText:nil images:nil url:_videoUrl title:@"Taro" type:SSDKContentTypeVideo];
     [param SSDKEnableUseClientShare];
