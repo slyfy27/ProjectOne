@@ -11,8 +11,11 @@
 #import <Social/Social.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <TwitterKit/TWTRKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
-@interface ShareViewController ()
+@interface ShareViewController ()<TWTRComposerViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+
+@property (nonatomic, strong) UIImagePickerController *pickVC;
 
 @end
 
@@ -20,6 +23,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _pickVC = [[UIImagePickerController alloc] init];
+    _pickVC.delegate = self;
+    _pickVC.mediaTypes = @[(NSString *)kUTTypeMovie];
     _videoImageView.image = _videoImage;
     _videoImageView.layer.borderWidth = 10;
     _videoImageView.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -30,8 +36,7 @@
     [[PHImageManager defaultManager] requestAVAssetForVideo:_shareAsset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
         AVURLAsset *urlAsset = (AVURLAsset *)asset;
         _videoUrl = urlAsset.URL;
-        [self saveToCameraRoll:_videoUrl];
-
+//        [self saveToCameraRoll:_videoUrl];
     }];
 //    NSString *localStr = _shareAsset.localIdentifier;
 //    NSRange range = [localStr rangeOfString:@"/"];
@@ -123,16 +128,28 @@
 }
 
 - (IBAction)twitterAction:(id)sender {
+//    TWTRComposer *composer = [[TWTRComposer alloc] init];
+//    [composer setText:@"123"];
+//    [composer setURL:_videoUrl];
+//    [composer showFromViewController:self completion:^(TWTRComposerResult result) {
+//
+//    }];
+//    return;
+//    [self presentViewController:_pickVC animated:YES completion:^{
+//
+//    }];
+//    return ;
     if ([[TWTRTwitter sharedInstance].sessionStore hasLoggedInUsers]) {
-        TWTRComposerViewController *composer = [TWTRComposerViewController emptyComposer];
-        composer = [composer initWithInitialText:nil image:nil videoURL:_videoUrl];
+        TWTRComposerViewController *composer = [[TWTRComposerViewController alloc] initWithInitialText:nil image:nil videoURL:_videoUrl];
+//        composer = [composer initWithInitialText:@"fasdfas" image:nil videoURL:_videoUrl];
+        composer.delegate = self;
         [self presentViewController:composer animated:YES completion:nil];
     }
     else{
         [[TWTRTwitter sharedInstance] logInWithCompletion:^(TWTRSession *session, NSError *error) {
             if (session) {
-                TWTRComposerViewController *composer = [TWTRComposerViewController emptyComposer];
-                composer = [composer initWithInitialText:nil image:nil videoURL:_videoUrl];
+                TWTRComposerViewController *composer = [[TWTRComposerViewController alloc] initWithInitialText:nil image:nil videoURL:_videoUrl];
+                
                 [self presentViewController:composer animated:YES completion:nil];
             } else {
                 //分享失败
@@ -169,6 +186,30 @@
 - (IBAction)otherAction:(id)sender {
     UIActivityViewController *activityController=[[UIActivityViewController alloc]initWithActivityItems:@[_videoUrl] applicationActivities:nil];
     [self presentViewController:activityController animated:YES completion:nil];
+}
+
+- (void)composerDidCancel:(TWTRComposerViewController *)controller{
+    
+}
+
+- (void)composerDidFail:(TWTRComposerViewController *)controller withError:(NSError *)error{
+    
+}
+
+- (void)composerDidSucceed:(TWTRComposerViewController *)controller withTweet:(TWTRTweet *)tweet{
+    
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    NSURL *url = info[UIImagePickerControllerMediaURL];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+    TWTRComposerViewController *composer = [[TWTRComposerViewController alloc] initWithInitialText:@"123" image:nil videoURL:url];
+    //        composer = [composer initWithInitialText:@"fasdfas" image:nil videoURL:_videoUrl];
+    composer.delegate = self;
+    [self presentViewController:composer animated:YES completion:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
