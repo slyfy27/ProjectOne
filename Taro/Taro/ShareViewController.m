@@ -18,12 +18,17 @@
 @property (nonatomic, strong) UIImagePickerController *pickVC;
 @property (nonatomic, strong) NSURL *twitterUrl;
 
+@property (nonatomic, strong) NSURL *fileUrl;
+
+@property (nonatomic, copy) NSString *createTimeString;
+
 @end
 
 @implementation ShareViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     _pickVC = [[UIImagePickerController alloc] init];
     _pickVC.delegate = self;
     _pickVC.mediaTypes = @[(NSString *)kUTTypeMovie];
@@ -32,6 +37,8 @@
     _videoImageView.layer.borderWidth = 10;
     _videoImageView.layer.borderColor = [UIColor whiteColor].CGColor;
     _videoImageView.layer.masksToBounds = YES;
+    _createTimeString = @([_shareAsset.creationDate timeIntervalSince1970]).stringValue;
+    _fileUrl = [self getFilePath:_createTimeString];
     PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
     options.version = PHImageRequestOptionsVersionCurrent;
     options.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
@@ -40,7 +47,7 @@
         _videoUrl = urlAsset.URL;
         [self saveToCameraRoll:_videoUrl];
         AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPreset960x540];
-        _twitterUrl = [self getFilePath];
+        _twitterUrl = [self getFilePath:@""];
         session.outputURL = _twitterUrl;
         session.outputFileType = AVFileTypeQuickTimeMovie;
         [session exportAsynchronouslyWithCompletionHandler:^{
@@ -49,8 +56,8 @@
     }];
 }
 
-- (NSURL *)getFilePath{
-    NSString *times = @([[NSDate date] timeIntervalSince1970]).stringValue;
+- (NSURL *)getFilePath:(NSString *)identifier{
+    NSString *times = identifier;
     times = [times stringByAppendingString:@".mov"];
     NSString *document = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
     NSURL *outputURL = [NSURL fileURLWithPath:document isDirectory:YES];
@@ -113,9 +120,8 @@
 }
 
 - (IBAction)youtubeAction:(id)sender {
-    https://github.com/google/gdata-objectivec-client
     NSMutableDictionary *param = @{}.mutableCopy;
-    [param SSDKSetupShareParamsByText:@"分享视频" images:nil url:_twitterUrl title:@"Taro" type:SSDKContentTypeVideo];
+    [param SSDKSetupShareParamsByText:@"分享视频" images:nil url:_fileUrl title:@"Taro" type:SSDKContentTypeVideo];
 //    [param SSDKSetupYouTubeParamsByVideo:[NSData dataWithContentsOfFile:_videoUrl.absoluteString] title:@"title" description:@"desc" tags:nil privacyStatus:SSDKPrivacyStatusPrivate];
     [ShareSDK share:SSDKPlatformTypeYouTube parameters:param onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
         if (state == SSDKResponseStateBeginUPLoad) {
@@ -149,7 +155,6 @@
 //    }];
 //    return;
     if (!_twitterUrl) {
-        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
         [SVProgressHUD showInfoWithStatus:@"正在压缩视频，请稍后"];
         [SVProgressHUD dismissWithDelay:1.5];
         return;

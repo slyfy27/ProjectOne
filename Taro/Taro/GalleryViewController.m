@@ -95,6 +95,10 @@
     }
     else{
         _audioResult = [PHAsset fetchAssetsInAssetCollection:_taroAssetCollection options:nil];
+        if (_audioResult.count == 0) {
+            [_galleryCollectionView reloadData];
+            return ;
+        }
         [_audioResult enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [_assets addObject:obj];
             if (stop) {

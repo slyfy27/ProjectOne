@@ -327,7 +327,8 @@ static NSString *iso = @"iso";
 }
 
 - (NSURL *)getFilePath{
-    NSString *times = @([[NSDate date] timeIntervalSince1970]).stringValue;
+    NSInteger time = [[NSDate date] timeIntervalSince1970];
+    NSString *times = @(time).stringValue;
     times = [times stringByAppendingString:@".mov"];
     NSString *document = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
     NSURL *outputURL = [NSURL fileURLWithPath:document isDirectory:YES];
@@ -1037,7 +1038,18 @@ static NSString *iso = @"iso";
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
             PHAssetCollectionChangeRequest *request = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:_taroAssetCollection];
             PHAsset *asset = [PHAsset fetchAssetsWithLocalIdentifiers:@[createdAssetId] options:nil].firstObject;
+            NSString *document = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+            NSURL *outputURL = [NSURL fileURLWithPath:document isDirectory:YES];
+            outputURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@.mov",@([asset.creationDate timeIntervalSince1970]).stringValue] relativeToURL:outputURL];
+            NSError *error;
+            if ([[NSFileManager defaultManager] moveItemAtURL:outputFileURL toURL:outputURL error:&error]) {
+                NSLog(@"%@",outputURL);
+            }
+            else{
+                
+            }
             [request addAssets:@[asset]];
+            
         } completionHandler:^(BOOL success, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 GalleryViewController *vc = [[GalleryViewController alloc] init];
@@ -1045,7 +1057,13 @@ static NSString *iso = @"iso";
             });
         }];
     }];
-    
+}
+
+- (NSURL *)getAssetFileOutUrl:(NSString *)identifier{
+    NSString *document = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSString *fileString = [identifier stringByAppendingString:@".mov"];
+    document = [document stringByAppendingPathComponent:fileString];
+    return [NSURL fileURLWithPath:fileString];
 }
 
 - (void)creatTaroAlbum{
