@@ -16,6 +16,7 @@
 @interface ShareViewController ()<TWTRComposerViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIImagePickerController *pickVC;
+@property (nonatomic, strong) NSURL *twitterUrl;
 
 @end
 
@@ -26,6 +27,7 @@
     _pickVC = [[UIImagePickerController alloc] init];
     _pickVC.delegate = self;
     _pickVC.mediaTypes = @[(NSString *)kUTTypeMovie];
+    _pickVC.videoQuality = UIImagePickerControllerQualityType640x480;
     _videoImageView.image = _videoImage;
     _videoImageView.layer.borderWidth = 10;
     _videoImageView.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -36,14 +38,24 @@
     [[PHImageManager defaultManager] requestAVAssetForVideo:_shareAsset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
         AVURLAsset *urlAsset = (AVURLAsset *)asset;
         _videoUrl = urlAsset.URL;
-//        [self saveToCameraRoll:_videoUrl];
+        [self saveToCameraRoll:_videoUrl];
+        AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPreset960x540];
+        _twitterUrl = [self getFilePath];
+        session.outputURL = _twitterUrl;
+        session.outputFileType = AVFileTypeQuickTimeMovie;
+        [session exportAsynchronouslyWithCompletionHandler:^{
+            
+        }];
     }];
-//    NSString *localStr = _shareAsset.localIdentifier;
-//    NSRange range = [localStr rangeOfString:@"/"];
-//    NSString *newString = [localStr substringToIndex:range.location];
-//    NSString *appendedString = [NSString stringWithFormat:@"%@%@%@",@"assets-library://asset/asset.MOV?id=",newString,@"&ext=MOV"];
-//    _videoUrl = [NSURL URLWithString:appendedString];
-    
+}
+
+- (NSURL *)getFilePath{
+    NSString *times = @([[NSDate date] timeIntervalSince1970]).stringValue;
+    times = [times stringByAppendingString:@".mov"];
+    NSString *document = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSURL *outputURL = [NSURL fileURLWithPath:document isDirectory:YES];
+    outputURL = [NSURL URLWithString:times relativeToURL:outputURL];
+    return outputURL;
 }
 
 - (void)saveToCameraRoll:(NSURL *)srcURL
@@ -101,8 +113,9 @@
 }
 
 - (IBAction)youtubeAction:(id)sender {
+    https://github.com/google/gdata-objectivec-client
     NSMutableDictionary *param = @{}.mutableCopy;
-    [param SSDKSetupShareParamsByText:@"分享视频" images:nil url:_videoUrl title:@"Taro" type:SSDKContentTypeVideo];
+    [param SSDKSetupShareParamsByText:@"分享视频" images:nil url:_twitterUrl title:@"Taro" type:SSDKContentTypeVideo];
 //    [param SSDKSetupYouTubeParamsByVideo:[NSData dataWithContentsOfFile:_videoUrl.absoluteString] title:@"title" description:@"desc" tags:nil privacyStatus:SSDKPrivacyStatusPrivate];
     [ShareSDK share:SSDKPlatformTypeYouTube parameters:param onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
         if (state == SSDKResponseStateBeginUPLoad) {
@@ -135,20 +148,23 @@
 //
 //    }];
 //    return;
-//    [self presentViewController:_pickVC animated:YES completion:^{
-//
-//    }];
-//    return ;
+    if (!_twitterUrl) {
+        [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+        [SVProgressHUD showInfoWithStatus:@"正在压缩视频，请稍后"];
+        [SVProgressHUD dismissWithDelay:1.5];
+        return;
+    }
     if ([[TWTRTwitter sharedInstance].sessionStore hasLoggedInUsers]) {
-        TWTRComposerViewController *composer = [[TWTRComposerViewController alloc] initWithInitialText:nil image:nil videoURL:_videoUrl];
+        TWTRComposerViewController *composer = [[TWTRComposerViewController alloc] initWithInitialText:nil image:nil videoURL:_twitterUrl];
 //        composer = [composer initWithInitialText:@"fasdfas" image:nil videoURL:_videoUrl];
+        
         composer.delegate = self;
         [self presentViewController:composer animated:YES completion:nil];
     }
     else{
         [[TWTRTwitter sharedInstance] logInWithCompletion:^(TWTRSession *session, NSError *error) {
             if (session) {
-                TWTRComposerViewController *composer = [[TWTRComposerViewController alloc] initWithInitialText:nil image:nil videoURL:_videoUrl];
+                TWTRComposerViewController *composer = [[TWTRComposerViewController alloc] initWithInitialText:nil image:nil videoURL:_twitterUrl];
                 
                 [self presentViewController:composer animated:YES completion:nil];
             } else {
@@ -205,10 +221,10 @@
     [picker dismissViewControllerAnimated:YES completion:^{
         
     }];
-    TWTRComposerViewController *composer = [[TWTRComposerViewController alloc] initWithInitialText:@"123" image:nil videoURL:url];
-    //        composer = [composer initWithInitialText:@"fasdfas" image:nil videoURL:_videoUrl];
-    composer.delegate = self;
-    [self presentViewController:composer animated:YES completion:nil];
+//    TWTRComposerViewController *composer = [[TWTRComposerViewController alloc] initWithInitialText:@"123" image:nil videoURL:url];
+//    //        composer = [composer initWithInitialText:@"fasdfas" image:nil videoURL:_videoUrl];
+//    composer.delegate = self;
+//    [self presentViewController:composer animated:YES completion:nil];
     
 }
 
