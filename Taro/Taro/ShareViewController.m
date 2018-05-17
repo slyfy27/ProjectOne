@@ -46,7 +46,7 @@
         AVURLAsset *urlAsset = (AVURLAsset *)asset;
         _videoUrl = urlAsset.URL;
         [self saveToCameraRoll:_videoUrl];
-        AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPreset960x540];
+        AVAssetExportSession *session = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPreset640x480];
         _twitterUrl = [self getFilePath:@""];
         session.outputURL = _twitterUrl;
         session.outputFileType = AVFileTypeQuickTimeMovie;
@@ -121,7 +121,7 @@
 
 - (IBAction)youtubeAction:(id)sender {
     NSMutableDictionary *param = @{}.mutableCopy;
-    [param SSDKSetupShareParamsByText:@"分享视频" images:nil url:_fileUrl title:@"Taro" type:SSDKContentTypeVideo];
+    [param SSDKSetupShareParamsByText:@"分享视频" images:nil url:_twitterUrl title:@"Taro" type:SSDKContentTypeVideo];
 //    [param SSDKSetupYouTubeParamsByVideo:[NSData dataWithContentsOfFile:_videoUrl.absoluteString] title:@"title" description:@"desc" tags:nil privacyStatus:SSDKPrivacyStatusPrivate];
     [ShareSDK share:SSDKPlatformTypeYouTube parameters:param onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
         if (state == SSDKResponseStateBeginUPLoad) {
@@ -147,6 +147,26 @@
 }
 
 - (IBAction)twitterAction:(id)sender {
+    NSMutableDictionary *param = @{}.mutableCopy;
+    [param SSDKSetupShareParamsByText:@"分享视频" images:nil url:_fileUrl title:@"Taro" type:SSDKContentTypeVideo];
+    [param SSDKEnableUseClientShare];
+    [ShareSDK share:SSDKPlatformTypeInstagram parameters:param onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+        if (state == SSDKResponseStateSuccess) {
+            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [SVProgressHUD dismiss];
+                [self closeAction:nil];
+            });
+        }
+        else{
+            [SVProgressHUD showSuccessWithStatus:@"上传失败"];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [SVProgressHUD dismiss];
+                [self closeAction:nil];
+            });
+        }
+    }];
+    return;
 //    TWTRComposer *composer = [[TWTRComposer alloc] init];
 //    [composer setText:@"123"];
 //    [composer setURL:_videoUrl];
@@ -178,7 +198,7 @@
         }];
     }
     return;
-    NSMutableDictionary *param = @{}.mutableCopy;
+    NSMutableDictionary *param1 = @{}.mutableCopy;
     [param SSDKSetupShareParamsByText:nil images:nil url:_videoUrl title:@"Taro" type:SSDKContentTypeVideo];
     [param SSDKEnableUseClientShare];
     [ShareSDK share:SSDKPlatformTypeTwitter parameters:param onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {

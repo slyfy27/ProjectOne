@@ -20,7 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [[TWTRTwitter sharedInstance] startWithConsumerKey:@"1gFzSPd3YbI9y1aAxGSyycAId" consumerSecret:@"luJOmJAkgWhJS17Z7ff51Ll2j0pF7LttovwFpVBkwg3Mj4bR0Y"];
-    [ShareSDK registerActivePlatforms:@[@(SSDKPlatformTypeFacebook),@(SSDKPlatformTypeYouTube),@(SSDKPlatformTypeTwitter)] onImport:^(SSDKPlatformType platformType) {
+    [ShareSDK registerActivePlatforms:@[@(SSDKPlatformTypeFacebook),@(SSDKPlatformTypeYouTube),@(SSDKPlatformTypeTwitter),@(SSDKPlatformTypeInstagram)] onImport:^(SSDKPlatformType platformType) {
         
     } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
         switch (platformType) {
@@ -32,6 +32,9 @@
                 break;
             case SSDKPlatformTypeTwitter:
                 [appInfo SSDKSetupTwitterByConsumerKey:@"1gFzSPd3YbI9y1aAxGSyycAId" consumerSecret:@"luJOmJAkgWhJS17Z7ff51Ll2j0pF7LttovwFpVBkwg3Mj4bR0Y" redirectUri:@"https://www.taro.ai"];
+                break;
+            case SSDKPlatformTypeInstagram:
+                [appInfo SSDKSetupInstagramByClientID:@"4d5c80181a3e42ca869ddb139d475557" clientSecret:@"563774ed72f34f33805df62587496ac4" redirectUri:@"http://www.taro.com"];
                 break;
             default:
                 break;
