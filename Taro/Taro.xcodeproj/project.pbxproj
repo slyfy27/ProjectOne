@@ -8,18 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2BB21B2B2080A96F00620A6D /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB21B2A2080A96F00620A6D /* PlayViewController.m */; };
-		4224BC0C2085027700C47EBE /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BBFD2085027600C47EBE /* ShareSDKConnector.framework */; };
-		4224BC0D2085027700C47EBE /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4224BBFE2085027600C47EBE /* ShareSDK.bundle */; };
-		4224BC0E2085027700C47EBE /* ShareSDKUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4224BC002085027600C47EBE /* ShareSDKUI.bundle */; };
-		4224BC0F2085027700C47EBE /* ShareSDKConfigFile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC012085027600C47EBE /* ShareSDKConfigFile.framework */; };
-		4224BC102085027700C47EBE /* ShareSDKExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC022085027600C47EBE /* ShareSDKExtension.framework */; };
-		4224BC112085027700C47EBE /* ShareSDKUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC032085027600C47EBE /* ShareSDKUI.framework */; };
-		4224BC122085027700C47EBE /* ShareSDKConfigFile.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4224BC042085027600C47EBE /* ShareSDKConfigFile.bundle */; };
-		4224BC132085027800C47EBE /* YouTubeConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC062085027600C47EBE /* YouTubeConnector.framework */; };
-		4224BC142085027800C47EBE /* TwitterConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC072085027600C47EBE /* TwitterConnector.framework */; };
-		4224BC152085027800C47EBE /* FacebookConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC082085027600C47EBE /* FacebookConnector.framework */; };
-		4224BC162085027800C47EBE /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC092085027600C47EBE /* ShareSDK.framework */; };
-		4224BC172085027800C47EBE /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC0B2085027600C47EBE /* MOBFoundation.framework */; };
 		4224BC19208502F700C47EBE /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC18208502F700C47EBE /* libicucore.tbd */; };
 		4224BC1A2085030500C47EBE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BB21B1C20809CD000620A6D /* libz.tbd */; };
 		4224BC1B2085032E00C47EBE /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BB21B1E20809CDA00620A6D /* libstdc++.tbd */; };
@@ -62,6 +50,19 @@
 		42C244E82067AA7200436FA0 /* GalleryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */; };
 		42C244E92067AA7300436FA0 /* GalleryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */; };
 		42DA1EC2207373EF000819C9 /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DA1EC1207373EF000819C9 /* BluetoothManager.m */; };
+		42DBBB2520AE822500650B7A /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB1320AE822500650B7A /* MOBFoundation.framework */; };
+		42DBBB2620AE822500650B7A /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB1520AE822500650B7A /* ShareSDK.framework */; };
+		42DBBB2720AE822500650B7A /* ShareSDKConfigFile.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 42DBBB1820AE822500650B7A /* ShareSDKConfigFile.bundle */; };
+		42DBBB2820AE822500650B7A /* ShareSDKConfigFile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB1920AE822500650B7A /* ShareSDKConfigFile.framework */; };
+		42DBBB2920AE822500650B7A /* ShareSDKExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB1A20AE822500650B7A /* ShareSDKExtension.framework */; };
+		42DBBB2A20AE822500650B7A /* ShareSDKUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 42DBBB1B20AE822500650B7A /* ShareSDKUI.bundle */; };
+		42DBBB2B20AE822500650B7A /* ShareSDKUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB1C20AE822500650B7A /* ShareSDKUI.framework */; };
+		42DBBB2C20AE822500650B7A /* FacebookConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB1E20AE822500650B7A /* FacebookConnector.framework */; };
+		42DBBB2D20AE822500650B7A /* InstagramConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB1F20AE822500650B7A /* InstagramConnector.framework */; };
+		42DBBB2E20AE822500650B7A /* TwitterConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB2020AE822500650B7A /* TwitterConnector.framework */; };
+		42DBBB2F20AE822500650B7A /* YouTubeConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB2120AE822500650B7A /* YouTubeConnector.framework */; };
+		42DBBB3020AE822500650B7A /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 42DBBB2320AE822500650B7A /* ShareSDK.bundle */; };
+		42DBBB3120AE822500650B7A /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB2420AE822500650B7A /* ShareSDKConnector.framework */; };
 		99CA651C570305177DA379B1 /* Pods_Taro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E6CFB29E817E33A8C720A4 /* Pods_Taro.framework */; };
 /* End PBXBuildFile section */
 
@@ -74,18 +75,6 @@
 		2BB21B2020809CE200620A6D /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		2BB21B292080A96E00620A6D /* PlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayViewController.h; sourceTree = "<group>"; };
 		2BB21B2A2080A96F00620A6D /* PlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayViewController.m; sourceTree = "<group>"; };
-		4224BBFD2085027600C47EBE /* ShareSDKConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKConnector.framework; sourceTree = "<group>"; };
-		4224BBFE2085027600C47EBE /* ShareSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDK.bundle; sourceTree = "<group>"; };
-		4224BC002085027600C47EBE /* ShareSDKUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKUI.bundle; sourceTree = "<group>"; };
-		4224BC012085027600C47EBE /* ShareSDKConfigFile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKConfigFile.framework; sourceTree = "<group>"; };
-		4224BC022085027600C47EBE /* ShareSDKExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKExtension.framework; sourceTree = "<group>"; };
-		4224BC032085027600C47EBE /* ShareSDKUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKUI.framework; sourceTree = "<group>"; };
-		4224BC042085027600C47EBE /* ShareSDKConfigFile.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKConfigFile.bundle; sourceTree = "<group>"; };
-		4224BC062085027600C47EBE /* YouTubeConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YouTubeConnector.framework; sourceTree = "<group>"; };
-		4224BC072085027600C47EBE /* TwitterConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterConnector.framework; sourceTree = "<group>"; };
-		4224BC082085027600C47EBE /* FacebookConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookConnector.framework; sourceTree = "<group>"; };
-		4224BC092085027600C47EBE /* ShareSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDK.framework; sourceTree = "<group>"; };
-		4224BC0B2085027600C47EBE /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
 		4224BC18208502F700C47EBE /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		4224BC1C2085034100C47EBE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		422E7627206A31BD00B8F443 /* CameraCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraCell.h; sourceTree = "<group>"; };
@@ -149,6 +138,19 @@
 		42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCollectionViewCell.xib; sourceTree = "<group>"; };
 		42DA1EC0207373EF000819C9 /* BluetoothManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothManager.h; sourceTree = "<group>"; };
 		42DA1EC1207373EF000819C9 /* BluetoothManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
+		42DBBB1320AE822500650B7A /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
+		42DBBB1520AE822500650B7A /* ShareSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDK.framework; sourceTree = "<group>"; };
+		42DBBB1820AE822500650B7A /* ShareSDKConfigFile.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKConfigFile.bundle; sourceTree = "<group>"; };
+		42DBBB1920AE822500650B7A /* ShareSDKConfigFile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKConfigFile.framework; sourceTree = "<group>"; };
+		42DBBB1A20AE822500650B7A /* ShareSDKExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKExtension.framework; sourceTree = "<group>"; };
+		42DBBB1B20AE822500650B7A /* ShareSDKUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKUI.bundle; sourceTree = "<group>"; };
+		42DBBB1C20AE822500650B7A /* ShareSDKUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKUI.framework; sourceTree = "<group>"; };
+		42DBBB1E20AE822500650B7A /* FacebookConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookConnector.framework; sourceTree = "<group>"; };
+		42DBBB1F20AE822500650B7A /* InstagramConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = InstagramConnector.framework; sourceTree = "<group>"; };
+		42DBBB2020AE822500650B7A /* TwitterConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterConnector.framework; sourceTree = "<group>"; };
+		42DBBB2120AE822500650B7A /* YouTubeConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YouTubeConnector.framework; sourceTree = "<group>"; };
+		42DBBB2320AE822500650B7A /* ShareSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDK.bundle; sourceTree = "<group>"; };
+		42DBBB2420AE822500650B7A /* ShareSDKConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKConnector.framework; sourceTree = "<group>"; };
 		52495895D933E821E4B7A930 /* Pods-Taro.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Taro.release.xcconfig"; path = "Pods/Target Support Files/Pods-Taro/Pods-Taro.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -157,98 +159,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42DBBB2E20AE822500650B7A /* TwitterConnector.framework in Frameworks */,
 				4224BC1D2085034100C47EBE /* JavaScriptCore.framework in Frameworks */,
+				42DBBB2520AE822500650B7A /* MOBFoundation.framework in Frameworks */,
+				42DBBB2F20AE822500650B7A /* YouTubeConnector.framework in Frameworks */,
 				4224BC1B2085032E00C47EBE /* libstdc++.tbd in Frameworks */,
+				42DBBB2620AE822500650B7A /* ShareSDK.framework in Frameworks */,
+				42DBBB2820AE822500650B7A /* ShareSDKConfigFile.framework in Frameworks */,
+				42DBBB3120AE822500650B7A /* ShareSDKConnector.framework in Frameworks */,
+				42DBBB2D20AE822500650B7A /* InstagramConnector.framework in Frameworks */,
 				4224BC1A2085030500C47EBE /* libz.tbd in Frameworks */,
 				4224BC19208502F700C47EBE /* libicucore.tbd in Frameworks */,
-				4224BC142085027800C47EBE /* TwitterConnector.framework in Frameworks */,
 				427116492079189500B762ED /* Accounts.framework in Frameworks */,
 				427116472079186000B762ED /* Social.framework in Frameworks */,
 				427116452079183A00B762ED /* MessageUI.framework in Frameworks */,
-				4224BC0F2085027700C47EBE /* ShareSDKConfigFile.framework in Frameworks */,
-				4224BC0C2085027700C47EBE /* ShareSDKConnector.framework in Frameworks */,
-				4224BC112085027700C47EBE /* ShareSDKUI.framework in Frameworks */,
-				4224BC132085027800C47EBE /* YouTubeConnector.framework in Frameworks */,
+				42DBBB2B20AE822500650B7A /* ShareSDKUI.framework in Frameworks */,
 				4240172E205FAE6B007885C4 /* CoreBluetooth.framework in Frameworks */,
-				4224BC162085027800C47EBE /* ShareSDK.framework in Frameworks */,
+				42DBBB2C20AE822500650B7A /* FacebookConnector.framework in Frameworks */,
+				42DBBB2920AE822500650B7A /* ShareSDKExtension.framework in Frameworks */,
 				42401724205F6E51007885C4 /* AVFoundation.framework in Frameworks */,
 				99CA651C570305177DA379B1 /* Pods_Taro.framework in Frameworks */,
-				4224BC172085027800C47EBE /* MOBFoundation.framework in Frameworks */,
-				4224BC102085027700C47EBE /* ShareSDKExtension.framework in Frameworks */,
-				4224BC152085027800C47EBE /* FacebookConnector.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4224BBF92085027600C47EBE /* SDK */ = {
-			isa = PBXGroup;
-			children = (
-				4224BBFA2085027600C47EBE /* ShareSDK */,
-				4224BC0A2085027600C47EBE /* Required */,
-			);
-			path = SDK;
-			sourceTree = "<group>";
-		};
-		4224BBFA2085027600C47EBE /* ShareSDK */ = {
-			isa = PBXGroup;
-			children = (
-				4224BBFB2085027600C47EBE /* Support */,
-				4224BC092085027600C47EBE /* ShareSDK.framework */,
-			);
-			path = ShareSDK;
-			sourceTree = "<group>";
-		};
-		4224BBFB2085027600C47EBE /* Support */ = {
-			isa = PBXGroup;
-			children = (
-				4224BBFC2085027600C47EBE /* Required */,
-				4224BBFF2085027600C47EBE /* Optional */,
-				4224BC052085027600C47EBE /* PlatformConnector */,
-			);
-			path = Support;
-			sourceTree = "<group>";
-		};
-		4224BBFC2085027600C47EBE /* Required */ = {
-			isa = PBXGroup;
-			children = (
-				4224BBFD2085027600C47EBE /* ShareSDKConnector.framework */,
-				4224BBFE2085027600C47EBE /* ShareSDK.bundle */,
-			);
-			path = Required;
-			sourceTree = "<group>";
-		};
-		4224BBFF2085027600C47EBE /* Optional */ = {
-			isa = PBXGroup;
-			children = (
-				4224BC002085027600C47EBE /* ShareSDKUI.bundle */,
-				4224BC012085027600C47EBE /* ShareSDKConfigFile.framework */,
-				4224BC022085027600C47EBE /* ShareSDKExtension.framework */,
-				4224BC032085027600C47EBE /* ShareSDKUI.framework */,
-				4224BC042085027600C47EBE /* ShareSDKConfigFile.bundle */,
-			);
-			path = Optional;
-			sourceTree = "<group>";
-		};
-		4224BC052085027600C47EBE /* PlatformConnector */ = {
-			isa = PBXGroup;
-			children = (
-				4224BC062085027600C47EBE /* YouTubeConnector.framework */,
-				4224BC072085027600C47EBE /* TwitterConnector.framework */,
-				4224BC082085027600C47EBE /* FacebookConnector.framework */,
-			);
-			path = PlatformConnector;
-			sourceTree = "<group>";
-		};
-		4224BC0A2085027600C47EBE /* Required */ = {
-			isa = PBXGroup;
-			children = (
-				4224BC0B2085027600C47EBE /* MOBFoundation.framework */,
-			);
-			path = Required;
-			sourceTree = "<group>";
-		};
 		42401722205F6E51007885C4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -289,7 +225,7 @@
 		4274A2EE205B72A800844BCE /* Taro */ = {
 			isa = PBXGroup;
 			children = (
-				4224BBF92085027600C47EBE /* SDK */,
+				42DBBB1120AE822500650B7A /* SDK */,
 				42B3A699207A603D007DF798 /* 连接摄像头GIF.gif */,
 				4274A2EF205B72A800844BCE /* AppDelegate.h */,
 				4274A2F0205B72A800844BCE /* AppDelegate.m */,
@@ -346,6 +282,74 @@
 				4274A314205B9EBE00844BCE /* GolbalDefine.h */,
 			);
 			path = Taro;
+			sourceTree = "<group>";
+		};
+		42DBBB1120AE822500650B7A /* SDK */ = {
+			isa = PBXGroup;
+			children = (
+				42DBBB1220AE822500650B7A /* Required */,
+				42DBBB1420AE822500650B7A /* ShareSDK */,
+			);
+			path = SDK;
+			sourceTree = "<group>";
+		};
+		42DBBB1220AE822500650B7A /* Required */ = {
+			isa = PBXGroup;
+			children = (
+				42DBBB1320AE822500650B7A /* MOBFoundation.framework */,
+			);
+			path = Required;
+			sourceTree = "<group>";
+		};
+		42DBBB1420AE822500650B7A /* ShareSDK */ = {
+			isa = PBXGroup;
+			children = (
+				42DBBB1520AE822500650B7A /* ShareSDK.framework */,
+				42DBBB1620AE822500650B7A /* Support */,
+			);
+			path = ShareSDK;
+			sourceTree = "<group>";
+		};
+		42DBBB1620AE822500650B7A /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				42DBBB1720AE822500650B7A /* Optional */,
+				42DBBB1D20AE822500650B7A /* PlatformConnector */,
+				42DBBB2220AE822500650B7A /* Required */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		42DBBB1720AE822500650B7A /* Optional */ = {
+			isa = PBXGroup;
+			children = (
+				42DBBB1820AE822500650B7A /* ShareSDKConfigFile.bundle */,
+				42DBBB1920AE822500650B7A /* ShareSDKConfigFile.framework */,
+				42DBBB1A20AE822500650B7A /* ShareSDKExtension.framework */,
+				42DBBB1B20AE822500650B7A /* ShareSDKUI.bundle */,
+				42DBBB1C20AE822500650B7A /* ShareSDKUI.framework */,
+			);
+			path = Optional;
+			sourceTree = "<group>";
+		};
+		42DBBB1D20AE822500650B7A /* PlatformConnector */ = {
+			isa = PBXGroup;
+			children = (
+				42DBBB1E20AE822500650B7A /* FacebookConnector.framework */,
+				42DBBB1F20AE822500650B7A /* InstagramConnector.framework */,
+				42DBBB2020AE822500650B7A /* TwitterConnector.framework */,
+				42DBBB2120AE822500650B7A /* YouTubeConnector.framework */,
+			);
+			path = PlatformConnector;
+			sourceTree = "<group>";
+		};
+		42DBBB2220AE822500650B7A /* Required */ = {
+			isa = PBXGroup;
+			children = (
+				42DBBB2320AE822500650B7A /* ShareSDK.bundle */,
+				42DBBB2420AE822500650B7A /* ShareSDKConnector.framework */,
+			);
+			path = Required;
 			sourceTree = "<group>";
 		};
 		EAC61F90E1374BD3779EEA2F /* Pods */ = {
@@ -418,23 +422,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4224BC122085027700C47EBE /* ShareSDKConfigFile.bundle in Resources */,
 				4274A30D205B781300844BCE /* Localizable.strings in Resources */,
-				4224BC0D2085027700C47EBE /* ShareSDK.bundle in Resources */,
 				42675C7D20679DEC005CBB33 /* GalleryViewController.xib in Resources */,
 				42B3A69A207A603D007DF798 /* 连接摄像头GIF.gif in Resources */,
 				4274A2FC205B72A800844BCE /* LaunchScreen.storyboard in Resources */,
 				4274A307205B74E100844BCE /* InfoPlist.strings in Resources */,
 				422E762B206A31BD00B8F443 /* CameraCell.xib in Resources */,
 				4272503C2069D9CA001DAE18 /* ShootViewController.xib in Resources */,
+				42DBBB2A20AE822500650B7A /* ShareSDKUI.bundle in Resources */,
 				4271162C20779C3A00B762ED /* AlertBluetoothDevices.xib in Resources */,
 				42711627206BD1C700B762ED /* SliderCell.xib in Resources */,
 				4274A2F9205B72A800844BCE /* Assets.xcassets in Resources */,
 				422E7630206A358000B8F443 /* TaroCell.xib in Resources */,
-				4224BC0E2085027700C47EBE /* ShareSDKUI.bundle in Resources */,
 				42C244E92067AA7300436FA0 /* GalleryCollectionViewCell.xib in Resources */,
+				42DBBB2720AE822500650B7A /* ShareSDKConfigFile.bundle in Resources */,
 				4274A2F7205B72A800844BCE /* Main.storyboard in Resources */,
 				42C01CD72085C5E800F9E0E9 /* ShareViewController.xib in Resources */,
+				42DBBB3020AE822500650B7A /* ShareSDK.bundle in Resources */,
 				422E763D206B9A3A00B8F443 /* WhiteBalanceCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
