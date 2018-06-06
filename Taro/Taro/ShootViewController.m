@@ -16,6 +16,7 @@
 #import "BluetoothManager.h"
 #import "UIImage+GradientColor.h"
 #import <Photos/Photos.h>
+#import "MTClockView.h"
 
 @interface DiagonalView : UIView
 
@@ -75,6 +76,13 @@ static NSString *flash = @"flash";
 static NSString *iso = @"iso";
 
 @interface ShootViewController ()<UITableViewDelegate,UITableViewDataSource,SliderCellDelegate,AVCaptureFileOutputRecordingDelegate,CAAnimationDelegate>
+{
+    CGFloat angle;
+    CGFloat preAngle;
+    CGFloat sub;
+    
+    CGFloat rightAngle;
+}
 
 @property (weak, nonatomic) CAShapeLayer *maskLayer;
 
@@ -125,6 +133,12 @@ static NSString *iso = @"iso";
 @property (nonatomic, strong) CAGradientLayer *rightLayer;
 
 @property (nonatomic, strong) PHAssetCollection *taroAssetCollection;
+
+@property (nonatomic, strong) MTClockView *clockView;
+
+@property (nonatomic, strong) UIView *panView;
+
+@property (nonatomic, strong) UIImageView *arrowView;
 
 @end
 
@@ -728,6 +742,61 @@ static NSString *iso = @"iso";
     [footerView addSubview:button];
     _subTable.tableFooterView = footerView;
     _subTable.backgroundColor = UIColorFromRGBAndAlpha(0x000000, 0.6);
+    
+    angle = 0;
+    preAngle = 0;
+    _clockView = [[MTClockView alloc] initWithFrame:(CGRect){Width - Height/2,0,Height,Height}];
+    [self.view addSubview:_clockView];
+    
+    _panView = [[UIView alloc] initWithFrame:_clockView.frame];
+    _panView.backgroundColor = [UIColor clearColor];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleClockPan:)];
+//    panGesture.delegate = self;
+    [panGesture setMaximumNumberOfTouches:1];
+    [_panView addGestureRecognizer:panGesture];
+    _arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(Width-Height/2-6, Height/2 - 8, 16, 16)];
+    _arrowView.image = [UIImage imageNamed:@"箭头 三角形"];
+    [self.view addSubview:_arrowView];
+    [self.view addSubview:_panView];
+    _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
+    UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.videoView addGestureRecognizer:leftSwipeGesture];
+    UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.videoView addGestureRecognizer:rightSwipeGesture];
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
+        _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
+    }
+    else if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
+        _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
+    }
+}
+
+
+- (void)handleClockPan:(UIPanGestureRecognizer *)recognizer {
+    UIView *view = recognizer.view;
+    CGPoint translation = [recognizer locationInView:view];
+    
+    //    NSLog(@"translationX:%f\ntranslationY:%f",translation.x,translation.y);
+    CGFloat angleInRadians = atan2f(translation.y - view.frame.size.height/2, translation.x - view.frame.size.width/2);
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        angle = angleInRadians;
+    }
+    sub = angleInRadians - angle;
+    CGFloat sumAngle = sub + preAngle;
+    self.clockView.transform = CGAffineTransformMakeRotation(sumAngle);
+    rightAngle = (sumAngle) * 180 / M_PI;
+    NSLog(@"%f",rightAngle);
+    int x = rightAngle / 3.6;
+    
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        preAngle += sub;
+    }
+    //    NSLog(@"angle:%f,angleInRadians:%f",angle,angleInRadians);
 }
 
 - (void)subTableBack{

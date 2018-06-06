@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2BB21B2B2080A96F00620A6D /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB21B2A2080A96F00620A6D /* PlayViewController.m */; };
+		4218CE4220C847D40083C0E7 /* MTClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4218CE4120C847D30083C0E7 /* MTClockView.m */; };
 		4224BC19208502F700C47EBE /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4224BC18208502F700C47EBE /* libicucore.tbd */; };
 		4224BC1A2085030500C47EBE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BB21B1C20809CD000620A6D /* libz.tbd */; };
 		4224BC1B2085032E00C47EBE /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BB21B1E20809CDA00620A6D /* libstdc++.tbd */; };
@@ -75,6 +76,8 @@
 		2BB21B2020809CE200620A6D /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		2BB21B292080A96E00620A6D /* PlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayViewController.h; sourceTree = "<group>"; };
 		2BB21B2A2080A96F00620A6D /* PlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayViewController.m; sourceTree = "<group>"; };
+		4218CE4020C847D30083C0E7 /* MTClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTClockView.h; sourceTree = "<group>"; };
+		4218CE4120C847D30083C0E7 /* MTClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTClockView.m; sourceTree = "<group>"; };
 		4224BC18208502F700C47EBE /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		4224BC1C2085034100C47EBE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		422E7627206A31BD00B8F443 /* CameraCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraCell.h; sourceTree = "<group>"; };
@@ -231,6 +234,8 @@
 				4274A2F0205B72A800844BCE /* AppDelegate.m */,
 				4274A2F2205B72A800844BCE /* ViewController.h */,
 				4274A2F3205B72A800844BCE /* ViewController.m */,
+				4218CE4020C847D30083C0E7 /* MTClockView.h */,
+				4218CE4120C847D30083C0E7 /* MTClockView.m */,
 				42675C7920679DEC005CBB33 /* GalleryViewController.h */,
 				42675C7A20679DEC005CBB33 /* GalleryViewController.m */,
 				42675C7B20679DEC005CBB33 /* GalleryViewController.xib */,
@@ -523,6 +528,7 @@
 				422E762F206A358000B8F443 /* TaroCell.m in Sources */,
 				422E763C206B9A3A00B8F443 /* WhiteBalanceCell.m in Sources */,
 				42B3A698207A5337007DF798 /* UIImage+GradientColor.m in Sources */,
+				4218CE4220C847D40083C0E7 /* MTClockView.m in Sources */,
 				4274A2FF205B72A800844BCE /* main.m in Sources */,
 				4240172A205F9F2F007885C4 /* UIView+Category.m in Sources */,
 				42C01CD62085C5E800F9E0E9 /* ShareViewController.m in Sources */,
