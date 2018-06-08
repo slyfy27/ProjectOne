@@ -140,6 +140,8 @@ static NSString *iso = @"iso";
 
 @property (nonatomic, strong) UIImageView *arrowView;
 
+@property (nonatomic, strong) UIView *swipeView;
+
 @end
 
 @implementation ShootViewController
@@ -757,14 +759,17 @@ static NSString *iso = @"iso";
     _arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(Width-Height/2-6, Height/2 - 8, 16, 16)];
     _arrowView.image = [UIImage imageNamed:@"箭头 三角形"];
     [self.view addSubview:_arrowView];
-    [self.view addSubview:_panView];
+    [self.view insertSubview:_panView belowSubview:_recordBtn];
     _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
+    
+    _swipeView = [[UIView alloc] initWithFrame:(CGRect){0,0,Width,Height}];
     UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.videoView addGestureRecognizer:leftSwipeGesture];
     UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.videoView addGestureRecognizer:rightSwipeGesture];
+    [self.swipeView addGestureRecognizer:rightSwipeGesture];
+    [self.view insertSubview:self.swipeView belowSubview:self.recordBtn];
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
