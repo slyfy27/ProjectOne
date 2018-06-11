@@ -17,6 +17,7 @@
 #import "UIImage+GradientColor.h"
 #import <Photos/Photos.h>
 #import "MTClockView.h"
+#import "FocusSlider.h"
 
 @interface DiagonalView : UIView
 
@@ -141,6 +142,12 @@ static NSString *iso = @"iso";
 @property (nonatomic, strong) UIImageView *arrowView;
 
 @property (nonatomic, strong) UIView *swipeView;
+
+@property (nonatomic, strong) FocusSlider *focusSlider;
+
+@property (nonatomic, strong) UIImageView *circleImageView;
+
+@property (nonatomic, strong) UILabel *focusLabel;
 
 @end
 
@@ -747,8 +754,15 @@ static NSString *iso = @"iso";
     
     angle = 0;
     preAngle = 0;
+    
+    
+    _focusSlider = [[FocusSlider alloc] initWithFrame:(CGRect){Width - Height/2.0 - 70,-35,Height + 70, Height + 70}];
+    _focusSlider.transform = CGAffineTransformMakeRotation(-M_PI_2);
+    [_focusSlider addTarget:self action:@selector(focusSliderValueChange:) forControlEvents:UIControlEventValueChanged];
+    [self.view insertSubview:self.focusSlider belowSubview:_recordBtn];
+    
     _clockView = [[MTClockView alloc] initWithFrame:(CGRect){Width - Height/2,0,Height,Height}];
-    [self.view addSubview:_clockView];
+    [self.view insertSubview:_clockView belowSubview:_recordBtn];
     
     _panView = [[UIView alloc] initWithFrame:_clockView.frame];
     _panView.backgroundColor = [UIColor clearColor];
@@ -756,28 +770,58 @@ static NSString *iso = @"iso";
 //    panGesture.delegate = self;
     [panGesture setMaximumNumberOfTouches:1];
     [_panView addGestureRecognizer:panGesture];
+//    _panView.userInteractionEnabled = YES;
     _arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(Width-Height/2-6, Height/2 - 8, 16, 16)];
     _arrowView.image = [UIImage imageNamed:@"箭头 三角形"];
     [self.view addSubview:_arrowView];
     [self.view insertSubview:_panView belowSubview:_recordBtn];
-    _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
+    
+    _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
     
     _swipeView = [[UIView alloc] initWithFrame:(CGRect){0,0,Width,Height}];
     UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.videoView addGestureRecognizer:leftSwipeGesture];
+    [self.swipeView addGestureRecognizer:leftSwipeGesture];
     UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
     [self.swipeView addGestureRecognizer:rightSwipeGesture];
-    [self.view insertSubview:self.swipeView belowSubview:self.recordBtn];
+    [self.view insertSubview:self.swipeView belowSubview:self.focusSlider];
+    
+    _focusLabel = [[UILabel alloc] initWithFrame:(CGRect){0,0,40,18}];
+    _focusLabel.textColor = [UIColor whiteColor];
+    _focusLabel.font = [UIFont systemFontOfSize:15];
+    _focusLabel.center = CGPointMake(Width/2, Height/2);
+    [self.view addSubview:_focusLabel];
+}
+
+- (void)focusSliderValueChange:(FocusSlider *)slider{
+    _focusLabel.hidden = NO;
+    float value;
+    if (slider.value < 0) {
+        value = (0 - slider.value)*1.0/120.0 + 0.5;
+    }
+    else{
+        value = (60-slider.value)*1.0/120;
+    }
+    _focusLabel.text = [NSString stringWithFormat:@"%.2f",value];
+    if (!_isFront) {
+        [_backDevice lockForConfiguration:NULL];
+        [_backDevice setFocusModeLockedWithLensPosition:value completionHandler:^(CMTime syncTime) {
+            
+        }];
+        [_backDevice unlockForConfiguration];
+    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        _focusLabel.hidden = YES;
+    });
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
     if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
-        _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
+        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
     }
     else if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
-        _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
+        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
     }
 }
 
@@ -795,13 +839,22 @@ static NSString *iso = @"iso";
     CGFloat sumAngle = sub + preAngle;
     self.clockView.transform = CGAffineTransformMakeRotation(sumAngle);
     rightAngle = (sumAngle) * 180 / M_PI;
-    NSLog(@"%f",rightAngle);
     int x = rightAngle / 3.6;
-    
+    x = x%100;
+    float y = x*1.0/10;
+    NSLog(@"x=%.2f",x*1.0/10);
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         preAngle += sub;
     }
-    //    NSLog(@"angle:%f,angleInRadians:%f",angle,angleInRadians);
+//    if (!_isFront) {
+//        [_backDevice lockForConfiguration:NULL];
+//        NSInteger v = (_backDevice.activeFormat.maxISO - _backDevice.activeFormat.minISO) * y + _backDevice.activeFormat.minISO;
+//        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:iso];
+//        [_backDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:v completionHandler:^(CMTime syncTime) {
+//
+//        }];
+//        [_backDevice unlockForConfiguration];
+//    }
 }
 
 - (void)subTableBack{

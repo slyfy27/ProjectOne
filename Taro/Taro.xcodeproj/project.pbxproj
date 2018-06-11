@@ -50,6 +50,7 @@
 		42C01CD72085C5E800F9E0E9 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42C01CD52085C5E800F9E0E9 /* ShareViewController.xib */; };
 		42C244E82067AA7200436FA0 /* GalleryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */; };
 		42C244E92067AA7300436FA0 /* GalleryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */; };
+		42CF344C20CED6C100F9808A /* FocusSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 42CF344B20CED6C000F9808A /* FocusSlider.m */; };
 		42DA1EC2207373EF000819C9 /* BluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 42DA1EC1207373EF000819C9 /* BluetoothManager.m */; };
 		42DBBB2520AE822500650B7A /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB1320AE822500650B7A /* MOBFoundation.framework */; };
 		42DBBB2620AE822500650B7A /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB1520AE822500650B7A /* ShareSDK.framework */; };
@@ -139,6 +140,8 @@
 		42C244E52067AA7200436FA0 /* GalleryCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GalleryCollectionViewCell.h; sourceTree = "<group>"; };
 		42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GalleryCollectionViewCell.m; sourceTree = "<group>"; };
 		42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCollectionViewCell.xib; sourceTree = "<group>"; };
+		42CF344A20CED6C000F9808A /* FocusSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusSlider.h; sourceTree = "<group>"; };
+		42CF344B20CED6C000F9808A /* FocusSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FocusSlider.m; sourceTree = "<group>"; };
 		42DA1EC0207373EF000819C9 /* BluetoothManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothManager.h; sourceTree = "<group>"; };
 		42DA1EC1207373EF000819C9 /* BluetoothManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BluetoothManager.m; sourceTree = "<group>"; };
 		42DBBB1320AE822500650B7A /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
@@ -234,6 +237,8 @@
 				4274A2F0205B72A800844BCE /* AppDelegate.m */,
 				4274A2F2205B72A800844BCE /* ViewController.h */,
 				4274A2F3205B72A800844BCE /* ViewController.m */,
+				42CF344A20CED6C000F9808A /* FocusSlider.h */,
+				42CF344B20CED6C000F9808A /* FocusSlider.m */,
 				4218CE4020C847D30083C0E7 /* MTClockView.h */,
 				4218CE4120C847D30083C0E7 /* MTClockView.m */,
 				42675C7920679DEC005CBB33 /* GalleryViewController.h */,
@@ -537,6 +542,7 @@
 				4271164C2079F22800B762ED /* SlyShowProgress.m in Sources */,
 				422E762A206A31BD00B8F443 /* CameraCell.m in Sources */,
 				42DA1EC2207373EF000819C9 /* BluetoothManager.m in Sources */,
+				42CF344C20CED6C100F9808A /* FocusSlider.m in Sources */,
 				42C244E82067AA7200436FA0 /* GalleryCollectionViewCell.m in Sources */,
 				4274A2F1205B72A800844BCE /* AppDelegate.m in Sources */,
 				42675C7C20679DEC005CBB33 /* GalleryViewController.m in Sources */,
