@@ -656,43 +656,43 @@ static NSString *iso = @"iso";
     [self.view layoutIfNeeded];
     [self configCameraSetting];
     [self configView];
-    _captureSession = [[AVCaptureSession alloc] init];
-    if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
-        [_captureSession setSessionPreset:[[NSUserDefaults standardUserDefaults] valueForKey:resolution]];
-    }
-    _backDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
-    _autoGains = [_backDevice deviceWhiteBalanceGains];
-    _frontDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionFront];
-    _backInput = [AVCaptureDeviceInput deviceInputWithDevice:_backDevice error:NULL];
-    _frontInput = [AVCaptureDeviceInput deviceInputWithDevice:_frontDevice error:NULL];
-    
-    if (_backInput) {
-        if ([_captureSession canAddInput:_backInput]){
-            [_captureSession addInput:_backInput];
-        }
-    }
-    // 音频输入
-    AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio]; AVCaptureDeviceInput *audioIn = [[AVCaptureDeviceInput alloc] initWithDevice:audioDevice error:NULL];
-    if ([_captureSession canAddInput:audioIn]){
-        [_captureSession addInput:audioIn];
-    }
-    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
-    previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-    
-    [self.videoView.layer addSublayer:previewLayer];
-    [_captureSession startRunning];
-    _output = [[AVCaptureMovieFileOutput alloc] init];
-    CMTime maxDuration = CMTimeMake(3600, 1);//最大20分钟
-    _output.maxRecordedDuration = maxDuration;
-    _output.minFreeDiskSpaceLimit = 1024;
-    if ([_captureSession canAddOutput:_output]) {
-        [_captureSession addOutput:_output];
-    }
-    // 视频输出也需要设置成横屏的
-    AVCaptureConnection *outputVideoConnection = [_output connectionWithMediaType:AVMediaTypeVideo];
-    outputVideoConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+//    _captureSession = [[AVCaptureSession alloc] init];
+//    if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
+//        [_captureSession setSessionPreset:[[NSUserDefaults standardUserDefaults] valueForKey:resolution]];
+//    }
+//    _backDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+//    _autoGains = [_backDevice deviceWhiteBalanceGains];
+//    _frontDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionFront];
+//    _backInput = [AVCaptureDeviceInput deviceInputWithDevice:_backDevice error:NULL];
+//    _frontInput = [AVCaptureDeviceInput deviceInputWithDevice:_frontDevice error:NULL];
+//
+//    if (_backInput) {
+//        if ([_captureSession canAddInput:_backInput]){
+//            [_captureSession addInput:_backInput];
+//        }
+//    }
+//    // 音频输入
+//    AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio]; AVCaptureDeviceInput *audioIn = [[AVCaptureDeviceInput alloc] initWithDevice:audioDevice error:NULL];
+//    if ([_captureSession canAddInput:audioIn]){
+//        [_captureSession addInput:audioIn];
+//    }
+//    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
+//    previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+//    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+//    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+//
+//    [self.videoView.layer addSublayer:previewLayer];
+//    [_captureSession startRunning];
+//    _output = [[AVCaptureMovieFileOutput alloc] init];
+//    CMTime maxDuration = CMTimeMake(3600, 1);//最大20分钟
+//    _output.maxRecordedDuration = maxDuration;
+//    _output.minFreeDiskSpaceLimit = 1024;
+//    if ([_captureSession canAddOutput:_output]) {
+//        [_captureSession addOutput:_output];
+//    }
+//    // 视频输出也需要设置成横屏的
+//    AVCaptureConnection *outputVideoConnection = [_output connectionWithMediaType:AVMediaTypeVideo];
+//    outputVideoConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
 }
 
 
@@ -767,10 +767,8 @@ static NSString *iso = @"iso";
     _panView = [[UIView alloc] initWithFrame:_clockView.frame];
     _panView.backgroundColor = [UIColor clearColor];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleClockPan:)];
-//    panGesture.delegate = self;
     [panGesture setMaximumNumberOfTouches:1];
     [_panView addGestureRecognizer:panGesture];
-//    _panView.userInteractionEnabled = YES;
     _arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(Width-Height/2-6, Height/2 - 8, 16, 16)];
     _arrowView.image = [UIImage imageNamed:@"箭头 三角形"];
     [self.view addSubview:_arrowView];

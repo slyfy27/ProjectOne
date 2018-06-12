@@ -19,8 +19,8 @@
 		422E7630206A358000B8F443 /* TaroCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 422E762E206A358000B8F443 /* TaroCell.xib */; };
 		422E763C206B9A3A00B8F443 /* WhiteBalanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 422E763A206B9A3A00B8F443 /* WhiteBalanceCell.m */; };
 		422E763D206B9A3A00B8F443 /* WhiteBalanceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 422E763B206B9A3A00B8F443 /* WhiteBalanceCell.xib */; };
+		4233184320CFAB0F002FD8FE /* AuthDeniedAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4233184220CFAB0F002FD8FE /* AuthDeniedAlertView.m */; };
 		42401724205F6E51007885C4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42401723205F6E51007885C4 /* AVFoundation.framework */; };
-		42401727205F9C55007885C4 /* AuthDeniedAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 42401726205F9C55007885C4 /* AuthDeniedAlertView.m */; };
 		4240172A205F9F2F007885C4 /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 42401729205F9F2F007885C4 /* UIView+Category.m */; };
 		4240172E205FAE6B007885C4 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4240172D205FAE6B007885C4 /* CoreBluetooth.framework */; };
 		42675C73205E99EB005CBB33 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42675C72205E99EB005CBB33 /* BaseViewController.m */; };
@@ -90,9 +90,9 @@
 		422E7639206B9A3A00B8F443 /* WhiteBalanceCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WhiteBalanceCell.h; sourceTree = "<group>"; };
 		422E763A206B9A3A00B8F443 /* WhiteBalanceCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhiteBalanceCell.m; sourceTree = "<group>"; };
 		422E763B206B9A3A00B8F443 /* WhiteBalanceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WhiteBalanceCell.xib; sourceTree = "<group>"; };
+		4233184220CFAB0F002FD8FE /* AuthDeniedAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthDeniedAlertView.m; sourceTree = "<group>"; };
 		42401723205F6E51007885C4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		42401725205F9C55007885C4 /* AuthDeniedAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthDeniedAlertView.h; sourceTree = "<group>"; };
-		42401726205F9C55007885C4 /* AuthDeniedAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthDeniedAlertView.m; sourceTree = "<group>"; };
 		42401728205F9F2F007885C4 /* UIView+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
 		42401729205F9F2F007885C4 /* UIView+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
 		4240172D205FAE6B007885C4 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
@@ -191,6 +191,131 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4233183E20CFAA9B002FD8FE /* Shoot */ = {
+			isa = PBXGroup;
+			children = (
+				4233183F20CFAAB5002FD8FE /* Cell */,
+				427250382069D9CA001DAE18 /* ShootViewController.h */,
+				427250392069D9CA001DAE18 /* ShootViewController.m */,
+				4272503A2069D9CA001DAE18 /* ShootViewController.xib */,
+			);
+			path = Shoot;
+			sourceTree = "<group>";
+		};
+		4233183F20CFAAB5002FD8FE /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				422E7639206B9A3A00B8F443 /* WhiteBalanceCell.h */,
+				422E763A206B9A3A00B8F443 /* WhiteBalanceCell.m */,
+				422E763B206B9A3A00B8F443 /* WhiteBalanceCell.xib */,
+				422E7627206A31BD00B8F443 /* CameraCell.h */,
+				422E7628206A31BD00B8F443 /* CameraCell.m */,
+				422E7629206A31BD00B8F443 /* CameraCell.xib */,
+				422E762C206A358000B8F443 /* TaroCell.h */,
+				422E762D206A358000B8F443 /* TaroCell.m */,
+				422E762E206A358000B8F443 /* TaroCell.xib */,
+				42711623206BD1C700B762ED /* SliderCell.h */,
+				42711624206BD1C700B762ED /* SliderCell.m */,
+				42711625206BD1C700B762ED /* SliderCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		4233184020CFAAD2002FD8FE /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				42401725205F9C55007885C4 /* AuthDeniedAlertView.h */,
+				4233184220CFAB0F002FD8FE /* AuthDeniedAlertView.m */,
+				4271162820779C2B00B762ED /* AlertBluetoothDevices.h */,
+				4271162920779C2B00B762ED /* AlertBluetoothDevices.m */,
+				4271162B20779C3A00B762ED /* AlertBluetoothDevices.xib */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
+		4233184120CFAAEE002FD8FE /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				42DA1EC0207373EF000819C9 /* BluetoothManager.h */,
+				42DA1EC1207373EF000819C9 /* BluetoothManager.m */,
+			);
+			path = Bluetooth;
+			sourceTree = "<group>";
+		};
+		4233184420CFAB18002FD8FE /* Accessory */ = {
+			isa = PBXGroup;
+			children = (
+				4271164A2079F22800B762ED /* SlyShowProgress.h */,
+				4271164B2079F22800B762ED /* SlyShowProgress.m */,
+				42CF344A20CED6C000F9808A /* FocusSlider.h */,
+				42CF344B20CED6C000F9808A /* FocusSlider.m */,
+				4218CE4020C847D30083C0E7 /* MTClockView.h */,
+				4218CE4120C847D30083C0E7 /* MTClockView.m */,
+			);
+			path = Accessory;
+			sourceTree = "<group>";
+		};
+		4233184520CFAB27002FD8FE /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				4274A314205B9EBE00844BCE /* GolbalDefine.h */,
+				42B3A696207A5337007DF798 /* UIImage+GradientColor.h */,
+				42B3A697207A5337007DF798 /* UIImage+GradientColor.m */,
+				42401728205F9F2F007885C4 /* UIView+Category.h */,
+				42401729205F9F2F007885C4 /* UIView+Category.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		4233184620CFAB3A002FD8FE /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				4233184920CFAB5A002FD8FE /* Cell */,
+				42675C7920679DEC005CBB33 /* GalleryViewController.h */,
+				42675C7A20679DEC005CBB33 /* GalleryViewController.m */,
+				42675C7B20679DEC005CBB33 /* GalleryViewController.xib */,
+			);
+			path = Gallery;
+			sourceTree = "<group>";
+		};
+		4233184720CFAB45002FD8FE /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				42C01CD32085C5E800F9E0E9 /* ShareViewController.h */,
+				42C01CD42085C5E800F9E0E9 /* ShareViewController.m */,
+				42C01CD52085C5E800F9E0E9 /* ShareViewController.xib */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
+		4233184820CFAB4E002FD8FE /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				2BB21B292080A96E00620A6D /* PlayViewController.h */,
+				2BB21B2A2080A96F00620A6D /* PlayViewController.m */,
+			);
+			path = Play;
+			sourceTree = "<group>";
+		};
+		4233184920CFAB5A002FD8FE /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				42C244E52067AA7200436FA0 /* GalleryCollectionViewCell.h */,
+				42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */,
+				42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		4233184A20CFAB81002FD8FE /* Localizable */ = {
+			isa = PBXGroup;
+			children = (
+				4274A309205B74E100844BCE /* InfoPlist.strings */,
+				4274A30F205B781300844BCE /* Localizable.strings */,
+			);
+			path = Localizable;
+			sourceTree = "<group>";
+		};
 		42401722205F6E51007885C4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,65 +356,28 @@
 		4274A2EE205B72A800844BCE /* Taro */ = {
 			isa = PBXGroup;
 			children = (
+				4233184A20CFAB81002FD8FE /* Localizable */,
+				4233184820CFAB4E002FD8FE /* Play */,
+				4233184720CFAB45002FD8FE /* Share */,
+				4233184620CFAB3A002FD8FE /* Gallery */,
+				4233184520CFAB27002FD8FE /* Category */,
+				4233184420CFAB18002FD8FE /* Accessory */,
+				4233184120CFAAEE002FD8FE /* Bluetooth */,
+				4233184020CFAAD2002FD8FE /* Alert */,
+				4233183E20CFAA9B002FD8FE /* Shoot */,
 				42DBBB1120AE822500650B7A /* SDK */,
 				42B3A699207A603D007DF798 /* 连接摄像头GIF.gif */,
 				4274A2EF205B72A800844BCE /* AppDelegate.h */,
 				4274A2F0205B72A800844BCE /* AppDelegate.m */,
 				4274A2F2205B72A800844BCE /* ViewController.h */,
 				4274A2F3205B72A800844BCE /* ViewController.m */,
-				42CF344A20CED6C000F9808A /* FocusSlider.h */,
-				42CF344B20CED6C000F9808A /* FocusSlider.m */,
-				4218CE4020C847D30083C0E7 /* MTClockView.h */,
-				4218CE4120C847D30083C0E7 /* MTClockView.m */,
-				42675C7920679DEC005CBB33 /* GalleryViewController.h */,
-				42675C7A20679DEC005CBB33 /* GalleryViewController.m */,
-				42675C7B20679DEC005CBB33 /* GalleryViewController.xib */,
-				42C244E52067AA7200436FA0 /* GalleryCollectionViewCell.h */,
-				42C244E62067AA7200436FA0 /* GalleryCollectionViewCell.m */,
-				42C244E72067AA7200436FA0 /* GalleryCollectionViewCell.xib */,
-				42C01CD32085C5E800F9E0E9 /* ShareViewController.h */,
-				42C01CD42085C5E800F9E0E9 /* ShareViewController.m */,
-				42C01CD52085C5E800F9E0E9 /* ShareViewController.xib */,
-				427250382069D9CA001DAE18 /* ShootViewController.h */,
-				427250392069D9CA001DAE18 /* ShootViewController.m */,
-				4272503A2069D9CA001DAE18 /* ShootViewController.xib */,
-				2BB21B292080A96E00620A6D /* PlayViewController.h */,
-				2BB21B2A2080A96F00620A6D /* PlayViewController.m */,
-				422E7627206A31BD00B8F443 /* CameraCell.h */,
-				422E7628206A31BD00B8F443 /* CameraCell.m */,
-				422E7629206A31BD00B8F443 /* CameraCell.xib */,
-				422E762C206A358000B8F443 /* TaroCell.h */,
-				422E762D206A358000B8F443 /* TaroCell.m */,
-				422E762E206A358000B8F443 /* TaroCell.xib */,
-				422E7639206B9A3A00B8F443 /* WhiteBalanceCell.h */,
-				422E763A206B9A3A00B8F443 /* WhiteBalanceCell.m */,
-				422E763B206B9A3A00B8F443 /* WhiteBalanceCell.xib */,
-				42DA1EC0207373EF000819C9 /* BluetoothManager.h */,
-				42DA1EC1207373EF000819C9 /* BluetoothManager.m */,
-				42711623206BD1C700B762ED /* SliderCell.h */,
-				42711624206BD1C700B762ED /* SliderCell.m */,
-				42711625206BD1C700B762ED /* SliderCell.xib */,
-				42401725205F9C55007885C4 /* AuthDeniedAlertView.h */,
-				4271162820779C2B00B762ED /* AlertBluetoothDevices.h */,
-				4271162920779C2B00B762ED /* AlertBluetoothDevices.m */,
-				4271162B20779C3A00B762ED /* AlertBluetoothDevices.xib */,
-				42401728205F9F2F007885C4 /* UIView+Category.h */,
-				42401729205F9F2F007885C4 /* UIView+Category.m */,
 				42675C71205E99EB005CBB33 /* BaseViewController.h */,
 				42675C72205E99EB005CBB33 /* BaseViewController.m */,
-				4271164A2079F22800B762ED /* SlyShowProgress.h */,
-				4271164B2079F22800B762ED /* SlyShowProgress.m */,
-				42B3A696207A5337007DF798 /* UIImage+GradientColor.h */,
-				42B3A697207A5337007DF798 /* UIImage+GradientColor.m */,
 				4274A2F5205B72A800844BCE /* Main.storyboard */,
 				4274A2F8205B72A800844BCE /* Assets.xcassets */,
 				4274A2FA205B72A800844BCE /* LaunchScreen.storyboard */,
 				4274A2FD205B72A800844BCE /* Info.plist */,
 				4274A2FE205B72A800844BCE /* main.m */,
-				4274A309205B74E100844BCE /* InfoPlist.strings */,
-				42401726205F9C55007885C4 /* AuthDeniedAlertView.m */,
-				4274A30F205B781300844BCE /* Localizable.strings */,
-				4274A314205B9EBE00844BCE /* GolbalDefine.h */,
 			);
 			path = Taro;
 			sourceTree = "<group>";
@@ -526,7 +614,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BB21B2B2080A96F00620A6D /* PlayViewController.m in Sources */,
-				42401727205F9C55007885C4 /* AuthDeniedAlertView.m in Sources */,
 				4274A2F4205B72A800844BCE /* ViewController.m in Sources */,
 				42675C73205E99EB005CBB33 /* BaseViewController.m in Sources */,
 				4271162A20779C2B00B762ED /* AlertBluetoothDevices.m in Sources */,
@@ -541,6 +628,7 @@
 				42711626206BD1C700B762ED /* SliderCell.m in Sources */,
 				4271164C2079F22800B762ED /* SlyShowProgress.m in Sources */,
 				422E762A206A31BD00B8F443 /* CameraCell.m in Sources */,
+				4233184320CFAB0F002FD8FE /* AuthDeniedAlertView.m in Sources */,
 				42DA1EC2207373EF000819C9 /* BluetoothManager.m in Sources */,
 				42CF344C20CED6C100F9808A /* FocusSlider.m in Sources */,
 				42C244E82067AA7200436FA0 /* GalleryCollectionViewCell.m in Sources */,
