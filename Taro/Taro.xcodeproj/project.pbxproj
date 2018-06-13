@@ -65,6 +65,7 @@
 		42DBBB2F20AE822500650B7A /* YouTubeConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB2120AE822500650B7A /* YouTubeConnector.framework */; };
 		42DBBB3020AE822500650B7A /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 42DBBB2320AE822500650B7A /* ShareSDK.bundle */; };
 		42DBBB3120AE822500650B7A /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DBBB2420AE822500650B7A /* ShareSDKConnector.framework */; };
+		42E7CEB120D17A85004954AA /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 42E7CEB020D17A85004954AA /* CircleView.m */; };
 		99CA651C570305177DA379B1 /* Pods_Taro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E6CFB29E817E33A8C720A4 /* Pods_Taro.framework */; };
 /* End PBXBuildFile section */
 
@@ -157,6 +158,8 @@
 		42DBBB2120AE822500650B7A /* YouTubeConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YouTubeConnector.framework; sourceTree = "<group>"; };
 		42DBBB2320AE822500650B7A /* ShareSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDK.bundle; sourceTree = "<group>"; };
 		42DBBB2420AE822500650B7A /* ShareSDKConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKConnector.framework; sourceTree = "<group>"; };
+		42E7CEAF20D17A85004954AA /* CircleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
+		42E7CEB020D17A85004954AA /* CircleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
 		52495895D933E821E4B7A930 /* Pods-Taro.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Taro.release.xcconfig"; path = "Pods/Target Support Files/Pods-Taro/Pods-Taro.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -251,6 +254,8 @@
 				42CF344B20CED6C000F9808A /* FocusSlider.m */,
 				4218CE4020C847D30083C0E7 /* MTClockView.h */,
 				4218CE4120C847D30083C0E7 /* MTClockView.m */,
+				42E7CEAF20D17A85004954AA /* CircleView.h */,
+				42E7CEB020D17A85004954AA /* CircleView.m */,
 			);
 			path = Accessory;
 			sourceTree = "<group>";
@@ -619,6 +624,7 @@
 				4271162A20779C2B00B762ED /* AlertBluetoothDevices.m in Sources */,
 				422E762F206A358000B8F443 /* TaroCell.m in Sources */,
 				422E763C206B9A3A00B8F443 /* WhiteBalanceCell.m in Sources */,
+				42E7CEB120D17A85004954AA /* CircleView.m in Sources */,
 				42B3A698207A5337007DF798 /* UIImage+GradientColor.m in Sources */,
 				4218CE4220C847D40083C0E7 /* MTClockView.m in Sources */,
 				4274A2FF205B72A800844BCE /* main.m in Sources */,

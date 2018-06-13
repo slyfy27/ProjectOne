@@ -9,7 +9,7 @@
 #import "BaseViewController.h"
 #import "YYKit.h"
 
-@interface ShootViewController : BaseViewController
+@interface ShootViewController : BaseViewController<UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *bluetoothBtn;
 @property (weak, nonatomic) IBOutlet UIButton *cameraBtn;
 @property (weak, nonatomic) IBOutlet UIButton *deviceBtn;

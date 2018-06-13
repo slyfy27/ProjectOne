@@ -18,6 +18,7 @@
 #import <Photos/Photos.h>
 #import "MTClockView.h"
 #import "FocusSlider.h"
+#import "CircleView.h"
 
 @interface DiagonalView : UIView
 
@@ -656,43 +657,43 @@ static NSString *iso = @"iso";
     [self.view layoutIfNeeded];
     [self configCameraSetting];
     [self configView];
-//    _captureSession = [[AVCaptureSession alloc] init];
-//    if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
-//        [_captureSession setSessionPreset:[[NSUserDefaults standardUserDefaults] valueForKey:resolution]];
-//    }
-//    _backDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
-//    _autoGains = [_backDevice deviceWhiteBalanceGains];
-//    _frontDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionFront];
-//    _backInput = [AVCaptureDeviceInput deviceInputWithDevice:_backDevice error:NULL];
-//    _frontInput = [AVCaptureDeviceInput deviceInputWithDevice:_frontDevice error:NULL];
-//
-//    if (_backInput) {
-//        if ([_captureSession canAddInput:_backInput]){
-//            [_captureSession addInput:_backInput];
-//        }
-//    }
-//    // 音频输入
-//    AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio]; AVCaptureDeviceInput *audioIn = [[AVCaptureDeviceInput alloc] initWithDevice:audioDevice error:NULL];
-//    if ([_captureSession canAddInput:audioIn]){
-//        [_captureSession addInput:audioIn];
-//    }
-//    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
-//    previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-//    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-//    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-//
-//    [self.videoView.layer addSublayer:previewLayer];
-//    [_captureSession startRunning];
-//    _output = [[AVCaptureMovieFileOutput alloc] init];
-//    CMTime maxDuration = CMTimeMake(3600, 1);//最大20分钟
-//    _output.maxRecordedDuration = maxDuration;
-//    _output.minFreeDiskSpaceLimit = 1024;
-//    if ([_captureSession canAddOutput:_output]) {
-//        [_captureSession addOutput:_output];
-//    }
-//    // 视频输出也需要设置成横屏的
-//    AVCaptureConnection *outputVideoConnection = [_output connectionWithMediaType:AVMediaTypeVideo];
-//    outputVideoConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+    _captureSession = [[AVCaptureSession alloc] init];
+    if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
+        [_captureSession setSessionPreset:[[NSUserDefaults standardUserDefaults] valueForKey:resolution]];
+    }
+    _backDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+    _autoGains = [_backDevice deviceWhiteBalanceGains];
+    _frontDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionFront];
+    _backInput = [AVCaptureDeviceInput deviceInputWithDevice:_backDevice error:NULL];
+    _frontInput = [AVCaptureDeviceInput deviceInputWithDevice:_frontDevice error:NULL];
+
+    if (_backInput) {
+        if ([_captureSession canAddInput:_backInput]){
+            [_captureSession addInput:_backInput];
+        }
+    }
+    // 音频输入
+    AVCaptureDevice *audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio]; AVCaptureDeviceInput *audioIn = [[AVCaptureDeviceInput alloc] initWithDevice:audioDevice error:NULL];
+    if ([_captureSession canAddInput:audioIn]){
+        [_captureSession addInput:audioIn];
+    }
+    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
+    previewLayer.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+
+    [self.videoView.layer addSublayer:previewLayer];
+    [_captureSession startRunning];
+    _output = [[AVCaptureMovieFileOutput alloc] init];
+    CMTime maxDuration = CMTimeMake(3600, 1);//最大20分钟
+    _output.maxRecordedDuration = maxDuration;
+    _output.minFreeDiskSpaceLimit = 1024;
+    if ([_captureSession canAddOutput:_output]) {
+        [_captureSession addOutput:_output];
+    }
+    // 视频输出也需要设置成横屏的
+    AVCaptureConnection *outputVideoConnection = [_output connectionWithMediaType:AVMediaTypeVideo];
+    outputVideoConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
 }
 
 
@@ -756,7 +757,7 @@ static NSString *iso = @"iso";
     preAngle = 0;
     
     
-    _focusSlider = [[FocusSlider alloc] initWithFrame:(CGRect){Width - Height/2.0 - 70,-35,Height + 70, Height + 70}];
+    _focusSlider = [[FocusSlider alloc] initWithFrame:(CGRect){Width - Height/2.0 - 35,-35,Height + 70, Height + 70}];
     _focusSlider.transform = CGAffineTransformMakeRotation(-M_PI_2);
     [_focusSlider addTarget:self action:@selector(focusSliderValueChange:) forControlEvents:UIControlEventValueChanged];
     [self.view insertSubview:self.focusSlider belowSubview:_recordBtn];
@@ -764,11 +765,16 @@ static NSString *iso = @"iso";
     _clockView = [[MTClockView alloc] initWithFrame:(CGRect){Width - Height/2,0,Height,Height}];
     [self.view insertSubview:_clockView belowSubview:_recordBtn];
     
-    _panView = [[UIView alloc] initWithFrame:_clockView.frame];
+    _panView = [[UIView alloc] initWithFrame:(CGRect){Width - Height/2+50,0,Height,Height}];
     _panView.backgroundColor = [UIColor clearColor];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleClockPan:)];
     [panGesture setMaximumNumberOfTouches:1];
+    panGesture.delegate = self;
+    
     [_panView addGestureRecognizer:panGesture];
+    _panView.layer.cornerRadius = Height/2;
+    _panView.layer.masksToBounds = YES;
+    _panView.clipsToBounds = YES;
     _arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(Width-Height/2-6, Height/2 - 8, 16, 16)];
     _arrowView.image = [UIImage imageNamed:@"箭头 三角形"];
     [self.view addSubview:_arrowView];
@@ -790,6 +796,23 @@ static NSString *iso = @"iso";
     _focusLabel.font = [UIFont systemFontOfSize:15];
     _focusLabel.center = CGPointMake(Width/2, Height/2);
     [self.view addSubview:_focusLabel];
+    
+//    CircleView *circleView = [[CircleView alloc] initWithFrame:(CGRect){100,0,Height,Height}];
+//    circleView.backgroundColor = [UIColor redColor];
+//    [self.view addSubview:circleView];
+//    [circleView addGestureRecognizer:panGesture];
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    return YES;
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    CGPoint point = [touch locationInView:touch.view];
+    if (point.x * point.x + point.y * point.y > Height/2*Height/2) {
+        return NO;
+    }
+    return YES;
 }
 
 - (void)focusSliderValueChange:(FocusSlider *)slider{
@@ -816,7 +839,8 @@ static NSString *iso = @"iso";
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
     if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
-        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
+//        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
+        _focusLabel.hidden = _focusSlider.hidden = NO;
     }
     else if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
         _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
