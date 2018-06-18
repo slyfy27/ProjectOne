@@ -19,6 +19,7 @@
 #import "MTClockView.h"
 #import "FocusSlider.h"
 #import "CircleView.h"
+#import "AdjustView.h"
 
 @interface DiagonalView : UIView
 
@@ -149,6 +150,8 @@ static NSString *iso = @"iso";
 @property (nonatomic, strong) UIImageView *circleImageView;
 
 @property (nonatomic, strong) UILabel *focusLabel;
+
+@property (nonatomic, strong) AdjustView *adjustView;
 
 @end
 
@@ -753,37 +756,42 @@ static NSString *iso = @"iso";
     _subTable.tableFooterView = footerView;
     _subTable.backgroundColor = UIColorFromRGBAndAlpha(0x000000, 0.6);
     
-    angle = 0;
-    preAngle = 0;
+//    angle = 0;
+//    preAngle = 0;
+//
+//
+//    _focusSlider = [[FocusSlider alloc] initWithFrame:(CGRect){Width - Height/2.0 - 35,-35,Height + 70, Height + 70}];
+//    _focusSlider.transform = CGAffineTransformMakeRotation(-M_PI_2);
+//    [_focusSlider addTarget:self action:@selector(focusSliderValueChange:) forControlEvents:UIControlEventValueChanged];
+//    [self.view insertSubview:self.focusSlider belowSubview:_recordBtn];
+//
+//    _clockView = [[MTClockView alloc] initWithFrame:(CGRect){Width - Height/2,0,Height,Height}];
+//    [self.view insertSubview:_clockView belowSubview:_recordBtn];
+//
+//    _panView = [[UIView alloc] initWithFrame:(CGRect){Width - Height/2+50,0,Height,Height}];
+//    _panView.backgroundColor = [UIColor clearColor];
+//    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleClockPan:)];
+//    [panGesture setMaximumNumberOfTouches:1];
+//    panGesture.delegate = self;
+//
+//    [_panView addGestureRecognizer:panGesture];
+//    _panView.layer.cornerRadius = Height/2;
+//    _panView.layer.masksToBounds = YES;
+//    _panView.clipsToBounds = YES;
+//    _arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(Width-Height/2-6, Height/2 - 8, 16, 16)];
+//    _arrowView.image = [UIImage imageNamed:@"箭头 三角形"];
+//    [self.view addSubview:_arrowView];
+//    [self.view insertSubview:_panView belowSubview:_recordBtn];
+//
+//    _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
     
-    
-    _focusSlider = [[FocusSlider alloc] initWithFrame:(CGRect){Width - Height/2.0 - 35,-35,Height + 70, Height + 70}];
-    _focusSlider.transform = CGAffineTransformMakeRotation(-M_PI_2);
-    [_focusSlider addTarget:self action:@selector(focusSliderValueChange:) forControlEvents:UIControlEventValueChanged];
-    [self.view insertSubview:self.focusSlider belowSubview:_recordBtn];
-    
-    _clockView = [[MTClockView alloc] initWithFrame:(CGRect){Width - Height/2,0,Height,Height}];
-    [self.view insertSubview:_clockView belowSubview:_recordBtn];
-    
-    _panView = [[UIView alloc] initWithFrame:(CGRect){Width - Height/2+50,0,Height,Height}];
-    _panView.backgroundColor = [UIColor clearColor];
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleClockPan:)];
-    [panGesture setMaximumNumberOfTouches:1];
-    panGesture.delegate = self;
-    
-    [_panView addGestureRecognizer:panGesture];
-    _panView.layer.cornerRadius = Height/2;
-    _panView.layer.masksToBounds = YES;
-    _panView.clipsToBounds = YES;
-    _arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(Width-Height/2-6, Height/2 - 8, 16, 16)];
-    _arrowView.image = [UIImage imageNamed:@"箭头 三角形"];
-    [self.view addSubview:_arrowView];
-    [self.view insertSubview:_panView belowSubview:_recordBtn];
-    
-    _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
-    
+    self.adjustView = [[AdjustView alloc] initWithFrame:(CGRect){Width - Height/2.0 - 50,-50,Height + 100, Height + 100}];
+    [self.adjustView.sliderView addTarget:self action:@selector(focusSliderValueChange:) forControlEvents:UIControlEventValueChanged];
+    self.adjustView.hidden = YES;
+    [self.view insertSubview:self.adjustView belowSubview:self.recordBtn];
     _swipeView = [[UIView alloc] initWithFrame:(CGRect){0,0,Width,Height}];
     UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    leftSwipeGesture.delegate = self;
     leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.swipeView addGestureRecognizer:leftSwipeGesture];
     UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
@@ -807,13 +815,13 @@ static NSString *iso = @"iso";
     return YES;
 }
 
--(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    CGPoint point = [touch locationInView:touch.view];
-    if (point.x * point.x + point.y * point.y > Height/2*Height/2) {
-        return NO;
-    }
-    return YES;
-}
+//-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+//    CGPoint point = [touch locationInView:touch.view];
+//    if (point.x * point.x + point.y * point.y > Height/2*Height/2) {
+//        return NO;
+//    }
+//    return YES;
+//}
 
 - (void)focusSliderValueChange:(FocusSlider *)slider{
     _focusLabel.hidden = NO;
@@ -840,10 +848,12 @@ static NSString *iso = @"iso";
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
     if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
 //        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
-        _focusLabel.hidden = _focusSlider.hidden = NO;
+        _adjustView.hidden = NO;
+//        _focusLabel.hidden = _focusSlider.hidden = NO;
     }
     else if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
-        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
+//        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
+        _adjustView.hidden = YES;
     }
 }
 
