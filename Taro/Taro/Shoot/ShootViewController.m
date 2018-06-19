@@ -818,9 +818,12 @@ static NSString *iso = @"iso";
 - (void)adjustISOWithFloat:(float)value{
     if (!_isFront) {
         [_backDevice lockForConfiguration:NULL];
-        NSInteger v = (_backDevice.activeFormat.maxISO - _backDevice.activeFormat.minISO) * value + _backDevice.activeFormat.minISO;
-        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:iso];
-        [_backDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:v completionHandler:^(CMTime syncTime) {
+        if (value < 0) {
+            value *= -1;
+        }
+        CGFloat second = (CMTimeGetSeconds(_backDevice.activeFormat.maxExposureDuration) - CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration)) * value + CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration);
+    //        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:exposureCompensation];
+        [_backDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(second,  1 *NSEC_PER_SEC) ISO:AVCaptureISOCurrent completionHandler:^(CMTime syncTime) {
             
         }];
         [_backDevice unlockForConfiguration];

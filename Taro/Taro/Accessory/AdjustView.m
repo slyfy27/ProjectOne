@@ -94,9 +94,9 @@
     NSLog(@"x=%.2f",x*1.0/10);
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         preAngle += sub;
-        if (self.delegate && [self.delegate respondsToSelector:@selector(adjustISOWithFloat:)]) {
-            [self.delegate adjustISOWithFloat:y/100];
-        }
+    }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(adjustISOWithFloat:)]) {
+        [self.delegate adjustISOWithFloat:y/100];
     }
 }
 
