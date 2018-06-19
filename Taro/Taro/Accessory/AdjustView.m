@@ -9,6 +9,7 @@
 #import "AdjustView.h"
 #import "MTClockView.h"
 #import "FocusSlider.h"
+#import "GolbalDefine.h"
 
 @implementation AdjustView
 {
@@ -18,6 +19,7 @@
     CGFloat sub;
     UIImageView *arrowView;
     CGFloat rightAngle;
+    UIView *circleView;
 }
 
 /*
@@ -33,23 +35,44 @@
     if (self) {
         angle = 0;
         preAngle = 0;
-        self.sliderView = [[FocusSlider alloc] initWithFrame:self.bounds];
+        circleView = [[UIView alloc] initWithFrame:(CGRect){Width - Height/2.0 - 50,-50,Height + 100, Height + 100}];
+        [self addSubview:circleView];
+        circleView.hidden = YES;
+        self.sliderView = [[FocusSlider alloc] initWithFrame:circleView.bounds];
         self.sliderView.transform = CGAffineTransformMakeRotation(-M_PI_2);
-        self.mtClockView = [[MTClockView alloc] initWithFrame:(CGRect){50,50,frame.size.width-100,frame.size.height-100}];
-        [self addSubview:self.sliderView];
-        [self addSubview:self.mtClockView];
+        self.mtClockView = [[MTClockView alloc] initWithFrame:(CGRect){50,50,Height,Height}];
+        [circleView addSubview:self.sliderView];
+        [circleView addSubview:self.mtClockView];
         panView = [[UIView alloc] initWithFrame:self.mtClockView.frame];
-        [self addSubview:panView];
+        [circleView addSubview:panView];
         arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(44, self.center.y-8 + 50, 16, 16)];
         arrowView.image = [UIImage imageNamed:@"箭头 三角形"];
-        [self addSubview:arrowView];
+        [circleView addSubview:arrowView];
         UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleClockPan:)];
         [panGesture setMaximumNumberOfTouches:1];
 //        panGesture.delegate = self;
-        
         [panView addGestureRecognizer:panGesture];
+        
+        UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+        leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self addGestureRecognizer:leftSwipeGesture];
+        UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+        rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+        [self addGestureRecognizer:rightSwipeGesture];
     }
     return self;
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
+        //        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
+        
+        circleView.hidden = NO;
+    }
+    else if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
+        //        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
+        circleView.hidden = YES;
+    }
 }
 
 - (void)handleClockPan:(UIPanGestureRecognizer *)recognizer {
@@ -71,25 +94,21 @@
     NSLog(@"x=%.2f",x*1.0/10);
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         preAngle += sub;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(adjustISOWithFloat:)]) {
+            [self.delegate adjustISOWithFloat:y/100];
+        }
     }
-    //    if (!_isFront) {
-    //        [_backDevice lockForConfiguration:NULL];
-    //        NSInteger v = (_backDevice.activeFormat.maxISO - _backDevice.activeFormat.minISO) * y + _backDevice.activeFormat.minISO;
-    //        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:iso];
-    //        [_backDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:v completionHandler:^(CMTime syncTime) {
-    //
-    //        }];
-    //        [_backDevice unlockForConfiguration];
-    //    }
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
 //    if (point.x < 0) {
 //        return [super hitTest:point withEvent:event];
 //    }
+    if (circleView.hidden || point.x < Width - Height/2.0 - 50) {
+        return self;
+    }
     NSLog(@"X = %.2f\nY= %.2f",point.x,point.y);
-    if ((self.mtClockView.frame.size.height/2 - point.x
-         + 50)*(self.mtClockView.frame.size.height/2 - point.x + 50) + (self.mtClockView.frame.size.height/2 - point.y)*(self.mtClockView.frame.size.height/2 - point.y) > self.mtClockView.frame.size.height*self.mtClockView.frame.size.height/4) {
+    if ((Width-point.x)*(Width-point.x) + (Height/2 - point.y)*(Height/2 - point.y) > Height*Height/4) {
         return self.sliderView;
     }
     return panView;

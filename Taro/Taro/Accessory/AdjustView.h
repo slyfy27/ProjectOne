@@ -10,13 +10,18 @@
 #import "MTClockView.h"
 #import "FocusSlider.h"
 
-//@protocal AdjustViewDelegate
-//
-//@end
+@protocol AdjustViewDelegate <NSObject>
+
+@optional
+- (void)adjustISOWithFloat:(float)value;
+
+@end
 
 @interface AdjustView : UIView
 
 @property (nonatomic, strong) MTClockView *mtClockView;
 @property (nonatomic, strong) FocusSlider *sliderView;
+
+@property (nonatomic, weak) id<AdjustViewDelegate> delegate;
 
 @end

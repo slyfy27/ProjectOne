@@ -78,7 +78,7 @@ static NSString *exposureCompensation = @"exposureCompensation";
 static NSString *flash = @"flash";
 static NSString *iso = @"iso";
 
-@interface ShootViewController ()<UITableViewDelegate,UITableViewDataSource,SliderCellDelegate,AVCaptureFileOutputRecordingDelegate,CAAnimationDelegate>
+@interface ShootViewController ()<UITableViewDelegate,UITableViewDataSource,SliderCellDelegate,AVCaptureFileOutputRecordingDelegate,CAAnimationDelegate,AdjustViewDelegate>
 {
     CGFloat angle;
     CGFloat preAngle;
@@ -785,19 +785,19 @@ static NSString *iso = @"iso";
 //
 //    _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
     
-    self.adjustView = [[AdjustView alloc] initWithFrame:(CGRect){Width - Height/2.0 - 50,-50,Height + 100, Height + 100}];
+    self.adjustView = [[AdjustView alloc] initWithFrame:(CGRect){0,0,Width,Height}];
     [self.adjustView.sliderView addTarget:self action:@selector(focusSliderValueChange:) forControlEvents:UIControlEventValueChanged];
-    self.adjustView.hidden = YES;
+    self.adjustView.delegate = self;
     [self.view insertSubview:self.adjustView belowSubview:self.recordBtn];
-    _swipeView = [[UIView alloc] initWithFrame:(CGRect){0,0,Width,Height}];
-    UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
-    leftSwipeGesture.delegate = self;
-    leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.swipeView addGestureRecognizer:leftSwipeGesture];
-    UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
-    rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.swipeView addGestureRecognizer:rightSwipeGesture];
-    [self.view insertSubview:self.swipeView belowSubview:self.focusSlider];
+//    _swipeView = [[UIView alloc] initWithFrame:(CGRect){0,0,Width,Height}];
+//    UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+//    leftSwipeGesture.delegate = self;
+//    leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+//    [self.swipeView addGestureRecognizer:leftSwipeGesture];
+//    UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+//    rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+//    [self.swipeView addGestureRecognizer:rightSwipeGesture];
+//    [self.view insertSubview:self.swipeView belowSubview:self.focusSlider];
     
     _focusLabel = [[UILabel alloc] initWithFrame:(CGRect){0,0,40,18}];
     _focusLabel.textColor = [UIColor whiteColor];
@@ -813,6 +813,18 @@ static NSString *iso = @"iso";
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
     return YES;
+}
+
+- (void)adjustISOWithFloat:(float)value{
+    if (!_isFront) {
+        [_backDevice lockForConfiguration:NULL];
+        NSInteger v = (_backDevice.activeFormat.maxISO - _backDevice.activeFormat.minISO) * value + _backDevice.activeFormat.minISO;
+        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:iso];
+        [_backDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:v completionHandler:^(CMTime syncTime) {
+            
+        }];
+        [_backDevice unlockForConfiguration];
+    }
 }
 
 //-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -845,17 +857,17 @@ static NSString *iso = @"iso";
     });
 }
 
-- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
-    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
-//        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
-        _adjustView.hidden = NO;
-//        _focusLabel.hidden = _focusSlider.hidden = NO;
-    }
-    else if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
-//        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
-        _adjustView.hidden = YES;
-    }
-}
+//- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
+//    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
+////        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
+//        _adjustView.hidden = NO;
+////        _focusLabel.hidden = _focusSlider.hidden = NO;
+//    }
+//    else if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
+////        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
+//        _adjustView.hidden = YES;
+//    }
+//}
 
 
 - (void)handleClockPan:(UIPanGestureRecognizer *)recognizer {
