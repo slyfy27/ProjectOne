@@ -697,6 +697,7 @@ static NSString *iso = @"iso";
     // 视频输出也需要设置成横屏的
     AVCaptureConnection *outputVideoConnection = [_output connectionWithMediaType:AVMediaTypeVideo];
     outputVideoConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+    [self.view setBackgroundColor:[UIColor whiteColor]];
 }
 
 
@@ -816,18 +817,19 @@ static NSString *iso = @"iso";
 }
 
 - (void)adjustISOWithFloat:(float)value{
-    if (!_isFront) {
-        [_backDevice lockForConfiguration:NULL];
-        if (value < 0) {
-            value *= -1;
-        }
-        CGFloat second = (CMTimeGetSeconds(_backDevice.activeFormat.maxExposureDuration) - CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration)) * value + CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration);
-    //        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:exposureCompensation];
-        [_backDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(second,  1 *NSEC_PER_SEC) ISO:AVCaptureISOCurrent completionHandler:^(CMTime syncTime) {
-            
-        }];
-        [_backDevice unlockForConfiguration];
-    }
+    NSLog(@"value = %@",@(value).stringValue);
+//    if (!_isFront) {
+//        [_backDevice lockForConfiguration:NULL];
+//        if (value < 0) {
+//            value *= -1;
+//        }
+//        CGFloat second = (CMTimeGetSeconds(_backDevice.activeFormat.maxExposureDuration) - CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration)) * value + CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration);
+//    //        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:exposureCompensation];
+//        [_backDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(second,  1 *NSEC_PER_SEC) ISO:AVCaptureISOCurrent completionHandler:^(CMTime syncTime) {
+//
+//        }];
+//        [_backDevice unlockForConfiguration];
+//    }
 }
 
 //-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {

@@ -78,25 +78,69 @@
 - (void)handleClockPan:(UIPanGestureRecognizer *)recognizer {
     UIView *view = recognizer.view;
     CGPoint translation = [recognizer locationInView:view];
-    
-    //    NSLog(@"translationX:%f\ntranslationY:%f",translation.x,translation.y);
     CGFloat angleInRadians = atan2f(translation.y - view.frame.size.height/2, translation.x - view.frame.size.width/2);
+//    NSLog(@"angleInRadians: %@",@(angleInRadians).stringValue);
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         angle = angleInRadians;
     }
+    NSLog(@"xxxxxx:%@",@(angleInRadians).stringValue);
     sub = angleInRadians - angle;
+    int x = 0;
     CGFloat sumAngle = sub + preAngle;
-    self.mtClockView.transform = CGAffineTransformMakeRotation(sumAngle);
-    rightAngle = (sumAngle) * 180 / M_PI;
-    int x = rightAngle / 3.6;
-    x = x%100;
-    float y = x*1.0/10;
-    NSLog(@"x=%.2f",x*1.0/10);
+    rightAngle = (sumAngle) * 180 / M_PI + 30;
+    if (rightAngle > 0 && rightAngle < 360) {
+        x = rightAngle;
+    }
+    else if (rightAngle < 0){
+        while ((rightAngle + 360) < 0) {
+            rightAngle += 360;
+        }
+//        if (rightAngle > 0) {
+//            rightAngle = 0;
+//        }
+        x = rightAngle;
+    }
+    else if (rightAngle > 360){
+        while (rightAngle > 360) {
+            rightAngle -= 360;
+        }
+        x = rightAngle;
+    }
+    if (rightAngle >= 210) {
+        rightAngle = 210;
+        x = rightAngle;
+//        self.mtClockView.transform = CGAffineTransformMakeRotation(M_PI);
+    }
+    if (rightAngle < 0) {
+        rightAngle = 0;
+        x = rightAngle;
+        self.mtClockView.transform = CGAffineTransformMakeRotation(-M_PI/6);
+    }
+//    else if (rightAngle < 0){
+//        rightAngle = 0;
+//        x = 0;
+//        preAngle = -M_PI/6;
+//        self.mtClockView.transform = CGAffineTransformMakeRotation(-M_PI/6);
+//    }
+    else{
+        self.mtClockView.transform = CGAffineTransformMakeRotation(sumAngle);
+    }
+    
+    NSLog(@"angle: %@",@(rightAngle).stringValue);
+//    x = x%105;
+//    float y = x*1.0/10;
+//    NSLog(@"x=%.2f",x*1.0/10);
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         preAngle += sub;
+        if (rightAngle == 0) {
+            preAngle = - 2 * M_PI - M_PI/6;
+        }
+        if (preAngle > M_PI) {
+            preAngle = - M_PI;
+        }
     }
     if (self.delegate && [self.delegate respondsToSelector:@selector(adjustISOWithFloat:)]) {
-        [self.delegate adjustISOWithFloat:y/100];
+        [self.delegate adjustISOWithFloat:x];
     }
 }
 
@@ -107,7 +151,7 @@
     if (circleView.hidden || point.x < Width - Height/2.0 - 50) {
         return self;
     }
-    NSLog(@"X = %.2f\nY= %.2f",point.x,point.y);
+//    NSLog(@"X = %.2f\nY= %.2f",point.x,point.y);
     if ((Width-point.x)*(Width-point.x) + (Height/2 - point.y)*(Height/2 - point.y) > Height*Height/4) {
         return self.sliderView;
     }

@@ -7,6 +7,7 @@
 //
 
 #import "FocusSlider.h"
+#import "GolbalDefine.h"
 
 @implementation FocusSlider{
     CGFloat radius;
@@ -55,15 +56,14 @@
     
     //Draw the unfilled circle
     CGContextAddArc(ctx, self.frame.size.width/2, self.frame.size.height/2, radius, M_PI, M_PI_2 * 3 - 0.05  - ToRad(angle), 0);//0, M_PI *2, 0
-    [_unfilledColor setStroke];
+    [[UIColor whiteColor] setStroke];
     
-
     //    CGContextSetLineWidth(ctx, _lineWidth);
     CGContextSetLineCap(ctx, kCGLineCapButt);
     CGContextDrawPath(ctx, kCGPathStroke);
     
     CGContextAddArc(ctx, self.frame.size.width/2, self.frame.size.height/2, radius, M_PI_2 * 3 + 0.05 - ToRad(angle), M_PI * 2, 0);//0, M_PI *2, 0
-    [_unfilledColor setStroke];
+    [[UIColor whiteColor] setStroke];
     
     CGContextSetLineCap(ctx, kCGLineCapButt);
     CGContextDrawPath(ctx, kCGPathStroke);
@@ -82,13 +82,10 @@
     
     //     CLOCK'S BORDER
     CGContextAddEllipseInRect(ctx, CGRectMake(handleCenter.x, handleCenter.y, _lineWidth+10, _lineWidth+10));
-    CGContextSetStrokeColorWithColor(ctx, [UIColor whiteColor].CGColor);
+    CGContextSetStrokeColorWithColor(ctx, AlertBlueColor.CGColor);
     CGContextSetAlpha(ctx, 0.5);
     CGContextSetLineWidth(ctx,1);
     CGContextStrokePath(ctx);
-//    UIImage *image = [UIImage imageNamed:@"橙色（24）.png"];
-//    [image drawAtPoint:CGPointMake((handleCenter.x),handleCenter.y)];
-    
     
     CGContextRestoreGState(ctx);
 }
