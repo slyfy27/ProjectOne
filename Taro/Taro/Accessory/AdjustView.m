@@ -41,6 +41,7 @@
         self.sliderView = [[FocusSlider alloc] initWithFrame:circleView.bounds];
         self.sliderView.transform = CGAffineTransformMakeRotation(-M_PI_2);
         self.mtClockView = [[MTClockView alloc] initWithFrame:(CGRect){50,50,Height,Height}];
+//        self.mtClockView.transform = CGAffineTransformMakeRotation(-M_PI_2);
         [circleView addSubview:self.sliderView];
         [circleView addSubview:self.mtClockView];
         panView = [[UIView alloc] initWithFrame:self.mtClockView.frame];
@@ -84,15 +85,21 @@
     }
     sub = angleInRadians - angle;
     CGFloat sumAngle = sub + preAngle;
+//    while (sumAngle < 0) {
+//        sumAngle += M_PI * 2;
+//    }
+//    while (sumAngle > M_PI * 2) {
+//        sumAngle -= M_PI * 2;
+//    }
     NSLog(@"angle:%.2f",sumAngle);
     self.mtClockView.transform = CGAffineTransformMakeRotation(sumAngle);
     rightAngle = (sumAngle) * 180 / M_PI;
-    int x = rightAngle / 3.6;
+    int x = rightAngle / 1.8;
     x = x%100;
     float y = x*1.0/10;
     NSLog(@"x=%.2f",x*1.0/10);
     if (recognizer.state == UIGestureRecognizerStateEnded) {
-        preAngle += sub;
+        preAngle = sumAngle;
     }
 
 //    NSLog(@"angleInRadians: %@",@(angleInRadians).stringValue);
