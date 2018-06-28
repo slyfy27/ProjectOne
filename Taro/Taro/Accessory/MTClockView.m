@@ -8,13 +8,16 @@
 
 #import "MTClockView.h"
 
-@implementation MTClockView
+@implementation MTClockView{
+    NSArray *dataArray;
+}
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         self.borderWidth = 60;
         self.backgroundColor = [UIColor clearColor];
+        dataArray = @[@"1000",@"997",@"975",@"904",@"755",@"600",@"553",@"364",@"227",@"140",@"88",@"56",@"37",@"25",@"18",@"13",@"9.1",@"6.7",@"5.1",@"3.9",@"3.0"];
     }
     return self;
 }
@@ -37,7 +40,7 @@
     CGContextStrokePath(ctx);
 
     // CLOCK'S GRADUATION
-    for (int i = 0; i<100; i++) {
+    for (int i = 0; i<101; i++) {
         self.graduationLength = 10;
         
         CGFloat graduationOffset = 10;
@@ -74,48 +77,89 @@
     
     NSInteger offset = 0;
     
-//    for(int i = 0; i <= 21; i ++){
-//        CGContextSaveGState(ctx);
-//        NSString *hourNumber = [NSString stringWithFormat:@"%d",i];
-//
-//        CGFloat labelX = center.x + (markingDistanceFromCenter - digitFont.lineHeight/2.0f) * cos((M_PI/180) * (i+offset) * 10 - M_PI - (M_PI/180)*30);
-//        CGFloat labelY = center.y + (markingDistanceFromCenter - digitFont.lineHeight/2.0f) * sin((M_PI/180)*(i+offset) * 10 - (M_PI/180)*30);
-//
-//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2,20,digitFont.lineHeight)];
-////        if (i == 1) {
-////            label.frame = CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2 + 0.5,15,digitFont.lineHeight);
-////        }
-////        if (i == 2) {
-////            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 0.5,labelY - digitFont.lineHeight/2 + 1.5,15,digitFont.lineHeight);
-////        }
-////        if (i == 3) {
-////            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 1.5,labelY - digitFont.lineHeight/2 + 3,15,digitFont.lineHeight);
-////        }
-////        if (i == 4) {
-////            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 3.5,labelY - digitFont.lineHeight/2 + 2.5,15,digitFont.lineHeight);
-////        }
-////        if (i == 5) {
-////            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 5,labelY - digitFont.lineHeight/2,15,digitFont.lineHeight);
-////        }
-////        if (i == 6) {
-////            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 4.5,labelY - digitFont.lineHeight/2,15,digitFont.lineHeight);
-////        }
-////        if (i == 7) {
-////            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 3.5,labelY - digitFont.lineHeight/2 - 1,15,digitFont.lineHeight);
-////        }
-////        if (i == 8) {
-////            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 1.5,labelY - digitFont.lineHeight/2 - 1,15,digitFont.lineHeight);
-////        }
-////        if (i == 9) {
-////            label.frame = CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2 - 0.5,15,digitFont.lineHeight);
-////        }
-//        label.textColor = [UIColor whiteColor];
-//        label.font = digitFont;
-//        label.text = hourNumber;
-//        label.transform = CGAffineTransformMakeRotation(M_PI/10.5 * (i-3));
-//        [self addSubview:label];
-//        CGContextRestoreGState(ctx);
-//    }
+    for(int i = 0; i < 21; i ++){
+        CGContextSaveGState(ctx);
+        NSString *hourNumber = [NSString stringWithFormat:@"1/%@ s",dataArray[i]];
+
+        CGFloat labelX = center.x + (markingDistanceFromCenter - digitFont.lineHeight/2.0f) * cos((M_PI/180) * (i+offset) * 9 + M_PI_2);
+        CGFloat labelY = center.y + (markingDistanceFromCenter - digitFont.lineHeight/2.0f) * sin((M_PI/180)*(i+offset) * 9 + M_PI_2);
+
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2,80,digitFont.lineHeight)];
+        if (i >=9 && i <= 10) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2 + 1,40,digitFont.lineHeight);
+        }
+        if (i == 11) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2 + 3,40,digitFont.lineHeight);
+        }
+        if (i == 12) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2 + 4,40,digitFont.lineHeight);
+        }
+        if (i == 13) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2 + 5,40,digitFont.lineHeight);
+        }
+        if (i == 14) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2 + 8,40,digitFont.lineHeight);
+        }
+        if (i == 15) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2 + 10,40,digitFont.lineHeight);
+        }
+        if (i == 16) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2,labelY - digitFont.lineHeight/2 + 10,40,digitFont.lineHeight);
+        }
+
+        if (i == 17) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 3,labelY - digitFont.lineHeight/2 + 13,40,digitFont.lineHeight);
+        }
+
+        if (i == 18) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 5,labelY - digitFont.lineHeight/2 + 14,40,digitFont.lineHeight);
+        }
+
+        if (i == 19) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 5,labelY - digitFont.lineHeight/2 + 14,40,digitFont.lineHeight);
+        }
+
+        if (i == 20) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 8,labelY - digitFont.lineHeight/2 + 14,40,digitFont.lineHeight);
+        }
+
+        if (i == 7) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 + 1,labelY - digitFont.lineHeight/2 + 1 - 5,40,digitFont.lineHeight);
+        }
+        if (i == 8) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 + 1,labelY - digitFont.lineHeight/2 + 1 - 3,40,digitFont.lineHeight);
+        }
+        if (i == 4) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 3,labelY - digitFont.lineHeight/2 - 1 - 10,40,digitFont.lineHeight);
+        }
+        if (i == 5) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 1,labelY - digitFont.lineHeight/2 - 1 - 6,40,digitFont.lineHeight);
+        }
+        if (i == 6) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 1,labelY - digitFont.lineHeight/2 - 1 - 4,40,digitFont.lineHeight);
+        }
+        if (i == 2) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 6,labelY - digitFont.lineHeight/2 - 3 - 10,40,digitFont.lineHeight);
+        }
+        if (i == 3) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 4,labelY - digitFont.lineHeight/2 - 3 - 10,40,digitFont.lineHeight);
+        }
+        if (i == 0) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 10,labelY - digitFont.lineHeight/2 - 4 - 10,40,digitFont.lineHeight);
+        }
+        if (i == 1) {
+            label.frame = CGRectMake(labelX - digitFont.lineHeight/2 - 8,labelY - digitFont.lineHeight/2 - 4 - 10,40,digitFont.lineHeight);
+        }
+        label.textColor = [UIColor whiteColor];
+        label.font = digitFont;
+        label.text = hourNumber;
+//        label.backgroundColor = [UIColor redColor];
+        label.layer.anchorPoint = CGPointMake(0.5,cos((M_PI_2/20)*i));
+////        label.transform = CGAffineTransformMakeRotation(-M_PI_2 + (M_PI/20)*i);
+        label.transform = CGAffineTransformMakeRotation(-M_PI_2 + (M_PI/20)*i);
+        [self addSubview:label];
+        CGContextRestoreGState(ctx);
+    }
 }
 
 

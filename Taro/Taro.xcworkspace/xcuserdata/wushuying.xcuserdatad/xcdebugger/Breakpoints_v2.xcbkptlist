@@ -186,7 +186,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Taro/Accessory/CircleView.m"
-            timestampString = "550600699.390974"
+            timestampString = "551731608.623298"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "20"
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Taro/Shoot/ShootViewController.m"
-            timestampString = "551091951.804527"
+            timestampString = "551905452.843415"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "826"
-            endingLineNumber = "826"
+            startingLineNumber = "835"
+            endingLineNumber = "835"
             landmarkName = "-adjustISOWithFloat:"
             landmarkType = "7">
          </BreakpointContent>

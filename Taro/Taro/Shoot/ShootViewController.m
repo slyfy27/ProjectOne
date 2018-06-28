@@ -85,6 +85,8 @@ static NSString *iso = @"iso";
     CGFloat sub;
     
     CGFloat rightAngle;
+    
+    NSArray *dataArray;
 }
 
 @property (weak, nonatomic) CAShapeLayer *maskLayer;
@@ -698,6 +700,8 @@ static NSString *iso = @"iso";
     AVCaptureConnection *outputVideoConnection = [_output connectionWithMediaType:AVMediaTypeVideo];
     outputVideoConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    dataArray = @[@"1000",@"997",@"975",@"904",@"755",@"600",@"553",@"364",@"227",@"140",@"88",@"56",@"37",@"25",@"18",@"13",@"9.1",@"6.7",@"5.1",@"3.9",@"3.0"];
 }
 
 
@@ -816,8 +820,28 @@ static NSString *iso = @"iso";
     return YES;
 }
 
-- (void)adjustISOWithFloat:(float)value{
+- (void)adjustISOWithFloat:(int)value{
     NSLog(@"value = %@",@(value).stringValue);
+    int index = value/20;
+    int sub = value%20;
+    NSString *firstString = dataArray[index];
+    int first = firstString.intValue;
+    int second = 0;
+    int result = 0;
+    if (sub != 0) {
+        NSString *secondString = dataArray[index + 1];
+        second = secondString.intValue;
+    }
+    if (second != 0) {
+        int a = first - second;
+        float b = sub*1.0 / 10;
+        float c = a * b;
+        result = c + second;
+    }
+    else{
+        result = first;
+    }
+    NSLog(@"result:1/%d s",result);
 //    if (!_isFront) {
 //        [_backDevice lockForConfiguration:NULL];
 //        if (value < 0) {

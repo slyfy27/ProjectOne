@@ -20,6 +20,8 @@
     UIImageView *arrowView;
     CGFloat rightAngle;
     UIView *circleView;
+    
+    CGFloat totalAngle;
 }
 
 /*
@@ -35,6 +37,7 @@
     if (self) {
         angle = 0;
         preAngle = 0;
+        totalAngle = 0;
         circleView = [[UIView alloc] initWithFrame:(CGRect){Width - Height/2.0 - 50,-50,Height + 100, Height + 100}];
         [self addSubview:circleView];
         circleView.hidden = YES;
@@ -79,11 +82,12 @@
 - (void)handleClockPan:(UIPanGestureRecognizer *)recognizer {
     UIView *view = recognizer.view;
     CGPoint translation = [recognizer locationInView:view];
-    CGFloat angleInRadians = atan2f(translation.y - view.frame.size.height/2, translation.x - view.frame.size.width/2);
+    CGFloat angleInRadians = atan2f(translation.y - view.frame.size.height, translation.x - view.frame.size.width)*2;
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         angle = angleInRadians;
     }
     sub = angleInRadians - angle;
+    angle = angleInRadians;
     CGFloat sumAngle = sub + preAngle;
 //    while (sumAngle < 0) {
 //        sumAngle += M_PI * 2;
@@ -92,14 +96,32 @@
 //        sumAngle -= M_PI * 2;
 //    }
     NSLog(@"angle:%.2f",sumAngle);
-    self.mtClockView.transform = CGAffineTransformMakeRotation(sumAngle);
-    rightAngle = (sumAngle) * 180 / M_PI;
+    if (totalAngle + sub >= M_PI_2) {
+        totalAngle = M_PI_2;
+        self.mtClockView.transform = CGAffineTransformMakeRotation(M_PI_2);
+    }
+    else if (totalAngle + sub <= -M_PI_2) {
+        totalAngle = -M_PI_2;
+        self.mtClockView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+    }
+    else{
+        totalAngle += sub;
+        self.mtClockView.transform = CGAffineTransformRotate(self.mtClockView.transform, sub);
+    }
+    rightAngle = (M_PI_2 - totalAngle) * 180 / M_PI;
     int x = rightAngle / 1.8;
-    x = x%100;
-    float y = x*1.0/10;
-    NSLog(@"x=%.2f",x*1.0/10);
+    x = x%200;
+    float y = x;
+    if (totalAngle == M_PI) {
+        x = 200;
+    }
+    if (self.delegate && [self.delegate respondsToSelector:@selector(adjustISOWithFloat:)]) {
+        [self.delegate adjustISOWithFloat:y];
+    }
+    NSLog(@"totalAngle:%.2f",totalAngle);
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         preAngle = sumAngle;
+        NSLog(@"preAngle:%.2f",angleInRadians-angle);
     }
 
 //    NSLog(@"angleInRadians: %@",@(angleInRadians).stringValue);

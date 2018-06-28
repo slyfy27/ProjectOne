@@ -13,7 +13,7 @@
 @protocol AdjustViewDelegate <NSObject>
 
 @optional
-- (void)adjustISOWithFloat:(float)value;
+- (void)adjustISOWithFloat:(int)value;
 
 @end
 
