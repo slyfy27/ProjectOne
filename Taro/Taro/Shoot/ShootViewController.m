@@ -761,59 +761,16 @@ static NSString *iso = @"iso";
     _subTable.tableFooterView = footerView;
     _subTable.backgroundColor = UIColorFromRGBAndAlpha(0x000000, 0.6);
     
-//    angle = 0;
-//    preAngle = 0;
-//
-//
-//    _focusSlider = [[FocusSlider alloc] initWithFrame:(CGRect){Width - Height/2.0 - 35,-35,Height + 70, Height + 70}];
-//    _focusSlider.transform = CGAffineTransformMakeRotation(-M_PI_2);
-//    [_focusSlider addTarget:self action:@selector(focusSliderValueChange:) forControlEvents:UIControlEventValueChanged];
-//    [self.view insertSubview:self.focusSlider belowSubview:_recordBtn];
-//
-//    _clockView = [[MTClockView alloc] initWithFrame:(CGRect){Width - Height/2,0,Height,Height}];
-//    [self.view insertSubview:_clockView belowSubview:_recordBtn];
-//
-//    _panView = [[UIView alloc] initWithFrame:(CGRect){Width - Height/2+50,0,Height,Height}];
-//    _panView.backgroundColor = [UIColor clearColor];
-//    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleClockPan:)];
-//    [panGesture setMaximumNumberOfTouches:1];
-//    panGesture.delegate = self;
-//
-//    [_panView addGestureRecognizer:panGesture];
-//    _panView.layer.cornerRadius = Height/2;
-//    _panView.layer.masksToBounds = YES;
-//    _panView.clipsToBounds = YES;
-//    _arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(Width-Height/2-6, Height/2 - 8, 16, 16)];
-//    _arrowView.image = [UIImage imageNamed:@"箭头 三角形"];
-//    [self.view addSubview:_arrowView];
-//    [self.view insertSubview:_panView belowSubview:_recordBtn];
-//
-//    _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
-    
     self.adjustView = [[AdjustView alloc] initWithFrame:(CGRect){0,0,Width,Height}];
     [self.adjustView.sliderView addTarget:self action:@selector(focusSliderValueChange:) forControlEvents:UIControlEventValueChanged];
     self.adjustView.delegate = self;
     [self.view insertSubview:self.adjustView belowSubview:self.recordBtn];
-//    _swipeView = [[UIView alloc] initWithFrame:(CGRect){0,0,Width,Height}];
-//    UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
-//    leftSwipeGesture.delegate = self;
-//    leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-//    [self.swipeView addGestureRecognizer:leftSwipeGesture];
-//    UISwipeGestureRecognizer *rightSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
-//    rightSwipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-//    [self.swipeView addGestureRecognizer:rightSwipeGesture];
-//    [self.view insertSubview:self.swipeView belowSubview:self.focusSlider];
     
     _focusLabel = [[UILabel alloc] initWithFrame:(CGRect){0,0,40,18}];
     _focusLabel.textColor = [UIColor whiteColor];
     _focusLabel.font = [UIFont systemFontOfSize:15];
     _focusLabel.center = CGPointMake(Width/2, Height/2);
     [self.view addSubview:_focusLabel];
-    
-//    CircleView *circleView = [[CircleView alloc] initWithFrame:(CGRect){100,0,Height,Height}];
-//    circleView.backgroundColor = [UIColor redColor];
-//    [self.view addSubview:circleView];
-//    [circleView addGestureRecognizer:panGesture];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
@@ -859,14 +816,6 @@ static NSString *iso = @"iso";
     }
 }
 
-//-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-//    CGPoint point = [touch locationInView:touch.view];
-//    if (point.x * point.x + point.y * point.y > Height/2*Height/2) {
-//        return NO;
-//    }
-//    return YES;
-//}
-
 - (void)focusSliderValueChange:(FocusSlider *)slider{
     _focusLabel.hidden = NO;
     float value;
@@ -889,49 +838,15 @@ static NSString *iso = @"iso";
     });
 }
 
-//- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
-//    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
-////        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
-//        _adjustView.hidden = NO;
-////        _focusLabel.hidden = _focusSlider.hidden = NO;
-//    }
-//    else if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
-////        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
-//        _adjustView.hidden = YES;
-//    }
-//}
-
-
-- (void)handleClockPan:(UIPanGestureRecognizer *)recognizer {
-    UIView *view = recognizer.view;
-    CGPoint translation = [recognizer locationInView:view];
-    
-    //    NSLog(@"translationX:%f\ntranslationY:%f",translation.x,translation.y);
-    CGFloat angleInRadians = atan2f(translation.y - view.frame.size.height/2, translation.x - view.frame.size.width/2);
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        angle = angleInRadians;
+- (void)autoAdjust{
+    if (!_isFront) {
+        [_backDevice lockForConfiguration:NULL];
+        _backDevice.focusMode = AVCaptureFocusModeAutoFocus;
+        [_backDevice setSmoothAutoFocusEnabled:YES];
+        [_backDevice unlockForConfiguration];
     }
-    sub = angleInRadians - angle;
-    CGFloat sumAngle = sub + preAngle;
-    self.clockView.transform = CGAffineTransformMakeRotation(sumAngle);
-    rightAngle = (sumAngle) * 180 / M_PI;
-    int x = rightAngle / 3.6;
-    x = x%100;
-    float y = x*1.0/10;
-    NSLog(@"x=%.2f",x*1.0/10);
-    if (recognizer.state == UIGestureRecognizerStateEnded) {
-        preAngle += sub;
-    }
-//    if (!_isFront) {
-//        [_backDevice lockForConfiguration:NULL];
-//        NSInteger v = (_backDevice.activeFormat.maxISO - _backDevice.activeFormat.minISO) * y + _backDevice.activeFormat.minISO;
-//        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:iso];
-//        [_backDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:v completionHandler:^(CMTime syncTime) {
-//
-//        }];
-//        [_backDevice unlockForConfiguration];
-//    }
 }
+
 
 - (void)subTableBack{
     self.type = SettingTypeCamera;

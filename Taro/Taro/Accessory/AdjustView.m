@@ -59,7 +59,7 @@
 //        panGesture.delegate = self;
         [panView addGestureRecognizer:panGesture];
         autoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        autoBtn.frame = CGRectMake(Width-Height/2 - 60, 20, 50, 30);
+        autoBtn.frame = CGRectMake(Width-Height/2 - 60, 20, 70, 30);
         [autoBtn setTitle:@"Auto" forState:UIControlStateNormal];
         [autoBtn setTitle:@"Manual" forState:UIControlStateSelected];
         autoBtn.titleLabel.font = [UIFont systemFontOfSize:13];
@@ -87,7 +87,9 @@
         //非自动
     }
     else{
-        //自动
+        if (self.delegate && [self.delegate respondsToSelector:@selector(autoAdjust)]) {
+            [self.delegate autoAdjust];
+        }
     }
 }
 
@@ -149,68 +151,16 @@
         preAngle = sumAngle;
         NSLog(@"preAngle:%.2f",angleInRadians-angle);
     }
-
-//    NSLog(@"angleInRadians: %@",@(angleInRadians).stringValue);
-//    if (recognizer.state == UIGestureRecognizerStateBegan) {
-//        angle = angleInRadians;
-//    }
-////    NSLog(@"xxxxxx:%@",@(angleInRadians).stringValue);
-//    sub = angleInRadians - angle;
-//    int x = 0;
-//    CGFloat sumAngle = sub + preAngle;
-//    rightAngle = (sumAngle) * 180 / M_PI + 30;
-//    if (rightAngle > 0 && rightAngle < 360) {
-//        x = rightAngle;
-//    }
-//    else if (rightAngle < 0){
-//        while ((rightAngle + 360) < 0) {
-//            rightAngle += 360;
-//        }
-//        x = rightAngle;
-//    }
-//    else if (rightAngle > 360){
-//        while (rightAngle > 360) {
-//            rightAngle -= 360;
-//        }
-//        x = rightAngle;
-//    }
-//    if (rightAngle >= 210) {
-//        rightAngle = 210;
-//        x = rightAngle;
-////        self.mtClockView.transform = CGAffineTransformMakeRotation(M_PI);
-//    }
-//    if (rightAngle < 0) {
-//        rightAngle = 0;
-//        x = rightAngle;
-////        self.mtClockView.transform = CGAffineTransformMakeRotation(-M_PI/6);
-//    }
-////    else if (rightAngle < 0){
-////        rightAngle = 0;
-////        x = 0;
-////        preAngle = -M_PI/6;
-////        self.mtClockView.transform = CGAffineTransformMakeRotation(-M_PI/6);
-////    }
-//    else{
-////        self.mtClockView.transform = CGAffineTransformMakeRotation(sumAngle);
-//    }
-//    self.mtClockView.transform = CGAffineTransformMakeRotation(sumAngle);
-//
-//    NSLog(@"angle: %@",@(rightAngle).stringValue);
-////    x = x%105;
-////    float y = x*1.0/10;
-////    NSLog(@"x=%.2f",x*1.0/10);
-//    if (recognizer.state == UIGestureRecognizerStateEnded) {
-//        preAngle = angleInRadians;
-//    }
-//    if (self.delegate && [self.delegate respondsToSelector:@selector(adjustISOWithFloat:)]) {
-//        [self.delegate adjustISOWithFloat:x];
-//    }
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
 //    if (point.x < 0) {
 //        return [super hitTest:point withEvent:event];
 //    }
+    UIView *view = [super hitTest:point withEvent:event];
+    if ([view isEqual:autoBtn]) {
+        return autoBtn;
+    }
     if (circleView.hidden || point.x < Width - Height/2.0 - 50) {
         return self;
     }

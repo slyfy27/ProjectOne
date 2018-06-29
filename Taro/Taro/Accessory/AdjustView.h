@@ -15,6 +15,8 @@
 @optional
 - (void)adjustISOWithFloat:(int)value;
 
+- (void)autoAdjust;
+
 @end
 
 @interface AdjustView : UIView
