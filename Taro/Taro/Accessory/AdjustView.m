@@ -22,6 +22,8 @@
     UIView *circleView;
     
     CGFloat totalAngle;
+    
+    UIButton *autoBtn;
 }
 
 /*
@@ -56,7 +58,19 @@
         [panGesture setMaximumNumberOfTouches:1];
 //        panGesture.delegate = self;
         [panView addGestureRecognizer:panGesture];
-        
+        autoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        autoBtn.frame = CGRectMake(Width-Height/2 - 60, 20, 50, 30);
+        [autoBtn setTitle:@"Auto" forState:UIControlStateNormal];
+        [autoBtn setTitle:@"Manual" forState:UIControlStateSelected];
+        autoBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+        [autoBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        autoBtn.layer.borderWidth = 1;
+        autoBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+        autoBtn.layer.cornerRadius = 15;
+        autoBtn.layer.masksToBounds = YES;
+        [autoBtn addTarget:self action:@selector(autoAction) forControlEvents:UIControlEventTouchUpInside];
+        autoBtn.hidden = YES;
+        [self addSubview:autoBtn];
         UISwipeGestureRecognizer *leftSwipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
         leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
         [self addGestureRecognizer:leftSwipeGesture];
@@ -67,15 +81,26 @@
     return self;
 }
 
+- (void)autoAction{
+    autoBtn.selected = !autoBtn.selected;
+    if (autoBtn.selected) {
+        //非自动
+    }
+    else{
+        //自动
+    }
+}
+
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
     if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {
         //        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = NO;
-        
+        autoBtn.hidden = NO;
         circleView.hidden = NO;
     }
     else if (recognizer.direction == UISwipeGestureRecognizerDirectionRight){
         //        _focusLabel.hidden = _focusSlider.hidden = _panView.hidden = _arrowView.hidden = _clockView.hidden = YES;
         circleView.hidden = YES;
+        autoBtn.hidden = YES;
     }
 }
 
@@ -110,6 +135,7 @@
     }
     rightAngle = (M_PI_2 - totalAngle) * 180 / M_PI;
     int x = rightAngle / 1.8;
+    NSLog(@"x= %d",x);
     x = x%200;
     float y = x;
     if (totalAngle == M_PI) {

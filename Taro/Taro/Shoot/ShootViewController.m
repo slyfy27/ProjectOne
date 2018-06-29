@@ -822,8 +822,8 @@ static NSString *iso = @"iso";
 
 - (void)adjustISOWithFloat:(int)value{
     NSLog(@"value = %@",@(value).stringValue);
-    int index = value/20;
-    int sub = value%20;
+    int index = value/5;
+    int sub = value%5;
     NSString *firstString = dataArray[index];
     int first = firstString.intValue;
     int second = 0;
@@ -842,18 +842,21 @@ static NSString *iso = @"iso";
         result = first;
     }
     NSLog(@"result:1/%d s",result);
-//    if (!_isFront) {
-//        [_backDevice lockForConfiguration:NULL];
-//        if (value < 0) {
-//            value *= -1;
-//        }
+    if (!_isFront) {
+        _focusLabel.hidden = NO;
+        _focusLabel.text = [NSString stringWithFormat:@"1/%d s",result];
+        [_backDevice lockForConfiguration:NULL];
 //        CGFloat second = (CMTimeGetSeconds(_backDevice.activeFormat.maxExposureDuration) - CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration)) * value + CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration);
-//    //        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:exposureCompensation];
-//        [_backDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(second,  1 *NSEC_PER_SEC) ISO:AVCaptureISOCurrent completionHandler:^(CMTime syncTime) {
-//
-//        }];
-//        [_backDevice unlockForConfiguration];
-//    }
+        CGFloat second = 1.0/result;
+    //        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:exposureCompensation];
+        [_backDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(second,  1 *NSEC_PER_SEC) ISO:AVCaptureISOCurrent completionHandler:^(CMTime syncTime) {
+
+        }];
+        [_backDevice unlockForConfiguration];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            _focusLabel.hidden = YES;
+        });
+    }
 }
 
 //-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
