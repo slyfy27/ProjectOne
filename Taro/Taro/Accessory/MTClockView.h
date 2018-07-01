@@ -13,5 +13,6 @@
 @property (nonatomic) IBInspectable CGFloat borderWidth; // 边框圆圈宽
 @property (nonatomic) CGFloat graduationLength; // 线长
 
+- (void)adjustWithSecond:(CGFloat)second;
 
 @end

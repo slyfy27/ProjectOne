@@ -34,4 +34,8 @@
 @property (nonatomic, strong) UIColor* labelColor;
 @property (nonatomic) BOOL snapToLabels;
 
+@property (nonatomic, assign) int angle;
+
+- (void)autoAdjustWithAngle:(int)angleInt;
+
 @end

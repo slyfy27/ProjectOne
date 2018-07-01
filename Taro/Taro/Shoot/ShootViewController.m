@@ -328,7 +328,12 @@ static NSString *iso = @"iso";
     [super viewWillDisappear:animated];
     [_recordTimer invalidate];
     _recordTimer = nil;
-}
+    if (self.adjustView.autoAjust) {
+        [self.backDevice removeObserver:self forKeyPath:@"exposureDuration"];
+        [self.backDevice removeObserver:self forKeyPath:@"lensPosition"];
+        self.adjustView.autoAjust = NO;
+        self.backInput = nil;
+    }}
 
 - (void)configCameraSetting{
 //    if (![[NSUserDefaults standardUserDefaults] valueForKey:resolution]) {
@@ -415,11 +420,6 @@ static NSString *iso = @"iso";
     _second += 1;
     _recordTimeLabel.text = [NSString stringWithFormat:@"  %@",[self timeFromSeconds:_second]];
     _recordViewTimeLabel.text = [NSString stringWithFormat:@"  %@",[self timeFromSeconds:_second]];
-}
-
-- (void)dealloc
-{
-    
 }
 
 - (NSString *)timeFromSeconds:(NSInteger)seconds
@@ -766,7 +766,7 @@ static NSString *iso = @"iso";
     self.adjustView.delegate = self;
     [self.view insertSubview:self.adjustView belowSubview:self.recordBtn];
     
-    _focusLabel = [[UILabel alloc] initWithFrame:(CGRect){0,0,40,18}];
+    _focusLabel = [[UILabel alloc] initWithFrame:(CGRect){0,0,60,18}];
     _focusLabel.textColor = [UIColor whiteColor];
     _focusLabel.font = [UIFont systemFontOfSize:15];
     _focusLabel.center = CGPointMake(Width/2, Height/2);
@@ -778,6 +778,11 @@ static NSString *iso = @"iso";
 }
 
 - (void)adjustISOWithFloat:(int)value{
+    if (self.adjustView.autoAjust) {
+        [self.backDevice removeObserver:self forKeyPath:@"exposureDuration"];
+        [self.backDevice removeObserver:self forKeyPath:@"lensPosition"];
+        self.adjustView.autoAjust = NO;
+    }
     NSLog(@"value = %@",@(value).stringValue);
     int index = value/5;
     int sub = value%5;
@@ -817,6 +822,11 @@ static NSString *iso = @"iso";
 }
 
 - (void)focusSliderValueChange:(FocusSlider *)slider{
+    if (self.adjustView.autoAjust) {
+        [self.backDevice removeObserver:self forKeyPath:@"exposureDuration"];
+        [self.backDevice removeObserver:self forKeyPath:@"lensPosition"];
+        self.adjustView.autoAjust = NO;
+    }
     _focusLabel.hidden = NO;
     float value;
     if (slider.value < 0) {
@@ -838,11 +848,36 @@ static NSString *iso = @"iso";
     });
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    if ([keyPath isEqualToString:@"lensPosition"]) {
+        int value = 0;
+        //        if (_backDevice.lensPosition > 0.5) {
+        //            value = 120*_backDevice.lensPosition - 60
+        //        }
+        //        else{
+        value = 60 - 120*_backDevice.lensPosition;
+        //        }
+        
+        [self.adjustView setSliderViewValue:value];
+    }
+    if ([keyPath isEqualToString:@"exposureDuration"]) {
+        CGFloat exposure = CMTimeGetSeconds(_backDevice.exposureDuration);
+        [self.adjustView setClockViewValue:exposure];
+    }
+}
+
 - (void)autoAdjust{
     if (!_isFront) {
+        [self.backDevice addObserver:self forKeyPath:@"lensPosition" options:NSKeyValueObservingOptionNew context:nil];
+        [self.backDevice addObserver:self forKeyPath:@"exposureDuration" options:NSKeyValueObservingOptionNew context:nil];
         [_backDevice lockForConfiguration:NULL];
         _backDevice.focusMode = AVCaptureFocusModeAutoFocus;
         [_backDevice setSmoothAutoFocusEnabled:YES];
+        [_backDevice unlockForConfiguration];
+        
+        
+        [_backDevice lockForConfiguration:NULL];
+        [_backDevice setExposureMode:AVCaptureExposureModeAutoExpose];
         [_backDevice unlockForConfiguration];
     }
 }

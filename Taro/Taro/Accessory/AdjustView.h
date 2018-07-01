@@ -26,4 +26,10 @@
 
 @property (nonatomic, weak) id<AdjustViewDelegate> delegate;
 
+@property (nonatomic, assign) BOOL autoAjust;
+
+- (void)setSliderViewValue:(int)value;
+
+- (void)setClockViewValue:(CGFloat)second;
+
 @end

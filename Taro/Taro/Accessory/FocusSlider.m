@@ -11,7 +11,6 @@
 
 @implementation FocusSlider{
     CGFloat radius;
-    int angle;
     int fixedAngle;
     NSMutableDictionary* labelsWithPercents;
     NSArray* labelsEvenSpacing;
@@ -37,7 +36,7 @@
         
         _labelColor = [UIColor redColor];
         
-        angle = 0;
+        _angle = 0;
         radius = self.frame.size.height/2 - _lineWidth/2 - 9;
         
         self.backgroundColor = [UIColor clearColor];
@@ -55,14 +54,14 @@
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     
     //Draw the unfilled circle
-    CGContextAddArc(ctx, self.frame.size.width/2, self.frame.size.height/2, radius, M_PI, M_PI_2 * 3 - 0.05  - ToRad(angle), 0);//0, M_PI *2, 0
+    CGContextAddArc(ctx, self.frame.size.width/2, self.frame.size.height/2, radius, M_PI, M_PI_2 * 3 - 0.05  - ToRad(_angle), 0);//0, M_PI *2, 0
     [[UIColor whiteColor] setStroke];
     
     //    CGContextSetLineWidth(ctx, _lineWidth);
     CGContextSetLineCap(ctx, kCGLineCapButt);
     CGContextDrawPath(ctx, kCGPathStroke);
     
-    CGContextAddArc(ctx, self.frame.size.width/2, self.frame.size.height/2, radius, M_PI_2 * 3 + 0.05 - ToRad(angle), M_PI * 2, 0);//0, M_PI *2, 0
+    CGContextAddArc(ctx, self.frame.size.width/2, self.frame.size.height/2, radius, M_PI_2 * 3 + 0.05 - ToRad(_angle), M_PI * 2, 0);//0, M_PI *2, 0
     [[UIColor whiteColor] setStroke];
     
     CGContextSetLineCap(ctx, kCGLineCapButt);
@@ -74,7 +73,7 @@
 
 -(void)drawHandle:(CGContextRef)ctx{///画滑块
     CGContextSaveGState(ctx);
-    CGPoint handleCenter =  [self pointFromAngle: angle];
+    CGPoint handleCenter =  [self pointFromAngle: _angle];
     
     [[UIColor clearColor]set];
     CGContextFillEllipseInRect(ctx, CGRectMake(handleCenter.x, handleCenter.y, _lineWidth+10, _lineWidth+10));
@@ -96,11 +95,10 @@
 
 -(BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     [super beginTrackingWithTouch:touch withEvent:event];
-    
     return YES;
 }
 
--(BOOL) continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+-(BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     [super continueTrackingWithTouch:touch withEvent:event];
     
     CGPoint lastPoint = [touch locationInView:self];
@@ -127,39 +125,12 @@
     if (currentAngle > 45 && currentAngle < 135) {
         return;
     }
-    angle = 360 - 90 - currentAngle;
+    _angle = 360 - 90 - currentAngle;
     
     _currentValue = [self valueFromAngle];
     //  NSLog(@"%f",_currentValue);
     
-    _value=angle;
-    
-//    if(_value>223){
-//        _value=223+270-angle;
-//    }else{
-//        _value=abs(134-angle);
-//    }
-//    if (_value>0&&_value<=266) {
-//        // _label.text = [NSString stringWithFormat:@"%d",value];
-//        //
-//
-//        if (_value == 1) {
-//            _money = 10000;
-//            //_label.text = @"500";
-//        }else if(_value >258){
-//            _money = 100000;
-//            // _label.text= @"20000";
-//        }else if (_value == 258){
-//            _money = 99900;
-//            // _label.text = @"19900";
-//        }else{
-//            _number = _value*(100000/258)/100;
-//            //  _currentAngle = [NSString stringWithFormat:@"%d",(number*100+500)];
-//            _money = _number*100+10000;
-//            //_label.text = [NSString stringWithFormat:@"%ld",(number*100+500)];
-//        }
-//    }
-    
+    _value=_angle;
     
     [self setNeedsDisplay];
 }
@@ -178,6 +149,11 @@
     return result;
 }
 
+- (void)autoAdjustWithAngle:(int)angleInt{
+    CGPoint point = [self pointFromAngle:angleInt];
+    [self moveHandle:point];
+}
+
 static inline float AngleFromNorth(CGPoint p1, CGPoint p2, BOOL flipped) {
     CGPoint v = CGPointMake(p2.x-p1.x,p2.y-p1.y);
     //    float vmag = sqrt(SQR(v.x) + SQR(v.y)), result = 0;
@@ -190,11 +166,11 @@ static inline float AngleFromNorth(CGPoint p1, CGPoint p2, BOOL flipped) {
 }
 
 
--(float) valueFromAngle {
-    if(angle < 0) {
-        _currentValue = -angle;
+-(float)valueFromAngle {
+    if(_angle < 0) {
+        _currentValue = -_angle;
     } else {
-        _currentValue = 270 - angle + 90;
+        _currentValue = 270 - _angle + 90;
     }
     fixedAngle = _currentValue;
     return (_currentValue*(_maximumValue - _minimumValue))/360.0f;

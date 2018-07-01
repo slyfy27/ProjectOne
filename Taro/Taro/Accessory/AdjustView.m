@@ -24,6 +24,9 @@
     CGFloat totalAngle;
     
     UIButton *autoBtn;
+    
+    NSArray *dataArray;
+    
 }
 
 /*
@@ -40,6 +43,7 @@
         angle = 0;
         preAngle = 0;
         totalAngle = 0;
+        dataArray = @[@"1000",@"997",@"975",@"904",@"755",@"600",@"553",@"364",@"227",@"140",@"88",@"56",@"37",@"25",@"18",@"13",@"9.1",@"6.7",@"5.1",@"3.9",@"3.0"];
         circleView = [[UIView alloc] initWithFrame:(CGRect){Width - Height/2.0 - 50,-50,Height + 100, Height + 100}];
         [self addSubview:circleView];
         circleView.hidden = YES;
@@ -82,15 +86,16 @@
 }
 
 - (void)autoAction{
-    autoBtn.selected = !autoBtn.selected;
-    if (autoBtn.selected) {
-        //非自动
-    }
-    else{
+//    autoBtn.selected = !autoBtn.selected;
+//    if (autoBtn.selected) {
+//        //非自动
+//    }
+//    else{
+    self.autoAjust = YES;
         if (self.delegate && [self.delegate respondsToSelector:@selector(autoAdjust)]) {
             [self.delegate autoAdjust];
         }
-    }
+//    }
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
@@ -169,6 +174,38 @@
         return self.sliderView;
     }
     return panView;
+}
+
+- (void)setSliderViewValue:(int)value{
+    [self.sliderView autoAdjustWithAngle:value];
+}
+
+- (void)setClockViewValue:(CGFloat)second{
+    float b = 1.0/second;
+    int index = 0;
+    NSLog(@"b:%f",b);
+    NSString *pre = @"1000";
+    NSString *next = @"997";
+    for (int i = 0; i < dataArray.count - 1; i ++) {
+        pre = dataArray[i];
+        next = dataArray[i+1];
+        if (pre.floatValue >= b && next.floatValue <= b ) {
+            index = i;
+            break;
+        }
+    }
+    CGFloat sub = (b - next.floatValue)*(5/(pre.floatValue-next.floatValue));
+    CGFloat an = (9*index*M_PI+sub*1.8)/180;
+    if (an <= - M_PI_2) {
+        an = - M_PI_2;
+    }
+    if (an >= M_PI) {
+        an = M_PI;
+    }
+    self.mtClockView.transform = CGAffineTransformMakeRotation(M_PI_2-an);
+    preAngle = M_PI_2-an;
+    totalAngle = M_PI_2-an;
+//    [self.mtClockView adjustWithSecond:second];
 }
 
 
