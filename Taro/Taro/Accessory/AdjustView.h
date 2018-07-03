@@ -15,7 +15,7 @@
 @optional
 - (void)adjustISOWithFloat:(int)value;
 
-- (void)autoAdjust;
+- (void)autoAdjust:(BOOL)adjust;
 
 @end
 

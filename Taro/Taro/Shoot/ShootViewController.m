@@ -700,7 +700,8 @@ static NSString *iso = @"iso";
     AVCaptureConnection *outputVideoConnection = [_output connectionWithMediaType:AVMediaTypeVideo];
     outputVideoConnection.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
+    self.adjustView.autoAjust = YES;
+    [self autoAdjust:YES];
     dataArray = @[@"1000",@"997",@"975",@"904",@"755",@"600",@"553",@"364",@"227",@"140",@"88",@"56",@"37",@"25",@"18",@"13",@"9.1",@"6.7",@"5.1",@"3.9",@"3.0"];
 }
 
@@ -764,11 +765,13 @@ static NSString *iso = @"iso";
     self.adjustView = [[AdjustView alloc] initWithFrame:(CGRect){0,0,Width,Height}];
     [self.adjustView.sliderView addTarget:self action:@selector(focusSliderValueChange:) forControlEvents:UIControlEventValueChanged];
     self.adjustView.delegate = self;
+    
     [self.view insertSubview:self.adjustView belowSubview:self.recordBtn];
     
-    _focusLabel = [[UILabel alloc] initWithFrame:(CGRect){0,0,60,18}];
+    _focusLabel = [[UILabel alloc] initWithFrame:(CGRect){0,0,100,18}];
     _focusLabel.textColor = [UIColor whiteColor];
-    _focusLabel.font = [UIFont systemFontOfSize:15];
+    _focusLabel.font = [UIFont boldSystemFontOfSize:13];
+    _focusLabel.textAlignment = NSTextAlignmentCenter;
     _focusLabel.center = CGPointMake(Width/2, Height/2);
     [self.view addSubview:_focusLabel];
 }
@@ -806,9 +809,10 @@ static NSString *iso = @"iso";
     NSLog(@"result:1/%d s",result);
     if (!_isFront) {
         _focusLabel.hidden = NO;
-        _focusLabel.text = [NSString stringWithFormat:@"1/%d s",result];
+        _focusLabel.text = [NSString stringWithFormat:@"Shutter 1/%d s",result];
         [_backDevice lockForConfiguration:NULL];
-//        CGFloat second = (CMTimeGetSeconds(_backDevice.activeFormat.maxExposureDuration) - CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration)) * value + CMTimeGetSeconds(_backDevice.activeFormat.minExposureDuration);
+        [_backDevice setFocusMode:AVCaptureFocusModeLocked];
+        [_backDevice setExposureMode:AVCaptureExposureModeLocked];
         CGFloat second = 1.0/result;
     //        [[NSUserDefaults standardUserDefaults] setValue:@(v).stringValue forKey:exposureCompensation];
         [_backDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(second,  1 *NSEC_PER_SEC) ISO:AVCaptureISOCurrent completionHandler:^(CMTime syncTime) {
@@ -835,9 +839,11 @@ static NSString *iso = @"iso";
     else{
         value = (60-slider.value)*1.0/120;
     }
-    _focusLabel.text = [NSString stringWithFormat:@"%.2f",value];
+    _focusLabel.text = [NSString stringWithFormat:@"Focus %.2f",value];
     if (!_isFront) {
         [_backDevice lockForConfiguration:NULL];
+        [_backDevice setFocusMode:AVCaptureFocusModeLocked];
+        [_backDevice setExposureMode:AVCaptureExposureModeLocked];
         [_backDevice setFocusModeLockedWithLensPosition:value completionHandler:^(CMTime syncTime) {
             
         }];
@@ -866,18 +872,26 @@ static NSString *iso = @"iso";
     }
 }
 
-- (void)autoAdjust{
-    if (!_isFront) {
+
+
+- (void)autoAdjust:(BOOL)adjust{
+    if (!_isFront && adjust) {
         [self.backDevice addObserver:self forKeyPath:@"lensPosition" options:NSKeyValueObservingOptionNew context:nil];
         [self.backDevice addObserver:self forKeyPath:@"exposureDuration" options:NSKeyValueObservingOptionNew context:nil];
         [_backDevice lockForConfiguration:NULL];
-        _backDevice.focusMode = AVCaptureFocusModeAutoFocus;
+        _backDevice.focusMode = AVCaptureFocusModeContinuousAutoFocus;
         [_backDevice setSmoothAutoFocusEnabled:YES];
         [_backDevice unlockForConfiguration];
         
         
         [_backDevice lockForConfiguration:NULL];
-        [_backDevice setExposureMode:AVCaptureExposureModeAutoExpose];
+        [_backDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+        [_backDevice unlockForConfiguration];
+    }
+    else{
+        [_backDevice lockForConfiguration:NULL];
+        [_backDevice setFocusMode:AVCaptureFocusModeLocked];
+        [_backDevice setExposureMode:AVCaptureExposureModeLocked];
         [_backDevice unlockForConfiguration];
     }
 }

@@ -85,17 +85,26 @@
     return self;
 }
 
+- (void)setAutoAjust:(BOOL)autoAjust{
+    _autoAjust = autoAjust;
+    autoBtn.selected = !autoAjust;
+}
+
 - (void)autoAction{
-//    autoBtn.selected = !autoBtn.selected;
-//    if (autoBtn.selected) {
-//        //非自动
-//    }
-//    else{
-    self.autoAjust = YES;
-        if (self.delegate && [self.delegate respondsToSelector:@selector(autoAdjust)]) {
-            [self.delegate autoAdjust];
+    autoBtn.selected = !autoBtn.selected;
+    if (autoBtn.selected) {
+        //非自动
+        self.autoAjust = NO;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(autoAdjust:)]) {
+            [self.delegate autoAdjust:NO];
         }
-//    }
+    }
+    else{
+        self.autoAjust = YES;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(autoAdjust:)]) {
+            [self.delegate autoAdjust:YES];
+        }
+    }
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
@@ -118,6 +127,7 @@
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         angle = angleInRadians;
     }
+    autoBtn.selected = YES;
     sub = angleInRadians - angle;
     angle = angleInRadians;
     CGFloat sumAngle = sub + preAngle;
