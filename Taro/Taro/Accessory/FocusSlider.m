@@ -57,7 +57,7 @@
     CGContextAddArc(ctx, self.frame.size.width/2, self.frame.size.height/2, radius, M_PI, M_PI_2 * 3 - 0.05  - ToRad(_angle), 0);//0, M_PI *2, 0
     [[UIColor whiteColor] setStroke];
     
-    //    CGContextSetLineWidth(ctx, _lineWidth);
+    CGContextSetLineWidth(ctx, 2);
     CGContextSetLineCap(ctx, kCGLineCapButt);
     CGContextDrawPath(ctx, kCGPathStroke);
     
@@ -81,9 +81,8 @@
     
     //     CLOCK'S BORDER
     CGContextAddEllipseInRect(ctx, CGRectMake(handleCenter.x, handleCenter.y, _lineWidth+10, _lineWidth+10));
-    CGContextSetStrokeColorWithColor(ctx, AlertBlueColor.CGColor);
-    CGContextSetAlpha(ctx, 0.5);
-    CGContextSetLineWidth(ctx,1);
+    CGContextSetStrokeColorWithColor(ctx, [UIColor whiteColor].CGColor);
+    CGContextSetLineWidth(ctx,2);
     CGContextStrokePath(ctx);
     
     CGContextRestoreGState(ctx);

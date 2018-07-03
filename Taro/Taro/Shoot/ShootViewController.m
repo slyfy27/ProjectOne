@@ -768,7 +768,7 @@ static NSString *iso = @"iso";
     
     [self.view insertSubview:self.adjustView belowSubview:self.recordBtn];
     
-    _focusLabel = [[UILabel alloc] initWithFrame:(CGRect){0,0,100,18}];
+    _focusLabel = [[UILabel alloc] initWithFrame:(CGRect){0,0,105,18}];
     _focusLabel.textColor = [UIColor whiteColor];
     _focusLabel.font = [UIFont boldSystemFontOfSize:13];
     _focusLabel.textAlignment = NSTextAlignmentCenter;
@@ -889,6 +889,8 @@ static NSString *iso = @"iso";
         [_backDevice unlockForConfiguration];
     }
     else{
+        [self.backDevice removeObserver:self forKeyPath:@"lensPosition"];
+        [self.backDevice removeObserver:self forKeyPath:@"exposureDuration"];
         [_backDevice lockForConfiguration:NULL];
         [_backDevice setFocusMode:AVCaptureFocusModeLocked];
         [_backDevice setExposureMode:AVCaptureExposureModeLocked];

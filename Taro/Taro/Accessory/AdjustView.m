@@ -68,7 +68,7 @@
         [autoBtn setTitle:@"Manual" forState:UIControlStateSelected];
         autoBtn.titleLabel.font = [UIFont systemFontOfSize:13];
         [autoBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        autoBtn.layer.borderWidth = 1;
+        autoBtn.layer.borderWidth = 2;
         autoBtn.layer.borderColor = [UIColor whiteColor].CGColor;
         autoBtn.layer.cornerRadius = 15;
         autoBtn.layer.masksToBounds = YES;
