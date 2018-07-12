@@ -868,7 +868,9 @@ static NSString *iso = @"iso";
     }
     if ([keyPath isEqualToString:@"exposureDuration"]) {
         CGFloat exposure = CMTimeGetSeconds(_backDevice.exposureDuration);
-        [self.adjustView setClockViewValue:exposure];
+        [UIView animateWithDuration:0.25 animations:^{
+            [self.adjustView setClockViewValue:exposure];
+        }];
     }
 }
 

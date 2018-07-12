@@ -20,6 +20,7 @@
 @interface ViewController ()
 
 @property (assign, nonatomic) NSInteger authCount;
+@property (weak, nonatomic) IBOutlet UIButton *startbtn;
 
 @end
 
@@ -37,7 +38,117 @@
     self.navigationController.navigationBar.shadowImage = [UIImage new];
     _authCount = 0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gotoCamera) name:@"deviceConnected" object:nil];
-    
+    UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(startLongPress:)];
+    [self.startbtn addGestureRecognizer:longGesture];
+}
+
+- (void)startLongPress:(UIGestureRecognizer *)gesture{
+    //长按开始
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstAuth"]) {
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                if (granted) {
+                    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+                        if (granted) {
+                            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    if (status == PHAuthorizationStatusAuthorized) {
+                                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstAuth"];
+                                        [[NSUserDefaults standardUserDefaults] synchronize];
+                                        ShootViewController *vc = [[ShootViewController alloc] init];
+                                        [self.navigationController pushViewController:vc animated:YES];
+                                    }
+                                    else{
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [AuthDeniedAlertView alertWithIconName:@"保存" content:NSLocalizedString(@"PhotoAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                                                if (index == 1) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                                                            
+                                                        }];
+                                                    });
+                                                }
+                                            }];
+                                        });
+                                    }
+                                });
+                            }];
+                        }
+                        else{
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [AuthDeniedAlertView alertWithIconName:@"麦克风" content:NSLocalizedString(@"MicrophoneAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                                    if (index == 1) {
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                                                
+                                            }];
+                                        });
+                                    }
+                                }];
+                            });
+                        }
+                    }];
+                }
+                else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [AuthDeniedAlertView alertWithIconName:@"录像" content:NSLocalizedString(@"CameraAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                            if (index == 1) {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                                    }];
+                                });
+                            }
+                        }];
+                    });
+                }
+            }];
+        }
+        else{
+            if ([self CameraAuthStatus]) {
+                if ([self microphoneAuthStatus]) {
+                    if ([self photoLibraryAuthStatus]) {
+                        ShootViewController *vc = [[ShootViewController alloc] init];
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
+                    else{
+                        [AuthDeniedAlertView alertWithIconName:@"保存" content:NSLocalizedString(@"PhotoAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                            if (index == 1) {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                                        
+                                    }];
+                                });
+                            }
+                        }];
+                    }
+                }
+                else{
+                    [AuthDeniedAlertView alertWithIconName:@"麦克风" content:NSLocalizedString(@"MicrophoneAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                        if (index == 1) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                                    
+                                }];
+                            });
+                        }
+                    }];
+                }
+            }
+            else{
+                [AuthDeniedAlertView alertWithIconName:@"录像" content:NSLocalizedString(@"CameraAuthDenied", nil) comfirmTitle:NSLocalizedString(@"AlertComfirmTitle",nil) choose:^(NSInteger index) {
+                    if (index == 1) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+                                
+                            }];
+                        });
+                    }
+                }];
+            }
+        }
+    }else {
+        
+    }
 }
 
 - (void)gotoCamera{
@@ -66,9 +177,9 @@
  @param sender button
  */
 - (IBAction)startAction:(id)sender {
-    ShootViewController *vc = [[ShootViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-    return;
+//    ShootViewController *vc = [[ShootViewController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+//    return;
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstAuth"]) {
         [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
             if (granted) {
